@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mees Putman — Photography &amp; Cinematography</title>
+<meta name="description" content="Mees Putman, photographer and filmmaker based in Utrecht, The Netherlands.">
+<meta name="theme-color" content="#401804">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --brown:#401804;
+    --black:#000;
+    --red:#e12020;
+    --yellow:#fce08b;
+    --cream:#f3e9d8;
+    --muted:rgba(243,233,216,.55);
+    --gap:clamp(8px, 1.6vw, 20px);
+    --pad:clamp(16px, 5.5vw, 80px);
+    --row-h:clamp(170px, 26vw, 330px);   /* target row height of the photo grid */
+    --nav-h:56px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--brown);color:var(--cream);
+    font-family:"DM Sans",system-ui,sans-serif;line-height:1.6;
+    min-height:100vh;display:flex;flex-direction:column;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit}
+
+  /* ---------- Navigation ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;height:var(--nav-h);
+    display:flex;justify-content:flex-end;align-items:center;gap:clamp(14px,3vw,28px);
+    padding:0 var(--pad);background:var(--brown);
+    border-bottom:1px solid rgba(243,233,216,.14);
+  }
+  .nav a{text-decoration:none;color:var(--muted);font-size:1.05rem;transition:color .2s;padding:8px 2px}
+  .nav a:hover,.nav a.active{color:#fff}
+
+  /* ---------- Pages ---------- */
+  main{flex:1}
+  .page{display:none}
+  .page.active{display:block;animation:fade .45s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  h1,h2,.display{font-family:"Montserrat",sans-serif;font-weight:900;letter-spacing:-.05em;line-height:.95}
+
+  /* ---------- Home hero ---------- */
+  .hero{display:grid;grid-template-columns:1.35fr 1fr;min-height:calc(100vh - var(--nav-h));min-height:calc(100svh - var(--nav-h))}
+  .hero-text{padding:clamp(40px,8vw,110px) var(--pad);display:flex;flex-direction:column;justify-content:flex-start}
+  .hero h1{color:var(--red);font-size:clamp(3.6rem,10.5vw,9.5rem)}
+  .hero .tag{margin-top:clamp(18px,2.5vw,34px);color:var(--yellow);font-size:clamp(.95rem,1.5vw,1.35rem);letter-spacing:.02em;text-transform:uppercase}
+  .hero-img{position:relative;background:#120803;overflow:hidden}
+  .hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+
+  /* ---------- About ---------- */
+  .about{background:var(--black);padding:clamp(48px,8vw,110px) var(--pad)}
+  .about-inner{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(28px,5vw,80px);align-items:start;max-width:1400px;margin:0 auto}
+  .about h2{color:var(--red);font-size:clamp(3rem,7vw,6rem);grid-column:1 / -1}
+  .about-photo img{width:100%;height:auto;border-radius:2px}
+  .about-text p{text-align:justify;color:var(--yellow);font-size:clamp(1rem,1.35vw,1.2rem);margin-bottom:1.3em;}
+  .about-text .btn-row{margin-top:2em}
+  .btn{display:inline-block;text-decoration:none;padding:12px 26px;border:1.5px solid var(--yellow);color:var(--yellow);
+       font-weight:500;letter-spacing:.04em;transition:background .2s,color .2s}
+  .btn:hover{background:var(--yellow);color:var(--black)}
+
+  /* ---------- Gallery pages ---------- */
+  .gallery-page{padding:clamp(28px,5vw,64px) var(--pad) clamp(48px,7vw,100px)}
+  .gallery-page h1{color:var(--red);text-align:center;font-size:clamp(2.6rem,7vw,5.5rem);margin-bottom:clamp(28px,5vw,64px);text-transform:uppercase}
+
+  /* Justified grid: rows fill the full width, every photo keeps its own aspect ratio. */
+  .grid{display:flex;flex-wrap:wrap;gap:var(--gap);max-width:1500px;margin:0 auto}
+  .grid::after{content:"";flex-grow:1e6}               /* keeps the last row from over-stretching */
+  .tile{
+    --ar:1.5;
+    flex:calc(var(--ar) * 1000) 1 calc(var(--ar) * var(--row-h));
+    min-width:0;position:relative;overflow:hidden;background:#2e1103;cursor:zoom-in;
+    opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease;
+  }
+  .tile.in{opacity:1;transform:none}
+  .tile img{width:100%;aspect-ratio:var(--ar);object-fit:cover;transition:transform .5s ease}
+  .tile:hover img{transform:scale(1.03)}
+  .tile:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+  .empty{text-align:center;color:var(--muted);padding:40px 0}
+
+  /* ---------- Contact ---------- */
+  .contact-img{height:clamp(220px,42vw,520px);background:#120803;overflow:hidden}
+  .contact-img img{width:100%;height:100%;object-fit:cover}
+  .contact{padding:clamp(36px,6vw,80px) var(--pad) clamp(48px,7vw,100px)}
+  .contact h1{color:var(--yellow);font-size:clamp(2.8rem,7.5vw,6.5rem);margin-bottom:clamp(28px,4vw,56px)}
+  .contact-grid{display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;gap:28px;align-items:center}
+  .contact dt{font-weight:700;font-size:1.25rem;color:#fff}
+  .contact dd{font-size:1.1rem}
+  .contact dd a{text-decoration:none}
+  .contact dd a:hover{color:var(--yellow)}
+  .insta{display:flex;align-items:center;gap:14px;text-decoration:none;font-weight:700;font-size:1.3rem;color:var(--yellow)}
+  .insta svg{width:38px;height:38px}
+
+  footer{padding:22px var(--pad);font-size:.85rem;color:var(--muted);text-align:center;border-top:1px solid rgba(243,233,216,.12)}
+
+  /* ---------- Lightbox ---------- */
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,.96);display:none;align-items:center;justify-content:center;touch-action:pan-y}
+  .lb.open{display:flex}
+  .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;object-fit:contain;user-select:none;-webkit-user-drag:none}
+  .lb button{position:absolute;background:none;border:0;color:var(--cream);cursor:pointer;font-size:2.2rem;line-height:1;padding:14px;opacity:.8;transition:opacity .2s}
+  .lb button:hover{opacity:1}
+  .lb .x{top:max(8px,env(safe-area-inset-top));right:8px}
+  .lb .prev{left:4px;top:50%;transform:translateY(-50%)}
+  .lb .next{right:4px;top:50%;transform:translateY(-50%)}
+  .lb .count{position:absolute;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:.9rem;color:var(--muted)}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;min-height:0}
+    .hero-text{padding-bottom:36px}
+    .hero-img{aspect-ratio:4/5;max-height:80vh}
+    .about-inner{grid-template-columns:1fr}
+    .contact-grid{grid-template-columns:1fr;justify-content:start}
+  }
+  @media (max-width:560px){
+    :root{--row-h:150px;--nav-h:52px}
+    .nav{justify-content:space-between;gap:6px}
+    .nav a{font-size:.98rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .tile{opacity:1;transform:none}
+  }
+</style>
+</head>
+
+<body>
+
+<nav class="nav" aria-label="Main">
+  <a href="#home" data-page="home">Home</a>
+  <a href="#people" data-page="people">People</a>
+  <a href="#street" data-page="street">Street</a>
+  <a href="#concert" data-page="concert">Concert</a>
+  <a href="#contact" data-page="contact">Contact</a>
+</nav>
+
+<main>
+  <!-- HOME -->
+  <section class="page" id="page-home">
+    <div class="hero">
+      <div class="hero-text">
+        <h1 id="site-name">Mees<br>Putman</h1>
+        <p class="tag" id="site-tagline">Photography &amp; Cinematography</p>
+      </div>
+      <div class="hero-img"><img id="img-hero" alt="Portrait of Mees Putman"></div>
+    </div>
+
+    <div class="about">
+      <div class="about-inner">
+        <h2>About</h2>
+        <div class="about-photo"><img id="img-about" alt="Mees Putman" loading="lazy"></div>
+        <div class="about-text" id="about-text"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PEOPLE -->
+  <section class="page gallery-page" id="page-people">
+    <h1>People</h1>
+    <div class="grid" id="grid-people"></div>
+  </section>
+
+  <!-- STREET -->
+  <section class="page gallery-page" id="page-street">
+    <h1>Street</h1>
+    <div class="grid" id="grid-street"></div>
+  </section>
+
+  <!-- CONCERT -->
+  <section class="page gallery-page" id="page-concert">
+    <h1>Concert</h1>
+    <div class="grid" id="grid-concert"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="page" id="page-contact">
+    <div class="contact-img"><img id="img-contact" alt=""></div>
+    <div class="contact">
+      <h1>Work with me</h1>
+      <div class="contact-grid">
+        <dl><dt>Phone</dt><dd><a id="c-phone"></a></dd></dl>
+        <dl><dt>Email</dt><dd><a id="c-email"></a></dd></dl>
+        <a class="insta" id="c-insta" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+          <span id="c-insta-name"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© <span id="year"></span> Mees Putman</footer>
+
+<!-- Lightbox -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="x" aria-label="Close">&times;</button>
+  <button class="prev" aria-label="Previous photo">&#8249;</button>
+  <img id="lb-img" alt="">
+  <button class="next" aria-label="Next photo">&#8250;</button>
+  <div class="count" id="lb-count"></div>
+</div>
+
+<script>
+/* =====================================================================
+   SITE SETTINGS — this is the only part you ever need to edit
+   ===================================================================== */
+const SITE = {
+  name:    ["Mees", "Putman"],
+  tagline: "Photography & Cinematography",
+
+  phone:     "+31 6 20470271",
+  email:     "meesputman@outlook.com",
+  instagram: "meesputman1",
+
+  about: [
+    "My name is Mees Putman, a photographer and filmmaker based in Utrecht, The Netherlands, driven by an eye for visuals that goes back as long as I can remember. It started casually, filming friends, shooting whatever caught my eye, long before I saw it as more than a hobby. That curiosity slowly turned into a real fascination with mood, motion, and energy.",
+    "Whether I'm framing a candid street scene, a live show, or a quiet portrait, I'm always trying to capture what a moment actually felt like; honest, alive, and true to the atmosphere it happened in.",
+    "Always searching for genuine stories to tell, I welcome new collaborations and projects across the Netherlands and beyond. Feel free to reach out.",
+    "Have a look around."
+  ]
+};
+
+/* All photos live in the "photos" folder next to this file.
+   HOW TO ADD A PHOTO: copy the file into the right folder and add its filename to the list.
+   HOW TO REMOVE ONE:  delete its line. The grid rebuilds itself — no layout work needed.
+   Optional: use { file: "name.jpg", alt: "Description" } for a custom description. */
+const PHOTOS = {
+  hero:    "photos/home/hero.jpg",     // big picture next to your name
+  about:   "photos/home/about.jpg",        // picture in the About section
+  contact: "photos/home/contact.jpg",      // wide banner on the Contact page
+
+  people: {
+    folder: "photos/people/",
+    files: [
+      "people-01.jpg",
+      "people-02.jpg",
+      "people-03.jpg",
+      "people-04.jpg",
+      "people-05.jpg",
+      "people-06.jpg",
+      "people-07.jpg",
+      "people-08.jpg",
+      "people-09.jpg",
+      "people-10.jpg",
+      "people-11.jpg",
+      "people-12.jpg",
+      "people-13.jpg",
+      "people-14.jpg",
+      "people-15.jpg",
+      "people-16.jpg",
+      "people-17.jpg",
+      "people-18.jpg",
+      "people-19.jpg",
+      "people-20.jpg",
+      "people-21.jpg",
+      "people-22.jpg",
+      "people-23.jpg",
+      "people-24.jpg",
+      "people-25.jpg",
+      "people-26.jpg",
+      "people-27.jpg",
+      "people-28.jpg",
+      "people-29.jpg",
+      "people-30.jpg",
+      "people-31.jpg",
+      "people-32.jpg",
+      "people-33.jpg",
+      "people-34.jpg",
+      "people-35.jpg",
+      "people-36.jpg",
+      "people-37.jpg",
+      "people-38.jpg",
+      "people-39.jpg",
+      "people-40.jpg",
+      "people-41.jpg",
+      "people-42.jpg",
+      // add more filenames here ...
+    ]
+  },
+
+  concert: {
+    folder: "photos/concert/",
+    files: [
+      "concert-01.jpg",
+      "concert-02.jpg",
+      "concert-03.jpg",
+      "concert-04.jpg",
+      "concert-05.jpg",
+      "concert-06.jpg",
+      "concert-07.jpg",
+      "concert-08.jpg",
+      "concert-09.jpg",
+      "concert-10.jpg",
+      "concert-11.jpg",
+      "concert-12.jpg",
+      "concert-13.jpg",
+      "concert-14.jpg",
+      "concert-15.jpg",
+      "concert-16.jpg",
+      "concert-17.jpg",
+      "concert-18.jpg",
+      "concert-19.jpg",
+      "concert-20.jpg",
+      "concert-21.jpg",
+      "concert-22.jpg",
+      "concert-23.jpg",
+      "concert-24.jpg",
+      // add more filenames here ...
+    ]
+  },
+
+  street: {
+    folder: "photos/street/",
+    files: [
+      "street-01.jpg",
+      "street-02.jpg",
+      "street-03.jpg",
+      "street-04.jpg",
+      "street-05.jpg",
+      "street-06.jpg",
+      "street-07.jpg",
+      "street-08.jpg",
+      "street-09.jpg",
+      "street-10.jpg",
+      "street-11.jpg",
+      "street-12.jpg",
+      "street-13.jpg",
+      "street-14.jpg",
+      "street-15.jpg",
+      "street-16.jpg",
+      "street-17.jpg",
+      "street-18.jpg",
+      "street-19.jpg",
+      "street-20.jpg",
+      "street-21.jpg",
+      "street-22.jpg",
+      "street-23.jpg",
+      "street-24.jpg",
+      "street-25.jpg",
+      "street-26.jpg",
+      "street-27.jpg",
+      "street-28.jpg",
+      "street-29.jpg",
+      "street-30.jpg",
+      "street-31.jpg",
+      "street-32.jpg",
+      "street-33.jpg",
+      "street-34.jpg",
+      "street-35.jpg",
+      "street-36.jpg",
+      "street-37.jpg",
+      "street-38.jpg",
+      "street-39.jpg",
+      "street-40.jpg",
+      "street-41.jpg",
+      "street-42.jpg",
+      "street-43.jpg",
+      "street-44.jpg",
+      "street-45.jpg",
+      "street-46.jpg",
+      "street-47.jpg",
+      "street-48.jpg",
+      "street-49.jpg",
+      "street-50.jpg",
+      "street-51.jpg",
+      "street-52.jpg",
+      "street-53.jpg",
+      "street-54.jpg",
+      "street-55.jpg",
+      "street-56.jpg",
+      "street-57.jpg",
+      "street-58.jpg",
+      // add more filenames here ...
+    ]
+  }
+};
+/* ===================================================================== */
+
+
+/* ---------- Fill in the text content ---------- */
+document.getElementById("site-name").innerHTML = SITE.name.join("<br>");
+document.getElementById("site-tagline").textContent = SITE.tagline;
+document.getElementById("about-text").innerHTML =
+  SITE.about.map(p => `<p>${p}</p>`).join("") +
+  `<div class="btn-row"><a class="btn" href="#contact">Get in touch</a></div>`;
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const phone = document.getElementById("c-phone");
+phone.textContent = SITE.phone;  phone.href = "tel:" + SITE.phone.replace(/[^+\d]/g, "");
+const mail = document.getElementById("c-email");
+mail.textContent = SITE.email;   mail.href = "mailto:" + SITE.email;
+document.getElementById("c-insta").href = "https://instagram.com/" + SITE.instagram;
+document.getElementById("c-insta-name").textContent = SITE.instagram;
+
+/* ---------- Single images (hide gracefully if the file is missing) ---------- */
+[["img-hero", PHOTOS.hero], ["img-about", PHOTOS.about], ["img-contact", PHOTOS.contact]].forEach(([id, src]) => {
+  const el = document.getElementById(id);
+  el.src = src;
+  el.onerror = () => { el.closest(".hero-img, .about-photo, .contact-img").style.display = "none"; };
+});
+
+/* ---------- Gallery builder ---------- */
+const galleries = {};   // name -> [{src, alt}]
+const built = {};
+
+const niceAlt = f => f.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+
+function loadSize(item){
+  return new Promise(res => {
+    const im = new Image();
+    im.onload  = () => res({ ...item, ar: im.naturalWidth / im.naturalHeight });
+    im.onerror = () => res(null);                      // skip files that don't exist
+    im.src = item.src;
+  });
+}
+
+async function buildGallery(name){
+  if (built[name]) return;
+  built[name] = true;
+  const cfg  = PHOTOS[name];
+  const grid = document.getElementById("grid-" + name);
+  const items = cfg.files.map(f => {
+    const file = typeof f === "string" ? f : f.file;
+    const alt  = typeof f === "string" ? niceAlt(f) : (f.alt || niceAlt(f.file));
+    return { src: cfg.folder + file, alt };
+  });
+
+  const loaded = (await Promise.all(items.map(loadSize))).filter(Boolean);
+  galleries[name] = loaded;
+
+  if (!loaded.length){
+    grid.innerHTML = `<p class="empty">No photos found yet. Add filenames to the <code>${name}</code> list in index.html.</p>`;
+    return;
+  }
+
+  loaded.forEach((p, i) => {
+    const t = document.createElement("a");
+    t.className = "tile";
+    t.href = p.src;
+    t.tabIndex = 0;
+    t.style.setProperty("--ar", p.ar.toFixed(4));
+    t.innerHTML = `<img src="${p.src}" alt="${p.alt}" loading="lazy" decoding="async">`;
+    t.addEventListener("click", e => { e.preventDefault(); openLB(name, i); });
+    grid.appendChild(t);
+  });
+
+  // fade tiles in as they scroll into view
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+  }), { rootMargin: "0px 0px -5% 0px" });
+  grid.querySelectorAll(".tile").forEach(t => io.observe(t));
+}
+
+/* ---------- Page routing (#home, #people, #street, #concert, #contact) ---------- */
+const pages = ["home", "people", "street", "concert", "contact"];
+function route(){
+  let p = location.hash.replace("#", "");
+  if (!pages.includes(p)) p = "home";
+  pages.forEach(n => document.getElementById("page-" + n).classList.toggle("active", n === p));
+  document.querySelectorAll(".nav a").forEach(a => a.classList.toggle("active", a.dataset.page === p));
+  if (PHOTOS[p] && PHOTOS[p].files) buildGallery(p);
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+route();
+
+/* ---------- Lightbox ---------- */
+const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCount = document.getElementById("lb-count");
+let cur = { name: null, i: 0 };
+
+function show(){
+  const list = galleries[cur.name], p = list[cur.i];
+  lbImg.src = p.src; lbImg.alt = p.alt;
+  lbCount.textContent = (cur.i + 1) + " / " + list.length;
+  // preload neighbours
+  [1, -1].forEach(d => { const n = list[(cur.i + d + list.length) % list.length]; new Image().src = n.src; });
+}
+function openLB(name, i){ cur = { name, i }; lb.classList.add("open"); document.body.style.overflow = "hidden"; show(); }
+function closeLB(){ lb.classList.remove("open"); document.body.style.overflow = ""; }
+function step(d){ const n = galleries[cur.name].length; cur.i = (cur.i + d + n) % n; show(); }
+
+lb.querySelector(".x").onclick = closeLB;
+lb.querySelector(".prev").onclick = () => step(-1);
+lb.querySelector(".next").onclick = () => step(1);
+lb.addEventListener("click", e => { if (e.target === lb) closeLB(); });
+document.addEventListener("keydown", e => {
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape") closeLB();
+  if (e.key === "ArrowLeft") step(-1);
+  if (e.key === "ArrowRight") step(1);
+});
+let sx = null;                                           // swipe on touch screens
+lb.addEventListener("touchstart", e => { sx = e.touches[0].clientX; }, { passive: true });
+lb.addEventListener("touchend", e => {
+  if (sx === null) return;
+  const dx = e.changedTouches[0].clientX - sx;
+  if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+  sx = null;
+});
+</script>
+</body>
+</html>
