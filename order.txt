@@ -115,6 +115,7 @@ concert-04.jpg
 concert-05.jpg
 concert-06.jpg
 concert-07.jpg
+concert-18.jpg
 concert-08.jpg
 concert-09.jpg
 concert-10.jpg
@@ -125,7 +126,6 @@ concert-14.jpg
 concert-15.jpg
 concert-16.jpg
 concert-17.jpg
-concert-18.jpg
 concert-19.jpg
 concert-20.jpg
 concert-21.jpg
