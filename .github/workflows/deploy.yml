@@ -33,7 +33,7 @@ jobs:
         run: |
           pip install pillow
           python - <<'PYEOF'
-          import json, os, subprocess
+          import json, os, re, subprocess
           from PIL import Image, ImageOps
 
           EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"}
@@ -87,6 +87,12 @@ jobs:
                           print("skipping", p, e); continue
                       rows.append((added.get(p, 0), taken, f, w, h))
               # newest upload first; within one upload, newest shot first
+              natural = lambda r: [int(t) if t.isdigit() else t.lower() for t in re.split(r"(\d+)", r[2])]
+              if not order.get(g):
+                  rows.sort(key=natural)            # default: filename order (street-02 before street-10)
+                  manifest[g] = [{"f": r[2], "w": r[3], "h": r[4]} for r in rows]
+                  print(g, len(rows), "photos")
+                  continue
               rows.sort(key=lambda r: (r[0], r[1], r[2]), reverse=True)
               byname = {r[2]: r for r in rows}
               listed = [byname[n] for n in dict.fromkeys(order.get(g, [])) if n in byname]
