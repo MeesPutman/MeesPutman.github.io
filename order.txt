@@ -1,5 +1,6 @@
 # Custom photo order. Lines starting with # are ignored.
-# Photos listed here appear in this order, BELOW any photos not listed yet.
-# New photos you upload are not listed, so they automatically show at the top.
+# Without a [gallery] section here, that gallery follows the filenames (street-01, street-02, ...).
+# Once a section exists, photos listed in it keep that order, and any photo NOT listed
+# (for example a new upload) shows at the top until you place it.
 # Easiest way to fill this in: open meesputman.github.io/?order , drag the photos
 # into place, press "Copy order", and paste the result here.
