@@ -4,3 +4,46 @@
 # (for example a new upload) shows at the top until you place it.
 # Easiest way to fill this in: open meesputman.github.io/?order , drag the photos
 # into place, press "Copy order", and paste the result here.
+
+[people]
+people-01.jpg
+people-02.jpg
+people-03.jpg
+people-04.jpg
+people-05.jpg
+people-06.jpg
+people-07.jpg
+people-08.jpg
+people-09.jpg
+R0003635.jpg
+R0003597.jpg
+people-10.jpg
+people-11.jpg
+people-12.jpg
+people-13.jpg
+people-14.jpg
+people-15.jpg
+people-16.jpg
+people-17.jpg
+people-18.jpg
+people-19.jpg
+R0003626.jpg
+people-20.jpg
+people-21.jpg
+people-22.jpg
+people-23.jpg
+people-24.jpg
+people-25.jpg
+people-26.jpg
+people-27.jpg
+people-28.jpg
+people-29.jpg
+people-30.jpg
+people-31.jpg
+people-32.jpg
+people-33.jpg
+people-34.jpg
+people-35.jpg
+people-36.jpg
+people-37.jpg
+
