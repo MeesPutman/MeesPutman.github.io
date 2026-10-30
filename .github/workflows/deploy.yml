@@ -1,0 +1,91 @@
+name: Build and deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build photo list (newest first)
+        run: |
+          pip install pillow
+          python - <<'PYEOF'
+          import json, os, subprocess
+          from PIL import Image, ImageOps
+
+          EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"}
+          GALLERIES = ["people", "street", "concert"]
+
+          # when was each file first added to the repo (unix time)
+          added = {}
+          log = subprocess.run(["git", "log", "--diff-filter=A", "--name-only", "--format=@%ct", "--", "photos"],
+                               capture_output=True, text=True).stdout
+          ts = 0
+          for line in log.splitlines():
+              if line.startswith("@"):
+                  ts = int(line[1:])
+              elif line.strip():
+                  added[line.strip()] = ts          # git lists newest first, so the oldest add wins
+
+          def info(path):
+              with Image.open(path) as im:
+                  w, h = im.size
+                  exif = im.getexif()
+                  taken = str(exif.get_ifd(0x8769).get(36867, "") or exif.get(306, ""))
+                  if exif.get(274, 1) in (5, 6, 7, 8):   # rotated by EXIF -> swap
+                      w, h = h, w
+              return w, h, taken
+
+          manifest = {}
+          for g in GALLERIES:
+              folder = os.path.join("photos", g)
+              rows = []
+              if os.path.isdir(folder):
+                  for f in os.listdir(folder):
+                      if os.path.splitext(f)[1].lower() not in EXT:
+                          continue
+                      p = os.path.join(folder, f)
+                      try:
+                          w, h, taken = info(p)
+                      except Exception as e:
+                          print("skipping", p, e); continue
+                      rows.append((added.get(p, 0), taken, f, w, h))
+              # newest upload first; within one upload, newest shot first
+              rows.sort(key=lambda r: (r[0], r[1], r[2]), reverse=True)
+              manifest[g] = [{"f": r[2], "w": r[3], "h": r[4]} for r in rows]
+              print(g, len(rows), "photos")
+
+          with open("photos/manifest.json", "w") as fh:
+              json.dump(manifest, fh)
+
+          PYEOF
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
