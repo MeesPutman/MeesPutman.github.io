@@ -59,6 +59,19 @@ jobs:
                       w, h = h, w
               return w, h, taken
 
+          # optional hand-made order: order.txt  ->  [street] heading, then one filename per line
+          order = {}
+          if os.path.exists("order.txt"):
+              cur = None
+              for line in open("order.txt", encoding="utf-8"):
+                  line = line.strip()
+                  if not line or line.startswith("#"):
+                      continue
+                  if line.startswith("[") and line.endswith("]"):
+                      cur = line[1:-1].strip().lower(); order.setdefault(cur, []); continue
+                  if cur:
+                      order[cur].append(line)
+
           manifest = {}
           for g in GALLERIES:
               folder = os.path.join("photos", g)
@@ -75,12 +88,15 @@ jobs:
                       rows.append((added.get(p, 0), taken, f, w, h))
               # newest upload first; within one upload, newest shot first
               rows.sort(key=lambda r: (r[0], r[1], r[2]), reverse=True)
-              manifest[g] = [{"f": r[2], "w": r[3], "h": r[4]} for r in rows]
+              byname = {r[2]: r for r in rows}
+              listed = [byname[n] for n in dict.fromkeys(order.get(g, [])) if n in byname]
+              names = {r[2] for r in listed}
+              fresh = [r for r in rows if r[2] not in names]       # not in order.txt yet -> go on top
+              manifest[g] = [{"f": r[2], "w": r[3], "h": r[4]} for r in fresh + listed]
               print(g, len(rows), "photos")
 
           with open("photos/manifest.json", "w") as fh:
               json.dump(manifest, fh)
-
           PYEOF
 
       - uses: actions/configure-pages@v5
