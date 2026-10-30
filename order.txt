@@ -1,0 +1,5 @@
+# Custom photo order. Lines starting with # are ignored.
+# Photos listed here appear in this order, BELOW any photos not listed yet.
+# New photos you upload are not listed, so they automatically show at the top.
+# Easiest way to fill this in: open meesputman.github.io/?order , drag the photos
+# into place, press "Copy order", and paste the result here.
