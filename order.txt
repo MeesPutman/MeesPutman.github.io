@@ -10,20 +10,20 @@ people-07.jpg
 people-08.jpg
 people-09.jpg
 R0003635.jpg
+people-16.jpg
+people-17.jpg
 R0003597.jpg
 people-10.jpg
 people-11.jpg
 people-12.jpg
-people-13.jpg
 people-14.jpg
-people-15.jpg
-people-16.jpg
-people-17.jpg
-people-18.jpg
-people-19.jpg
 R0003626.jpg
-people-20.jpg
+people-13.jpg
+people-15.jpg
+people-18.jpg
 people-21.jpg
+people-19.jpg
+people-20.jpg
 people-22.jpg
 people-23.jpg
 people-24.jpg
@@ -39,7 +39,6 @@ people-33.jpg
 people-34.jpg
 people-35.jpg
 people-36.jpg
-people-37.jpg
 
 [street]
 R0003703.jpg
