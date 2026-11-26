@@ -104,8 +104,12 @@
 
   .card{position:absolute;inset:0;background:#120803;isolation:isolate;transform-origin:50% 50%}
   .slides{position:absolute;inset:0}
-  .slide{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:0;transition:opacity 1.8s ease}
+  .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.8s ease;overflow:hidden}
   .slide.on{opacity:1}
+  .slide .fg{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover}
+  .slide.contain .fg{object-fit:contain}
+  .slide .bg{display:none;position:absolute;inset:-8%;width:116%;height:116%;max-width:none;object-fit:cover;filter:blur(38px) brightness(.5) saturate(1.15)}
+  .slide.contain .bg{display:block}
   .card-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,6,0,.82),rgba(20,6,0,.15) 55%,rgba(20,6,0,.35))}
 
   .hero-text{position:absolute;z-index:3;left:var(--pad);bottom:clamp(76px,13vh,130px);transform-origin:0 0}
@@ -145,12 +149,15 @@
   /* ---------- Home: about (compact) ---------- */
   .about{position:relative;z-index:5;background:var(--black);padding:clamp(36px,6vw,80px) var(--pad)}
   .about-inner{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,6vw,88px);align-items:center;max-width:1300px;margin:0 auto}
-  .about-photo{width:min(100%,360px);overflow:hidden}
-  .about-photo img{width:100%;aspect-ratio:4/5;object-fit:cover}
+  .about-photo img{width:auto;max-width:100%;height:auto;max-height:min(72vh,720px);max-height:min(72svh,720px)}
   .about h2{color:var(--red);font-size:clamp(2.8rem,6.5vw,5.2rem);margin-bottom:clamp(14px,2vw,26px)}
   .about-text{max-width:60ch}
   .about-text p{color:var(--yellow);font-size:clamp(1rem,1.2vw,1.1rem);margin-bottom:1em}
   .about-text .btn-row{margin-top:1.4em}
+
+  /* Page titles: a small focus-pull the first time each page opens (no layout movement) */
+  @keyframes titleIn{from{opacity:0;transform:scale(1.07);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+  .page-title.title-in{animation:titleIn 1.2s var(--ease) both}
 
   /* ---------- Gallery pages ---------- */
   .gallery-page{padding:calc(var(--nav-h) + clamp(28px,5vw,64px)) var(--pad) clamp(48px,7vw,100px)}
@@ -169,13 +176,16 @@
 
   /* ---------- Contact ---------- */
   #page-contact{padding-top:var(--nav-h)}
-  .contact-img{height:clamp(150px,calc(100vh - var(--nav-h) - 360px),460px);height:clamp(150px,calc(100svh - var(--nav-h) - 360px),460px);background:#120803;overflow:hidden}
-  .contact-img img{width:100%;height:100%;object-fit:cover}
-  .contact{padding:clamp(24px,4vw,56px) var(--pad) clamp(28px,4vw,56px)}
-  .contact h1{color:var(--yellow);font-size:clamp(2.4rem,6vw,5rem);margin-bottom:clamp(18px,2.6vw,36px)}
-  .contact-grid{display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;gap:28px;align-items:center}
-  .contact dt{font-weight:700;font-size:1.25rem;color:#fff}
-  .contact dd{font-size:1.1rem}
+  .contact{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(28px,7vw,110px);align-items:center;padding:clamp(24px,4vw,56px) var(--pad) clamp(40px,6vw,90px);min-height:calc(100vh - var(--nav-h) - 70px);min-height:calc(100svh - var(--nav-h) - 70px)}
+  .contact.no-photo{grid-template-columns:1fr}
+  .contact-photo{justify-self:center}
+  .contact-photo img{width:auto;max-width:100%;height:auto;max-height:calc(100vh - var(--nav-h) - 130px);max-height:calc(100svh - var(--nav-h) - 130px)}
+  .contact-body{min-width:0;container-type:inline-size}
+  .contact h1{color:var(--yellow);font-size:clamp(2.6rem,6.4vw,5.5rem);margin-bottom:clamp(22px,3vw,44px);transform-origin:0 50%}
+  .contact-grid{display:grid;gap:clamp(18px,2.4vw,30px);justify-items:start}
+  .contact dt{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .contact dd{font:800 clamp(1.15rem,2.2vw,2rem)/1.15 "Montserrat",sans-serif;letter-spacing:-.03em;white-space:nowrap}
+  @supports (font-size:1cqw){ .contact dd{font-size:clamp(1rem,min(5.8cqw,2.2rem),2.2rem)} }
   .contact dd a{text-decoration:none;transition:color .25s}
   .contact dd a:hover{color:var(--yellow)}
   .insta{display:flex;align-items:center;gap:14px;text-decoration:none;font-weight:700;font-size:1.3rem;color:var(--yellow)}
@@ -198,9 +208,9 @@
   /* ---------- Responsive ---------- */
   @media (max-width:900px){
     .about-inner{grid-template-columns:1fr}
-    .about-photo{width:min(70%,300px)}
-    .contact-grid{grid-template-columns:1fr;justify-content:start}
-    .contact-img{height:clamp(140px,26vh,240px)}
+    .about-photo img{max-height:60svh}
+    .contact{grid-template-columns:1fr;min-height:0}
+    .contact-photo img{max-height:56svh}
   }
   @media (max-width:560px){
     :root{--row-h:150px;--nav-h:54px}
@@ -283,24 +293,25 @@ try{
   </section>
 
   <section class="page gallery-page" id="page-people">
-    <h1>People</h1>
+    <h1 class="page-title">People</h1>
     <div class="grid" id="grid-people"></div>
   </section>
 
   <section class="page gallery-page" id="page-street">
-    <h1>Street</h1>
+    <h1 class="page-title">Street</h1>
     <div class="grid" id="grid-street"></div>
   </section>
 
   <section class="page gallery-page" id="page-concert">
-    <h1>Concert</h1>
+    <h1 class="page-title">Concert</h1>
     <div class="grid" id="grid-concert"></div>
   </section>
 
   <section class="page" id="page-contact">
-    <div class="contact-img"><img id="img-contact" alt="" decoding="async"></div>
-    <div class="contact">
-      <h1>Work with me</h1>
+    <div class="contact" id="contact-box">
+      <div class="contact-photo"><img id="img-contact" alt="Self portrait of Mees Putman" decoding="async"></div>
+      <div class="contact-body">
+      <h1 class="page-title">Work with me</h1>
       <div class="contact-grid">
         <dl><dt>Phone</dt><dd><a id="c-phone"></a></dd></dl>
         <dl><dt>Email</dt><dd><a id="c-email"></a></dd></dl>
@@ -310,6 +321,7 @@ try{
           </svg>
           <span id="c-insta-name"></span>
         </a>
+      </div>
       </div>
     </div>
   </section>
@@ -350,7 +362,7 @@ const PHOTOS = {
   slides:   [],                       // leave empty = a fresh random mix every visit. Or list fixed photos,
                                       // e.g. ["photos/street/a.jpg", "photos/concert/b.jpg"]
   about:    "photos/home/about.jpg",
-  contact:  "photos/home/contact.jpg",
+  contact:  "photos/home/hero.jpg",      // your self portrait
 
   people:  { folder: "photos/people/",  files: [] },
   concert: { folder: "photos/concert/", files: [] },
@@ -377,10 +389,13 @@ $("c-email").href = "mailto:" + SITE.email;
 $("c-insta").href = "https://instagram.com/" + SITE.instagram;
 $("c-insta-name").textContent = SITE.instagram;
 
-[["img-about", PHOTOS.about, ".about-photo"], ["img-contact", PHOTOS.contact, ".contact-img"]].forEach(([id, src, wrap]) => {
+[["img-about", PHOTOS.about, ".about-photo"], ["img-contact", PHOTOS.contact, ".contact-photo"]].forEach(([id, src, wrap]) => {
   const el = $(id);
   el.src = src;
-  el.onerror = () => { el.closest(wrap).style.display = "none"; };
+  el.onerror = () => {
+    el.closest(wrap).style.display = "none";
+    if (id === "img-contact") $("contact-box").classList.add("no-photo");
+  };
 });
 
 /* ---------- Photo data ---------- */
@@ -418,20 +433,38 @@ let slides = [], si = 0;
 function ensureSlide(i){
   const s = slides[i];
   if (!s.el){
+    const wrap = document.createElement("div");
+    wrap.className = "slide";
     const im = document.createElement("img");
-    im.className = "slide"; im.alt = ""; im.decoding = "async";
+    im.className = "fg"; im.alt = ""; im.decoding = "async";
     im.addEventListener("error", () => { s.bad = true; });
     im.src = s.src;
-    slidesEl.appendChild(im);
-    s.el = im;
+    wrap.appendChild(im);
+    slidesEl.appendChild(wrap);
+    s.el = wrap; s.fg = im;
   }
   return s.el;
 }
 
+/* Photos that match the screen shape fill it. Others (portraits on a wide screen,
+   landscapes on a phone) are shown whole, on a blurred copy of themselves. */
+function fitSlide(s){
+  if (!s.el || !s.fg || !s.fg.naturalWidth) return;
+  const r = (s.fg.naturalWidth / s.fg.naturalHeight) / (card.offsetWidth / card.offsetHeight);
+  const contain = r < .8 || r > 1.35;
+  s.el.classList.toggle("contain", contain);
+  if (contain && !s.bg){
+    s.bg = new Image(); s.bg.className = "bg"; s.bg.alt = ""; s.bg.decoding = "async";
+    s.bg.src = s.fg.currentSrc || s.fg.src;
+    s.el.prepend(s.bg);
+  }
+}
+
 async function showSlide(i){
   const s = slides[i], el = ensureSlide(i);
-  try { await el.decode(); } catch(e) {}
+  try { await s.fg.decode(); } catch(e) {}
   if (s.bad) return false;
+  fitSlide(s);
   const old = slides[si] && slides[si].el;
   if (old && old !== el) old.classList.remove("on");
   el.classList.add("on");
@@ -451,21 +484,16 @@ async function nextSlide(){
 }
 
 async function initSlides(){
-  const manifest = await manifestPromise;
-  const landscape = innerWidth >= innerHeight;
-  const ok = ar => landscape ? ar >= 1.25 : ar <= .95;
   let list = [];
   if (PHOTOS.slides.length) list = PHOTOS.slides.map(src => ({ src }));
   else {
-    /* up to 4 random photos from each gallery, mixed together, then shuffled */
-    const pools = ["street", "concert", "people"].map(g =>
-      shuffle((manifest[g] || []).filter(f => typeof f !== "string" && ok(f.w / f.h)))
+    /* up to 4 random photos (any shape) from each gallery, mixed together, then shuffled */
+    const pools = await Promise.all(["street", "concert", "people"].map(async g =>
+      shuffle((await entriesFor(g)).slice())
         .slice(0, 4)
-        .map(f => ({ src: PHOTOS[g].folder + encodeURIComponent(f.f), label: g[0].toUpperCase() + g.slice(1) })));
+        .map(f => ({ src: PHOTOS[g].folder + (typeof f === "string" ? f : encodeURIComponent(f.f)), label: g[0].toUpperCase() + g.slice(1) }))));
     for (let i = 0; i < 4; i++) pools.forEach(p => p[i] && list.push(p[i]));
-    list = list.slice(0, 8);
-    if (!landscape) list.push({ src: PHOTOS.hero });
-    shuffle(list);
+    list = shuffle(list.slice(0, 8));
     if (list.length < 2) list.unshift({ src: PHOTOS.hero });
   }
   if (!list.length) list = [{ src: PHOTOS.hero }];
@@ -480,7 +508,7 @@ async function buildWork(){
   const names = ["people", "street", "concert"];
   const lists = await Promise.all(names.map(entriesFor));
   names.forEach((n, i) => {
-    const first = lists[i][Math.floor(Math.random() * lists[i].length)];
+    const first = lists[i][0];
     if (!first) return;
     const src = PHOTOS[n].folder + (typeof first === "string" ? first : encodeURIComponent(first.f));
     const a = document.createElement("a");
@@ -654,6 +682,7 @@ function update(){
 
 /* ---------- Routing + nav ---------- */
 const pages = ["home", "people", "street", "concert", "contact"];
+const seenPages = new Set();
 
 function current(){
   const p = location.hash.replace("#", "");
@@ -673,6 +702,11 @@ function render(){
   pages.forEach(n => $("page-" + n).classList.toggle("active", n === page));
   document.querySelectorAll(".links a").forEach(a => a.classList.toggle("active", a.dataset.page === page));
   if (PHOTOS[page] && PHOTOS[page].files) buildGallery(page);
+  const title = $("page-" + page).querySelector(".page-title");
+  if (title && !seenPages.has(page)){
+    seenPages.add(page);
+    title.classList.remove("title-in"); void title.offsetWidth; title.classList.add("title-in");
+  }
   if (page !== prev || !/^#(work|about)$/.test(location.hash)) window.scrollTo({ top: 0, behavior: "instant" });
   if (page === "home") requestAnimationFrame(measure);
   updateNav();
@@ -697,7 +731,7 @@ addEventListener("scroll", () => {
 }, { passive: true });
 
 let rz;
-addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(measure, 150); });
+addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { measure(); slides.forEach(fitSlide); }, 150); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 
 render();
