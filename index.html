@@ -559,20 +559,65 @@ function enableOrdering(name, grid){
     catch(e){ prompt("Copy this text:", text); }
     setTimeout(label, 6000);
   };
-  let drag = null;
-  grid.querySelectorAll(".tile").forEach(t => {
-    t.draggable = true; t.style.cursor = "grab";
-    t.querySelector("img").draggable = false;
-    t.addEventListener("dragstart", e => { drag = t; t.style.opacity = .4; e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", t.dataset.file); });
-    t.addEventListener("dragend", () => { t.style.opacity = ""; drag = null; });
-    t.addEventListener("dragover", e => e.preventDefault());
-    t.addEventListener("drop", e => {
-      e.preventDefault();
-      if (!drag || drag === t) return;
+  const st = document.createElement("style");
+  st.textContent = ".order-on .tile{cursor:grab!important;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.order-on .tile img{pointer-events:none;-webkit-user-drag:none}.tile.dragging{opacity:.35}.drag-ghost{position:fixed;z-index:400;pointer-events:none;opacity:.85;box-shadow:0 12px 40px rgba(0,0,0,.5);transform:scale(1.04);overflow:hidden}.drag-ghost img{width:100%;height:100%;object-fit:cover;display:block}";
+  document.head.appendChild(st);
+  document.body.classList.add("order-on");
+  grid.addEventListener("dragstart", e => e.preventDefault());
+  grid.addEventListener("contextmenu", e => e.preventDefault());
+  grid.addEventListener("click", e => e.preventDefault(), true);
+  let cur = null, ghost = null, sx = 0, sy = 0, ox = 0, oy = 0, started = false, timer = null, lx = 0, ly = 0, raf = 0;
+  const begin = () => {
+    started = true;
+    const r = cur.getBoundingClientRect();
+    ghost = document.createElement("div");
+    ghost.className = "drag-ghost";
+    ghost.style.cssText = "left:" + r.left + "px;top:" + r.top + "px;width:" + r.width + "px;height:" + r.height + "px";
+    ghost.innerHTML = '<img src="' + cur.querySelector("img").currentSrc + '" alt="">';
+    document.body.appendChild(ghost);
+    cur.classList.add("dragging");
+    ox = sx - r.left; oy = sy - r.top;
+    tick();
+  };
+  const tick = () => {
+    if (!started) return;
+    ghost.style.left = (lx - ox) + "px"; ghost.style.top = (ly - oy) + "px";
+    const edge = 90;
+    if (ly < edge) scrollBy(0, -Math.ceil((edge - ly) / 4));
+    else if (ly > innerHeight - edge) scrollBy(0, Math.ceil((ly - (innerHeight - edge)) / 4));
+    const el = document.elementFromPoint(lx, ly);
+    const t = el && el.closest && el.closest(".tile");
+    if (t && t !== cur && grid.contains(t)){
       const kids = [...grid.querySelectorAll(".tile")];
-      if (kids.indexOf(drag) < kids.indexOf(t)) t.after(drag); else t.before(drag);
-    });
+      if (kids.indexOf(cur) < kids.indexOf(t)) t.after(cur); else t.before(cur);
+    }
+    raf = requestAnimationFrame(tick);
+  };
+  const end = () => {
+    clearTimeout(timer);
+    if (ghost) ghost.remove();
+    if (cur) cur.classList.remove("dragging");
+    cancelAnimationFrame(raf);
+    cur = ghost = null; started = false;
+  };
+  grid.addEventListener("pointerdown", e => {
+    if (e.button > 0) return;
+    const t = e.target.closest(".tile"); if (!t) return;
+    cur = t; sx = lx = e.clientX; sy = ly = e.clientY;
+    if (e.pointerType === "mouse") { e.preventDefault(); }
+    else timer = setTimeout(begin, 280);
   });
+  window.addEventListener("pointermove", e => {
+    if (!cur) return;
+    lx = e.clientX; ly = e.clientY;
+    if (!started){
+      if (e.pointerType === "mouse"){ if (Math.hypot(lx - sx, ly - sy) > 6) begin(); }
+      else if (Math.hypot(lx - sx, ly - sy) > 10) { clearTimeout(timer); cur = null; }
+    } else e.preventDefault();
+  }, { passive: false });
+  window.addEventListener("pointerup", end);
+  window.addEventListener("pointercancel", end);
+  window.addEventListener("touchmove", e => { if (started) e.preventDefault(); }, { passive: false });
 }
 
 const nav = $("nav");
