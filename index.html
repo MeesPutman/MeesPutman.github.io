@@ -29,10 +29,7 @@
     --brown-deep:#2e1103;
     --black:#000;
     --red:#e12020;
-    --yellow:#f0c24b;   /* warm golden: text + accents */
-    --gold:#e0a82e;     /* deeper mustard: fills + headings */
-    --orange:#d9561f;   /* burnt orange: one hover colour */
-    --cream:#f3e9d8;
+    --yellow:#f0c24b;    --gold:#e0a82e;    --orange:#d9561f;    --cream:#f3e9d8;
     --muted:rgba(243,233,216,.62);
     --gap:clamp(8px,1.6vw,20px);
     --pad:clamp(16px,5.5vw,80px);
@@ -50,29 +47,31 @@
   ::selection{background:var(--red);color:var(--cream)}
   :focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
 
-  /* Film grain: still (not animated), so it costs almost nothing. Delete this block to remove it. */
   .grain{position:fixed;inset:0;pointer-events:none;z-index:250;opacity:.06;
     background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-  /* ---------- Intro: a soft fade, first visit only ---------- */
   .intro{position:fixed;inset:0;z-index:400;background:var(--brown);display:grid;place-items:center;animation:introOut .7s ease 1.5s forwards}
   .intro h1{color:var(--red);font-size:clamp(2.6rem,9vw,6rem);text-align:center;opacity:0;animation:introIn .8s ease .2s forwards}
   @keyframes introIn{to{opacity:1}}
   @keyframes introOut{to{opacity:0;visibility:hidden}}
 
-  /* ---------- Navigation ---------- */
   .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nav-h);display:flex;align-items:center;gap:clamp(14px,3vw,28px);padding:0 var(--pad);background-color:transparent;transition:background-color .35s}
-  /* soft shade behind the links while the photo is under them (its own layer: no hard line) */
   .nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(20,6,0,.55),rgba(20,6,0,0));transition:opacity .35s}
   .nav.solid{background-color:var(--brown)}
   .nav.solid::before{opacity:0}
-  .brand{white-space:nowrap;font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red);text-decoration:none;opacity:0;pointer-events:none;transition:opacity .4s}
+  .brand{display:block;white-space:nowrap;line-height:1;text-decoration:none;opacity:0;pointer-events:none;transition:opacity .4s}
+  .brand-name{display:block;font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red)}
+  .brand-tag{display:block;margin-top:5px;font-size:.58rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
   .nav.show-brand .brand{opacity:1;pointer-events:auto}
   .links{display:flex;gap:clamp(14px,3vw,28px);margin-left:auto}
   .links a{text-decoration:none;color:var(--muted);font-size:1.05rem;padding:8px 2px;position:relative;transition:color .25s}
   .links a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1.5px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
   .links a:hover,.links a.active{color:#fff}
   .links a:hover::after,.links a.active::after{transform:scaleX(1)}
+
+  .cursor{position:fixed;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--yellow);pointer-events:none;z-index:300;opacity:0;transition:opacity .25s;will-change:transform}
+  .cursor.on{opacity:1}
+  .has-cursor,.has-cursor *{cursor:none!important}
 
   main{flex:1}
   .page{display:none}
@@ -82,13 +81,6 @@
   .btn{display:inline-block;text-decoration:none;padding:12px 26px;border:1.5px solid var(--yellow);color:var(--yellow);font-weight:500;letter-spacing:.04em;transition:background .25s,color .25s}
   .btn:hover{background:var(--gold);border-color:var(--gold);color:var(--black)}
 
-  /* ============================================================
-     HOME: scroll journey
-     Starts as your full-bleed photo with the big red name. As you
-     scroll, the photo pulls back into a framed print, the page turns
-     yellow, and the name settles beside it. Then the site scrolls in.
-     (Without JS / with reduced motion this is just the full-bleed hero.)
-     ============================================================ */
   .stage{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden;background:var(--brown)}
   .journey-on{height:225vh;height:225svh}
   .journey-on .stage{position:sticky;top:0}
@@ -112,7 +104,6 @@
   .journey-on .hero-meta .cue{display:inline}
   .hero-meta .count{justify-self:end;font-variant-numeric:tabular-nums}
 
-  /* "Open for projects" sticker: rides on the photo and keeps its size while the photo shrinks */
   .sticker-wrap{position:absolute;z-index:3;right:clamp(16px,4%,64px);bottom:clamp(76px,12%,150px);transform:scale(var(--ss,1));transform-origin:100% 100%}
   .sticker{display:grid;place-items:center;text-align:center;width:clamp(96px,10vw,132px);aspect-ratio:1;border-radius:50%;background:var(--red);color:var(--cream);text-decoration:none;font:900 .8rem/1.1 "Montserrat",sans-serif;letter-spacing:-.01em;text-transform:uppercase;padding:14px;transform:rotate(-14deg);transition:transform .4s var(--pop);animation:stick .6s var(--pop) 1s backwards}
   .sticker:hover{transform:rotate(6deg) scale(1.1)}
@@ -124,7 +115,6 @@
     .sticker-wrap{bottom:auto;top:clamp(66px,12%,120px);transform-origin:100% 0}
   }
 
-  /* ---------- Home: work (big type rows) ---------- */
   .work-sec{position:relative;z-index:5;background:var(--brown);color:var(--cream);padding:clamp(28px,4vw,52px) 0 0}
   .work-label{padding:0 var(--pad);margin-bottom:clamp(14px,2vw,24px);font:500 .85rem "Montserrat",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
   .row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(8px,1.4vw,18px) var(--pad);border-top:1px solid rgba(243,233,216,.22);text-decoration:none;color:var(--cream);overflow:hidden;transition:background .3s,color .3s}
@@ -140,7 +130,6 @@
   .row:hover .row-name,.row:focus-visible .row-name{transform:translateX(clamp(8px,1.6vw,24px))}
   .row:hover .thumb,.row:focus-visible .thumb{transform:rotate(-5deg) scale(1.08)}
 
-  /* ---------- Home: about (compact) ---------- */
   .about{position:relative;z-index:5;background:var(--black);padding:clamp(36px,6vw,80px) var(--pad)}
   .about-inner{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,6vw,88px);align-items:center;max-width:1300px;margin:0 auto}
   .about-photo img{width:auto;max-width:100%;height:auto;max-height:min(72vh,720px);max-height:min(72svh,720px)}
@@ -149,11 +138,9 @@
   .about-text p{color:var(--yellow);font-size:clamp(1rem,1.2vw,1.1rem);margin-bottom:1em}
   .about-text .btn-row{margin-top:1.4em}
 
-  /* Page titles: a small focus-pull the first time each page opens (no layout movement) */
   @keyframes titleIn{from{opacity:0;transform:scale(1.07);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
   .page-title.title-in{animation:titleIn 1.2s var(--ease) both}
 
-  /* ---------- Gallery pages ---------- */
   .gallery-page{padding:calc(var(--nav-h) + clamp(28px,5vw,64px)) var(--pad) clamp(48px,7vw,100px)}
   .gallery-page h1{color:var(--red);text-align:center;font-size:clamp(3rem,9vw,7.5rem);line-height:1;margin-bottom:clamp(28px,5vw,64px);text-transform:uppercase}
   .grid{display:flex;flex-wrap:wrap;gap:var(--gap);max-width:1500px;margin:0 auto}
@@ -168,27 +155,26 @@
   .tile:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
   .empty{text-align:center;color:var(--muted);padding:40px 0}
 
-  /* ---------- Contact ---------- */
   #page-contact{padding-top:var(--nav-h)}
-  .contact{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(28px,7vw,110px);align-items:center;padding:clamp(24px,4vw,56px) var(--pad) clamp(40px,6vw,90px);min-height:calc(100vh - var(--nav-h) - 70px);min-height:calc(100svh - var(--nav-h) - 70px)}
-  .contact.no-photo{grid-template-columns:1fr}
-  .contact-photo{justify-self:center}
-  .contact-photo img{width:auto;max-width:100%;height:auto;max-height:calc(100vh - var(--nav-h) - 130px);max-height:calc(100svh - var(--nav-h) - 130px)}
-  .contact-body{min-width:0;container-type:inline-size}
-  .contact h1{color:var(--gold);font-size:clamp(2.6rem,6.4vw,5.5rem);margin-bottom:clamp(22px,3vw,44px);transform-origin:0 50%}
-  .contact-grid{display:grid;gap:clamp(18px,2.4vw,30px);justify-items:start}
-  .contact dt{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  .contact dd{font:800 clamp(1.15rem,2.2vw,2rem)/1.15 "Montserrat",sans-serif;letter-spacing:-.03em;white-space:nowrap}
-  @supports (font-size:1cqw){ .contact dd{font-size:clamp(1rem,min(5.8cqw,2.2rem),2.2rem)} }
-  .contact dd a{text-decoration:none;transition:color .25s}
-  .contact dd a:hover{color:var(--yellow)}
-  .insta{display:flex;align-items:center;gap:14px;text-decoration:none;font-weight:700;font-size:1.3rem;color:var(--yellow)}
-  .insta svg{width:38px;height:38px;transition:transform .5s var(--ease)}
-  .insta:hover svg{transform:rotate(-12deg) scale(1.1)}
+  .contact{min-height:calc(100vh - var(--nav-h) - 66px);min-height:calc(100svh - var(--nav-h) - 66px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(24px,5vh,60px) var(--pad)}
+  .contact h1{color:var(--gold);font-size:clamp(3rem,8.5vw,7rem)}
+  .contact .lead{margin-top:clamp(14px,2.4vh,26px);max-width:34rem;color:var(--muted);font-size:clamp(1rem,1.5vw,1.2rem)}
+  .mail{position:relative}
+  .mail-addr{display:inline-block;font-weight:500;font-size:clamp(1.35rem,4.6vw,3.6rem);letter-spacing:-.02em;color:var(--yellow);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.22em}
+  .plane{position:absolute;left:50%;top:50%;width:clamp(120px,18vw,250px);padding:0;border:0;background:none;transform:translate(-50%,-50%) rotate(-4deg);z-index:2}
+  .plane svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 16px 16px rgba(10,3,0,.4));animation:float 5s ease-in-out infinite;transition:transform .5s var(--ease)}
+  .plane:hover svg,.plane:focus-visible svg{animation:none;transform:translate(8px,-12px) rotate(-5deg)}
+  .plane.fly{animation:fly .9s cubic-bezier(.55,0,.75,.35) forwards;pointer-events:none}
+  @keyframes float{50%{transform:translateY(-7px) rotate(-1.5deg)}}
+  @keyframes fly{to{transform:translate(calc(-50% + 70vw),calc(-50% - 70vh)) rotate(-16deg) scale(.35);opacity:0}}
+  .hint{margin-top:clamp(26px,4vh,44px);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .contact-meta{margin-top:clamp(28px,5vh,56px);display:flex;gap:clamp(24px,5vw,64px);flex-wrap:wrap;justify-content:center;font-size:1rem}
+  .contact-meta dt{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .contact-meta a{text-decoration:none;transition:color .25s}
+  .contact-meta a:hover{color:var(--yellow)}
 
   footer{padding:22px var(--pad);font-size:.85rem;color:var(--muted);text-align:center;border-top:1px solid rgba(243,233,216,.12)}
 
-  /* ---------- Lightbox ---------- */
   .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,.96);display:flex;align-items:center;justify-content:center;touch-action:pan-y;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
   .lb.open{opacity:1;visibility:visible}
   .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .3s}
@@ -199,17 +185,15 @@
   .lb .next{right:4px;top:50%;transform:translateY(-50%)}
   .lb .count{position:absolute;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:.9rem;color:var(--muted)}
 
-  /* ---------- Responsive ---------- */
   @media (max-width:900px){
     .about-inner{grid-template-columns:1fr}
     .about-photo img{max-height:60svh}
-    .contact{grid-template-columns:1fr;min-height:0}
-    .contact-photo img{max-height:56svh}
   }
   @media (max-width:560px){
     :root{--row-h:150px;--nav-h:54px}
     .nav{gap:10px}
-    .brand{font-size:.92rem}
+    .brand-name{font-size:.92rem}
+    .brand-tag{display:none}
     .links{gap:10px}
     .links a{font-size:.88rem}
     .stage-ui{font-size:.8rem}
@@ -236,7 +220,7 @@ try{
 <div class="grain" aria-hidden="true"></div>
 
 <nav class="nav" id="nav" aria-label="Main">
-  <a class="brand" href="#home">Mees Putman</a>
+  <a class="brand" href="#home"><span class="brand-name">Mees Putman</span><span class="brand-tag">Photography &amp; Cinematography</span></a>
   <div class="links">
     <a href="#people" data-page="people">People</a>
     <a href="#street" data-page="street">Street</a>
@@ -302,21 +286,27 @@ try{
   </section>
 
   <section class="page" id="page-contact">
-    <div class="contact" id="contact-box">
-      <div class="contact-photo"><img id="img-contact" alt="Self portrait of Mees Putman" decoding="async"></div>
-      <div class="contact-body">
-      <h1 class="page-title">Work with me</h1>
-      <div class="contact-grid">
-        <dl><dt>Phone</dt><dd><a id="c-phone"></a></dd></dl>
-        <dl><dt>Email</dt><dd><a id="c-email"></a></dd></dl>
-        <a class="insta" id="c-insta" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-            <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/>
+    <div class="contact">
+      <div class="mail">
+        <a class="mail-addr" id="c-email"></a>
+        <button class="plane" id="plane" aria-label="Send me an email">
+          <svg viewBox="0 0 320 260" aria-hidden="true">
+            <defs>
+              <linearGradient id="pa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbf4e6"/><stop offset="1" stop-color="#e6d7bc"/></linearGradient>
+              <linearGradient id="pb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2d3b7"/><stop offset="1" stop-color="#bda980"/></linearGradient>
+              <linearGradient id="pc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a08b69"/><stop offset="1" stop-color="#7a6747"/></linearGradient>
+            </defs>
+            <path d="M8 118 L312 8 L132 156 Z" fill="url(#pa)"/>
+            <path d="M132 156 L312 8 L224 236 Z" fill="url(#pb)"/>
+            <path d="M132 156 L224 236 L158 214 Z" fill="url(#pc)"/>
           </svg>
-          <span id="c-insta-name"></span>
-        </a>
+        </button>
       </div>
-      </div>
+      <p class="hint">Click the paper plane</p>
+      <dl class="contact-meta">
+        <div><dt>Phone</dt><dd><a id="c-phone"></a></dd></div>
+        <div><dt>Instagram</dt><dd><a id="c-insta" target="_blank" rel="noopener"></a></dd></div>
+      </dl>
     </div>
   </section>
 </main>
@@ -332,9 +322,6 @@ try{
 </div>
 
 <script>
-/* ============================================================
-   EDIT YOUR CONTENT HERE
-   ============================================================ */
 const SITE = {
   name:    ["Mees", "Putman"],
   tagline: "Photography & Cinematography",
@@ -352,23 +339,19 @@ const SITE = {
 };
 
 const PHOTOS = {
-  hero:     "photos/home/hero.jpg",   // joins the mix on portrait screens, and is the fallback
-  slides:   [],                       // leave empty = a fresh random mix every visit. Or list fixed photos,
-                                      // e.g. ["photos/street/a.jpg", "photos/concert/b.jpg"]
+  hero:     "photos/home/hero.jpg",
+  slides:   [],
   about:    "photos/home/about.jpg",
-  contact:  "photos/home/hero.jpg",      // your self portrait
 
   people:  { folder: "photos/people/",  files: [] },
   concert: { folder: "photos/concert/", files: [] },
   street:  { folder: "photos/street/",  files: [] }
 };
-/* ============================================================ */
 
 const ORDER_MODE = new URLSearchParams(location.search).has("order");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = id => document.getElementById(id);
 
-/* ---------- Static content ---------- */
 $("site-name").innerHTML = SITE.name.map(w => `<span>${w}</span>`).join("");
 $("site-tagline").textContent = SITE.tagline;
 $("about-text").innerHTML =
@@ -381,18 +364,20 @@ $("c-phone").href = "tel:" + SITE.phone.replace(/[^+\d]/g, "");
 $("c-email").textContent = SITE.email;
 $("c-email").href = "mailto:" + SITE.email;
 $("c-insta").href = "https://instagram.com/" + SITE.instagram;
-$("c-insta-name").textContent = SITE.instagram;
+$("c-insta").textContent = "@" + SITE.instagram;
 
-[["img-about", PHOTOS.about, ".about-photo"], ["img-contact", PHOTOS.contact, ".contact-photo"]].forEach(([id, src, wrap]) => {
-  const el = $(id);
-  el.src = src;
-  el.onerror = () => {
-    el.closest(wrap).style.display = "none";
-    if (id === "img-contact") $("contact-box").classList.add("no-photo");
-  };
+const aboutImg = $("img-about");
+aboutImg.src = PHOTOS.about;
+aboutImg.onerror = () => { aboutImg.closest(".about-photo").style.display = "none"; };
+
+const plane = $("plane");
+plane.addEventListener("click", () => {
+  if (plane.classList.contains("fly")) return;
+  plane.classList.add("fly");
+  setTimeout(() => { location.href = "mailto:" + SITE.email; }, reduced ? 0 : 700);
+  setTimeout(() => plane.classList.remove("fly"), reduced ? 300 : 2600);
 });
 
-/* ---------- Photo data ---------- */
 const galleries = {};
 const built = {};
 const niceAlt = f => f.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
@@ -419,7 +404,6 @@ function reveal(im){
   else im.addEventListener("load", () => im.classList.add("ready"), { once: true });
 }
 
-/* ---------- Hero slideshow: crossfade only, a different random mix every visit ---------- */
 const shuffle = a => { for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const slidesEl = $("slides"), slideLabel = $("slide-label"), slideCount = $("slide-count");
 let slides = [], si = 0;
@@ -465,7 +449,6 @@ async function initSlides(){
   let list = [];
   if (PHOTOS.slides.length) list = PHOTOS.slides.map(src => ({ src }));
   else {
-    /* up to 4 random photos that suit the screen shape from each gallery, mixed, then shuffled */
     const pools = await Promise.all(["street", "concert", "people"].map(async g =>
       shuffle((await entriesFor(g)).filter(f => typeof f !== "string" && ok(f.w / f.h)))
         .slice(0, 4)
@@ -482,7 +465,6 @@ async function initSlides(){
   if (slides.length > 1) setInterval(() => { if (!document.hidden && page === "home") nextSlide(); }, 6500);
 }
 
-/* ---------- Home: work rows ---------- */
 async function buildWork(){
   const box = $("work-rows");
   const names = ["people", "street", "concert"];
@@ -501,7 +483,6 @@ async function buildWork(){
   if (!box.children.length) $("work").style.display = "none";
 }
 
-/* ---------- Galleries ---------- */
 async function buildGallery(name){
   if (built[name]) return;
   built[name] = true;
@@ -542,7 +523,6 @@ async function buildGallery(name){
   if (ORDER_MODE) enableOrdering(name, grid);
 }
 
-/* ---------- Order mode (?order) — unchanged workflow ---------- */
 function enableOrdering(name, grid){
   let bar = $("order-bar");
   if (!bar){
@@ -579,11 +559,6 @@ function enableOrdering(name, grid){
   });
 }
 
-/* ============================================================
-   Scroll journey (home)
-   One scroll handler, throttled to animation frames. It only
-   changes transforms, opacity and a couple of colours.
-   ============================================================ */
 const nav = $("nav");
 const journey = $("journey"), stage = $("stage"), card = $("card"), shade = $("card-shade");
 const heroText = $("hero-text"), heroBtn = $("hero-btn"), cue = $("stage-cue"), meta = document.querySelector(".hero-meta");
@@ -612,12 +587,10 @@ function measure(){
 
   let s, cx, cy, k, targetTop, rot;
   if (wide){
-    /* print on the right, name on the left */
     s = .52; cx = W - pad - s * W / 2; cy = (navH + H) / 2;
     k = clamp(((W - pad - s * W) - pad - 24) / tw, .45, 1);
     targetTop = cy - th * k / 2; rot = 2.5;
   } else {
-    /* print on top, name underneath */
     k = clamp((W - 2 * pad) / tw, .4, 1);
     const m = navH + 16;
     const metaTop = H - (meta.offsetHeight + parseFloat(getComputedStyle(meta).bottom || 0)) - 14;
@@ -636,24 +609,19 @@ function update(){
   if (p === lastP) return;
   lastP = p;
 
-  /* the photo pulls back into a framed print */
   const e = ease(clamp((p - .04) / .62));
   const sc = 1 + (geo.s - 1) * e;
   card.style.transform =
     `translate3d(${(geo.dx * e).toFixed(1)}px,${(geo.dy * e).toFixed(1)}px,0) scale(${sc.toFixed(4)}) rotate(${(geo.rot * e).toFixed(2)}deg)`;
-  card.style.setProperty("--ss", (1 / sc).toFixed(3));   /* keeps the sticker the same size */
-  shade.style.opacity = (1 - e * .85).toFixed(3);
+  card.style.setProperty("--ss", (1 / sc).toFixed(3));  shade.style.opacity = (1 - e * .85).toFixed(3);
 
-  /* the room darkens, like a gallery: brown to black */
   const t = ease(clamp((p - .08) / .5));
   stage.style.backgroundColor = mix(BROWN, BLACK, t);
 
-  /* the name rises and settles next to the print */
   const e2 = ease(clamp((p - .1) / .6));
   heroText.style.transform =
     `translate3d(0,${(geo.ty * e2).toFixed(1)}px,0) scale(${(1 + (geo.k - 1) * e2).toFixed(4)})`;
 
-  /* the button arrives last */
   const b = clamp((p - .74) / .16);
   heroBtn.style.opacity = b.toFixed(3);
   heroBtn.style.visibility = b < .02 ? "hidden" : "visible";
@@ -662,7 +630,6 @@ function update(){
   updateNav();
 }
 
-/* ---------- Routing + nav ---------- */
 const pages = ["home", "people", "street", "concert", "contact"];
 const seenPages = new Set();
 
@@ -671,8 +638,6 @@ function current(){
   return pages.includes(p) ? p : "home";
 }
 
-/* Bar turns solid once you scroll. The logo shows on every page except the
-   very top of Home, where the big name already is. */
 function updateNav(){
   nav.classList.toggle("solid", page !== "home" || scrollY > 40);
   nav.classList.toggle("show-brand", page !== "home" || (on ? lastP > .6 : scrollY > 40));
@@ -694,7 +659,6 @@ function render(){
   updateNav();
 }
 
-/* #work and #about are in-page anchors on Home, not separate pages. */
 addEventListener("hashchange", () => {
   const h = location.hash.replace("#", "");
   if (h === "work" || h === "about"){
@@ -720,7 +684,27 @@ render();
 buildWork();
 initSlides();
 
-/* ---------- Lightbox ---------- */
+if (matchMedia("(hover: hover) and (pointer: fine)").matches && !ORDER_MODE && !reduced){
+  const c = document.createElement("div");
+  c.className = "cursor";
+  document.body.append(c);
+  document.documentElement.classList.add("has-cursor");
+  let x = -100, y = -100, cx = x, cy = y, ts = .36, cs = ts, running = false;
+  function loop(){
+    cx += (x - cx) * .22; cy += (y - cy) * .22; cs += (ts - cs) * .2;
+    c.style.transform = `translate3d(${cx}px, ${cy}px, 0) scale(${cs})`;
+    if (Math.abs(x - cx) > .1 || Math.abs(y - cy) > .1 || Math.abs(ts - cs) > .005) requestAnimationFrame(loop);
+    else running = false;
+  }
+  addEventListener("mousemove", e => {
+    x = e.clientX; y = e.clientY;
+    c.classList.add("on");
+    ts = (e.target.closest && e.target.closest("a, button")) ? .8 : .36;
+    if (!running){ running = true; requestAnimationFrame(loop); }
+  }, { passive: true });
+  document.addEventListener("mouseleave", () => c.classList.remove("on"));
+}
+
 const lb = $("lb"), lbImg = $("lb-img"), lbCount = $("lb-count");
 let cur = { name: null, i: 0 };
 lbImg.addEventListener("load",  () => { lbImg.style.opacity = 1; });
