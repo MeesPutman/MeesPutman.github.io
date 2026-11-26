@@ -29,7 +29,9 @@
     --brown-deep:#2e1103;
     --black:#000;
     --red:#e12020;
-    --yellow:#fce08b;
+    --yellow:#f0c24b;   /* warm golden: text + accents */
+    --gold:#e0a82e;     /* deeper mustard: fills + headings */
+    --orange:#d9561f;   /* burnt orange: one hover colour */
     --cream:#f3e9d8;
     --muted:rgba(243,233,216,.62);
     --gap:clamp(8px,1.6vw,20px);
@@ -58,24 +60,13 @@
   @keyframes introIn{to{opacity:1}}
   @keyframes introOut{to{opacity:0;visibility:hidden}}
 
-  /* ---------- Custom cursor (desktop only) ---------- */
-  .cursor{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border:1.5px solid var(--yellow);border-radius:50%;pointer-events:none;z-index:300;opacity:0;display:grid;place-items:center;
-    font:800 .72rem/1 "Montserrat",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--brown);
-    transition:width .3s var(--ease),height .3s var(--ease),margin .3s var(--ease),background .25s,opacity .25s}
-  .cursor.on{opacity:1}
-  .cursor::after{content:"View";font-size:0;transition:font-size .2s}
-  .cursor.view{width:86px;height:86px;margin:-43px 0 0 -43px;background:var(--yellow)}
-  .cursor.view::after{font-size:.72rem}
-  .cursor.link{width:36px;height:36px;margin:-18px 0 0 -18px}
-  .has-cursor .tile{cursor:none}
-
   /* ---------- Navigation ---------- */
   .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nav-h);display:flex;align-items:center;gap:clamp(14px,3vw,28px);padding:0 var(--pad);background-color:transparent;transition:background-color .35s}
   /* soft shade behind the links while the photo is under them (its own layer: no hard line) */
   .nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(20,6,0,.55),rgba(20,6,0,0));transition:opacity .35s}
   .nav.solid{background-color:var(--brown)}
   .nav.solid::before{opacity:0}
-  .brand{font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red);text-decoration:none;opacity:0;pointer-events:none;transition:opacity .4s}
+  .brand{white-space:nowrap;font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red);text-decoration:none;opacity:0;pointer-events:none;transition:opacity .4s}
   .nav.show-brand .brand{opacity:1;pointer-events:auto}
   .links{display:flex;gap:clamp(14px,3vw,28px);margin-left:auto}
   .links a{text-decoration:none;color:var(--muted);font-size:1.05rem;padding:8px 2px;position:relative;transition:color .25s}
@@ -89,7 +80,7 @@
   @keyframes fade{from{opacity:0}to{opacity:1}}
 
   .btn{display:inline-block;text-decoration:none;padding:12px 26px;border:1.5px solid var(--yellow);color:var(--yellow);font-weight:500;letter-spacing:.04em;transition:background .25s,color .25s}
-  .btn:hover{background:var(--yellow);color:var(--black)}
+  .btn:hover{background:var(--gold);border-color:var(--gold);color:var(--black)}
 
   /* ============================================================
      HOME: scroll journey
@@ -104,12 +95,8 @@
 
   .card{position:absolute;inset:0;background:#120803;isolation:isolate;transform-origin:50% 50%}
   .slides{position:absolute;inset:0}
-  .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.8s ease;overflow:hidden}
+  .slide{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:0;transition:opacity 1.8s ease}
   .slide.on{opacity:1}
-  .slide .fg{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover}
-  .slide.contain .fg{object-fit:contain}
-  .slide .bg{display:none;position:absolute;inset:-8%;width:116%;height:116%;max-width:none;object-fit:cover;filter:blur(38px) brightness(.5) saturate(1.15)}
-  .slide.contain .bg{display:block}
   .card-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,6,0,.82),rgba(20,6,0,.15) 55%,rgba(20,6,0,.35))}
 
   .hero-text{position:absolute;z-index:3;left:var(--pad);bottom:clamp(76px,13vh,130px);transform-origin:0 0}
@@ -133,16 +120,23 @@
   .intro-on .hero-text .tag{animation-delay:2.3s}
   .intro-on .hero-meta{animation-delay:2.5s}
   .intro-on .sticker{animation-delay:2.4s}
+  @media (max-width:700px),(max-aspect-ratio:1/1){
+    .sticker-wrap{bottom:auto;top:clamp(66px,12%,120px);transform-origin:100% 0}
+  }
 
   /* ---------- Home: work (big type rows) ---------- */
-  .work-sec{position:relative;z-index:5;background:var(--brown);color:var(--cream);padding:clamp(36px,6vw,80px) 0 0}
-  .work-sec h2{color:var(--red);font-size:clamp(2.8rem,7.5vw,6rem);padding:0 var(--pad);margin-bottom:clamp(16px,2.6vw,36px)}
+  .work-sec{position:relative;z-index:5;background:var(--brown);color:var(--cream);padding:clamp(28px,4vw,52px) 0 0}
+  .work-label{padding:0 var(--pad);margin-bottom:clamp(14px,2vw,24px);font:500 .85rem "Montserrat",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
   .row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(8px,1.4vw,18px) var(--pad);border-top:1px solid rgba(243,233,216,.22);text-decoration:none;color:var(--cream);overflow:hidden;transition:background .3s,color .3s}
   .row:last-child{border-bottom:1px solid rgba(243,233,216,.22)}
   .row-name{font:900 clamp(2.8rem,9vw,8rem)/1 "Montserrat",sans-serif;letter-spacing:-.05em;transition:transform .45s var(--ease)}
   .row .thumb{flex:none;width:clamp(70px,10vw,150px);aspect-ratio:4/5;overflow:hidden;background:var(--brown-deep);transform:rotate(6deg);transition:transform .5s var(--pop)}
   .row .thumb img{width:100%;height:100%;object-fit:cover}
-  .row:hover,.row:focus-visible{background:var(--red);outline-offset:-3px}
+  .row{--hv:var(--red)}
+  .row:nth-child(2){--hv:var(--gold)}
+  .row:nth-child(3){--hv:var(--orange)}
+  .row:hover,.row:focus-visible{background:var(--hv);outline-offset:-3px}
+  .row:nth-child(2):hover,.row:nth-child(2):focus-visible{color:var(--brown)}
   .row:hover .row-name,.row:focus-visible .row-name{transform:translateX(clamp(8px,1.6vw,24px))}
   .row:hover .thumb,.row:focus-visible .thumb{transform:rotate(-5deg) scale(1.08)}
 
@@ -150,7 +144,7 @@
   .about{position:relative;z-index:5;background:var(--black);padding:clamp(36px,6vw,80px) var(--pad)}
   .about-inner{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,6vw,88px);align-items:center;max-width:1300px;margin:0 auto}
   .about-photo img{width:auto;max-width:100%;height:auto;max-height:min(72vh,720px);max-height:min(72svh,720px)}
-  .about h2{color:var(--red);font-size:clamp(2.8rem,6.5vw,5.2rem);margin-bottom:clamp(14px,2vw,26px)}
+  .about h2{color:var(--gold);font-size:clamp(2.8rem,6.5vw,5.2rem);margin-bottom:clamp(14px,2vw,26px)}
   .about-text{max-width:60ch}
   .about-text p{color:var(--yellow);font-size:clamp(1rem,1.2vw,1.1rem);margin-bottom:1em}
   .about-text .btn-row{margin-top:1.4em}
@@ -181,7 +175,7 @@
   .contact-photo{justify-self:center}
   .contact-photo img{width:auto;max-width:100%;height:auto;max-height:calc(100vh - var(--nav-h) - 130px);max-height:calc(100svh - var(--nav-h) - 130px)}
   .contact-body{min-width:0;container-type:inline-size}
-  .contact h1{color:var(--yellow);font-size:clamp(2.6rem,6.4vw,5.5rem);margin-bottom:clamp(22px,3vw,44px);transform-origin:0 50%}
+  .contact h1{color:var(--gold);font-size:clamp(2.6rem,6.4vw,5.5rem);margin-bottom:clamp(22px,3vw,44px);transform-origin:0 50%}
   .contact-grid{display:grid;gap:clamp(18px,2.4vw,30px);justify-items:start}
   .contact dt{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
   .contact dd{font:800 clamp(1.15rem,2.2vw,2rem)/1.15 "Montserrat",sans-serif;letter-spacing:-.03em;white-space:nowrap}
@@ -215,9 +209,9 @@
   @media (max-width:560px){
     :root{--row-h:150px;--nav-h:54px}
     .nav{gap:10px}
-    .brand{font-size:1rem}
-    .links{gap:12px}
-    .links a{font-size:.95rem}
+    .brand{font-size:.92rem}
+    .links{gap:10px}
+    .links a{font-size:.88rem}
     .stage-ui{font-size:.8rem}
   }
   @media (prefers-reduced-motion:reduce){
@@ -277,7 +271,7 @@ try{
     </div>
 
     <div class="work-sec" id="work">
-      <h2>Work</h2>
+      <p class="work-label">Selected work</p>
       <div id="work-rows"></div>
     </div>
 
@@ -433,38 +427,20 @@ let slides = [], si = 0;
 function ensureSlide(i){
   const s = slides[i];
   if (!s.el){
-    const wrap = document.createElement("div");
-    wrap.className = "slide";
     const im = document.createElement("img");
-    im.className = "fg"; im.alt = ""; im.decoding = "async";
+    im.className = "slide"; im.alt = ""; im.decoding = "async";
     im.addEventListener("error", () => { s.bad = true; });
     im.src = s.src;
-    wrap.appendChild(im);
-    slidesEl.appendChild(wrap);
-    s.el = wrap; s.fg = im;
+    slidesEl.appendChild(im);
+    s.el = im;
   }
   return s.el;
 }
 
-/* Photos that match the screen shape fill it. Others (portraits on a wide screen,
-   landscapes on a phone) are shown whole, on a blurred copy of themselves. */
-function fitSlide(s){
-  if (!s.el || !s.fg || !s.fg.naturalWidth) return;
-  const r = (s.fg.naturalWidth / s.fg.naturalHeight) / (card.offsetWidth / card.offsetHeight);
-  const contain = r < .8 || r > 1.35;
-  s.el.classList.toggle("contain", contain);
-  if (contain && !s.bg){
-    s.bg = new Image(); s.bg.className = "bg"; s.bg.alt = ""; s.bg.decoding = "async";
-    s.bg.src = s.fg.currentSrc || s.fg.src;
-    s.el.prepend(s.bg);
-  }
-}
-
 async function showSlide(i){
   const s = slides[i], el = ensureSlide(i);
-  try { await s.fg.decode(); } catch(e) {}
+  try { await el.decode(); } catch(e) {}
   if (s.bad) return false;
-  fitSlide(s);
   const old = slides[si] && slides[si].el;
   if (old && old !== el) old.classList.remove("on");
   el.classList.add("on");
@@ -484,16 +460,20 @@ async function nextSlide(){
 }
 
 async function initSlides(){
+  const landscape = innerWidth >= innerHeight;
+  const ok = ar => landscape ? ar >= 1.25 : ar <= .95;
   let list = [];
   if (PHOTOS.slides.length) list = PHOTOS.slides.map(src => ({ src }));
   else {
-    /* up to 4 random photos (any shape) from each gallery, mixed together, then shuffled */
+    /* up to 4 random photos that suit the screen shape from each gallery, mixed, then shuffled */
     const pools = await Promise.all(["street", "concert", "people"].map(async g =>
-      shuffle((await entriesFor(g)).slice())
+      shuffle((await entriesFor(g)).filter(f => typeof f !== "string" && ok(f.w / f.h)))
         .slice(0, 4)
-        .map(f => ({ src: PHOTOS[g].folder + (typeof f === "string" ? f : encodeURIComponent(f.f)), label: g[0].toUpperCase() + g.slice(1) }))));
+        .map(f => ({ src: PHOTOS[g].folder + encodeURIComponent(f.f), label: g[0].toUpperCase() + g.slice(1) }))));
     for (let i = 0; i < 4; i++) pools.forEach(p => p[i] && list.push(p[i]));
-    list = shuffle(list.slice(0, 8));
+    list = list.slice(0, 8);
+    if (!landscape) list.push({ src: PHOTOS.hero });
+    shuffle(list);
     if (list.length < 2) list.unshift({ src: PHOTOS.hero });
   }
   if (!list.length) list = [{ src: PHOTOS.hero }];
@@ -606,7 +586,7 @@ function enableOrdering(name, grid){
    ============================================================ */
 const nav = $("nav");
 const journey = $("journey"), stage = $("stage"), card = $("card"), shade = $("card-shade");
-const heroText = $("hero-text"), heroBtn = $("hero-btn"), cue = $("stage-cue");
+const heroText = $("hero-text"), heroBtn = $("hero-btn"), cue = $("stage-cue"), meta = document.querySelector(".hero-meta");
 
 const BROWN = [64, 24, 4], BLACK = [0, 0, 0];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -640,8 +620,10 @@ function measure(){
     /* print on top, name underneath */
     k = clamp((W - 2 * pad) / tw, .4, 1);
     const m = navH + 16;
-    s = clamp((H - m - th * k - 70 - 40) / H, .28, .66);
-    cx = W / 2; cy = m + s * H / 2; targetTop = m + s * H + 26; rot = -2;
+    const metaTop = H - (meta.offsetHeight + parseFloat(getComputedStyle(meta).bottom || 0)) - 14;
+    const bh = heroBtn.offsetHeight || 48;
+    s = clamp((metaTop - (th * k + 18 + bh) - 22 - m) / H, .26, .66);
+    cx = W / 2; cy = m + s * H / 2; targetTop = m + s * H + 22; rot = -2;
   }
   geo = { s, dx: cx - W / 2, dy: cy - H / 2, rot, k, ty: targetTop - tTop, range: journey.offsetHeight - stage.offsetHeight };
   on = true; lastP = -1;
@@ -731,35 +713,12 @@ addEventListener("scroll", () => {
 }, { passive: true });
 
 let rz;
-addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { measure(); slides.forEach(fitSlide); }, 150); });
+addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(measure, 150); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 
 render();
 buildWork();
 initSlides();
-
-/* ---------- Cursor (desktop). Only animates while the mouse is moving. ---------- */
-if (matchMedia("(hover: hover) and (pointer: fine)").matches && !ORDER_MODE && !reduced){
-  const c = document.createElement("div");
-  c.className = "cursor";
-  document.body.append(c);
-  document.body.classList.add("has-cursor");
-  let x = -100, y = -100, cx = x, cy = y, raf = 0;
-  const loop = () => {
-    cx += (x - cx) * .22; cy += (y - cy) * .22;
-    c.style.transform = `translate(${cx}px, ${cy}px)`;
-    raf = (Math.abs(x - cx) > .3 || Math.abs(y - cy) > .3) ? requestAnimationFrame(loop) : 0;
-  };
-  addEventListener("mousemove", e => {
-    x = e.clientX; y = e.clientY;
-    c.classList.add("on");
-    const t = e.target.closest && e.target.closest(".tile, a, button");
-    c.classList.toggle("view", !!(t && t.classList.contains("tile")));
-    c.classList.toggle("link", !!(t && !t.classList.contains("tile")));
-    if (!raf) raf = requestAnimationFrame(loop);
-  }, { passive: true });
-  document.addEventListener("mouseleave", () => c.classList.remove("on"));
-}
 
 /* ---------- Lightbox ---------- */
 const lb = $("lb"), lbImg = $("lb-img"), lbCount = $("lb-count");
