@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mees Putman — Photography &amp; Cinematography</title>
+<meta name="description" content="Mees Putman, photographer and filmmaker based in Utrecht, The Netherlands.">
+<meta name="theme-color" content="#401804">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mees Putman">
+<meta property="og:title" content="Mees Putman — Photography &amp; Cinematography">
+<meta property="og:description" content="Photographer and filmmaker based in Utrecht, The Netherlands.">
+<meta property="og:url" content="https://meesputman.github.io/">
+<meta property="og:image" content="https://meesputman.github.io/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://meesputman.github.io/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Montserrat:wght@500;800;900&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --brown:#401804;
+    --brown-deep:#2e1103;
+    --black:#000;
+    --red:#e12020;
+    --yellow:#f0c24b;    --gold:#e0a82e;    --orange:#d9561f;    --cream:#f3e9d8;
+    --muted:rgba(243,233,216,.62);
+    --gap:clamp(8px,1.6vw,20px);
+    --pad:clamp(16px,5.5vw,80px);
+    --row-h:clamp(170px,26vw,330px);
+    --nav-h:60px;
+    --ease:cubic-bezier(.2,.7,.1,1);
+    --pop:cubic-bezier(.34,1.56,.64,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:var(--nav-h)}
+  body{background:var(--brown);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  h1,h2,.display{font-family:"Montserrat",sans-serif;font-weight:900;letter-spacing:-.05em;line-height:.95}
+  ::selection{background:var(--red);color:var(--cream)}
+  :focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:250;opacity:.06;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .intro{position:fixed;inset:0;z-index:400;background:var(--brown);display:grid;place-items:center;animation:introOut .7s ease 1.5s forwards}
+  .intro h1{color:var(--red);font-size:clamp(2.6rem,9vw,6rem);text-align:center;opacity:0;animation:introIn .8s ease .2s forwards}
+  @keyframes introIn{to{opacity:1}}
+  @keyframes introOut{to{opacity:0;visibility:hidden}}
+
+  .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nav-h);display:flex;align-items:center;gap:clamp(14px,3vw,28px);padding:0 var(--pad);background-color:transparent;transition:background-color .35s}
+  .nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(20,6,0,.55),rgba(20,6,0,0));transition:opacity .35s}
+  .nav.solid{background-color:var(--brown)}
+  .nav.solid::before{opacity:0}
+  .brand{display:block;white-space:nowrap;line-height:1;text-decoration:none;opacity:0;pointer-events:none;transition:opacity .4s}
+  .brand-name{display:block;font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red)}
+  .brand-tag{display:block;margin-top:5px;font-size:.58rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
+  .nav.show-brand .brand{opacity:1;pointer-events:auto}
+  .links{display:flex;gap:clamp(14px,3vw,28px);margin-left:auto}
+  .links a{text-decoration:none;color:var(--muted);font-size:1.05rem;padding:8px 2px;position:relative;transition:color .25s}
+  .links a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1.5px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+  .links a:hover,.links a.active{color:#fff}
+  .links a:hover::after,.links a.active::after{transform:scaleX(1)}
+
+  .cursor{position:fixed;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--yellow);pointer-events:none;z-index:300;opacity:0;transition:opacity .25s;will-change:transform}
+  .cursor.on{opacity:1}
+  .has-cursor,.has-cursor *{cursor:none!important}
+
+  main{flex:1}
+  .page{display:none}
+  .page.active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+
+  .btn{display:inline-block;text-decoration:none;padding:12px 26px;border:1.5px solid var(--yellow);color:var(--yellow);font-weight:500;letter-spacing:.04em;transition:background .25s,color .25s}
+  .btn:hover{background:var(--gold);border-color:var(--gold);color:var(--black)}
+
+  .stage{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden;background:var(--brown)}
+  .journey-on{height:225vh;height:225svh}
+  .journey-on .stage{position:sticky;top:0}
+
+  .card{position:absolute;inset:0;background:#120803;isolation:isolate;transform-origin:50% 50%}
+  .slides{position:absolute;inset:0}
+  .slide{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:0;transition:opacity 1.8s ease}
+  .slide.on{opacity:1}
+  .card-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,6,0,.82),rgba(20,6,0,.15) 55%,rgba(20,6,0,.35))}
+
+  .hero-text{position:absolute;z-index:3;left:var(--pad);bottom:clamp(76px,13vh,130px);transform-origin:0 0}
+  .hero-text h1{color:var(--red);font-size:clamp(3.8rem,min(15vw,26vh),11rem);line-height:.95}
+  .hero-text h1 span{display:block}
+  .hero-text .tag{margin-top:clamp(14px,2vw,26px);color:var(--yellow);font-size:clamp(.9rem,1.4vw,1.25rem);letter-spacing:.06em;text-transform:uppercase;opacity:0;animation:fade 1s ease .9s forwards}
+  .hero-text .btn{position:absolute;left:0;top:calc(100% + 18px);white-space:nowrap;opacity:0;visibility:hidden}
+
+  .hero-meta{position:absolute;z-index:4;left:var(--pad);right:var(--pad);bottom:clamp(22px,4vh,40px);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;font:500 .85rem "Montserrat",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);opacity:0;animation:fade 1s ease 1.1s forwards}
+  .hero-meta a{justify-self:start;text-decoration:none;color:var(--yellow)}
+  .hero-meta a:hover{text-decoration:underline}
+  .hero-meta .cue{display:none;justify-self:center}
+  .journey-on .hero-meta .cue{display:inline}
+  .hero-meta .count{justify-self:end;font-variant-numeric:tabular-nums}
+
+  .sticker-wrap{position:absolute;z-index:3;right:clamp(16px,4%,64px);bottom:clamp(76px,12%,150px);transform:scale(var(--ss,1));transform-origin:100% 100%}
+  .sticker{display:grid;place-items:center;text-align:center;width:clamp(96px,10vw,132px);aspect-ratio:1;border-radius:50%;background:var(--red);color:var(--cream);text-decoration:none;font:900 .8rem/1.1 "Montserrat",sans-serif;letter-spacing:-.01em;text-transform:uppercase;padding:14px;transform:rotate(-14deg);transition:transform .4s var(--pop);animation:stick .6s var(--pop) 1s backwards}
+  .sticker:hover{transform:rotate(6deg) scale(1.1)}
+  @keyframes stick{from{opacity:0;transform:rotate(-40deg) scale(.2)}to{opacity:1;transform:rotate(-14deg)}}
+  .intro-on .hero-text .tag{animation-delay:2.3s}
+  .intro-on .hero-meta{animation-delay:2.5s}
+  .intro-on .sticker{animation-delay:2.4s}
+  @media (max-width:700px),(max-aspect-ratio:1/1){
+    .sticker-wrap{bottom:auto;top:clamp(66px,12%,120px);transform-origin:100% 0}
+  }
+
+  .work-sec{position:relative;z-index:5;background:var(--brown);color:var(--cream);padding:clamp(28px,4vw,52px) 0 0}
+  .work-label{padding:0 var(--pad);margin-bottom:clamp(14px,2vw,24px);font:500 .85rem "Montserrat",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+  .row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(8px,1.4vw,18px) var(--pad);border-top:1px solid rgba(243,233,216,.22);text-decoration:none;color:var(--cream);overflow:hidden;transition:background .3s,color .3s}
+  .row:last-child{border-bottom:1px solid rgba(243,233,216,.22)}
+  .row-name{font:900 clamp(2.8rem,9vw,8rem)/1 "Montserrat",sans-serif;letter-spacing:-.05em;transition:transform .45s var(--ease)}
+  .row .thumb{flex:none;width:clamp(70px,10vw,150px);aspect-ratio:4/5;overflow:hidden;background:var(--brown-deep);transform:rotate(6deg);transition:transform .5s var(--pop)}
+  .row .thumb img{width:100%;height:100%;object-fit:cover}
+  .row{--hv:var(--red)}
+  .row:nth-child(2){--hv:var(--gold)}
+  .row:nth-child(3){--hv:var(--orange)}
+  .row:hover,.row:focus-visible{background:var(--hv);outline-offset:-3px}
+  .row:nth-child(2):hover,.row:nth-child(2):focus-visible{color:var(--brown)}
+  .row:hover .row-name,.row:focus-visible .row-name{transform:translateX(clamp(8px,1.6vw,24px))}
+  .row:hover .thumb,.row:focus-visible .thumb{transform:rotate(-5deg) scale(1.08)}
+
+  .about{position:relative;z-index:5;background:var(--black);padding:clamp(36px,6vw,80px) var(--pad)}
+  .about-inner{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,6vw,88px);align-items:center;max-width:1300px;margin:0 auto}
+  .about-photo img{width:auto;max-width:100%;height:auto;max-height:min(72vh,720px);max-height:min(72svh,720px)}
+  .about h2{color:var(--gold);font-size:clamp(2.8rem,6.5vw,5.2rem);margin-bottom:clamp(14px,2vw,26px)}
+  .about-text{max-width:60ch}
+  .about-text p{color:var(--yellow);font-size:clamp(1rem,1.2vw,1.1rem);margin-bottom:1em}
+  .about-text .btn-row{margin-top:1.4em}
+
+  @keyframes titleIn{from{opacity:0;transform:scale(1.07);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+  .page-title.title-in{animation:titleIn 1.2s var(--ease) both}
+
+  .gallery-page{padding:calc(var(--nav-h) + clamp(28px,5vw,64px)) var(--pad) clamp(48px,7vw,100px)}
+  .gallery-page h1{color:var(--red);text-align:center;font-size:clamp(3rem,9vw,7.5rem);line-height:1;margin-bottom:clamp(28px,5vw,64px);text-transform:uppercase}
+  .grid{display:flex;flex-wrap:wrap;gap:var(--gap);max-width:1500px;margin:0 auto}
+  .grid::after{content:"";flex-grow:1e6}
+  .tile{--ar:1.5;flex:calc(var(--ar) * 1000) 1 calc(var(--ar) * var(--row-h));min-width:0;position:relative;overflow:hidden;background:#2e1103;cursor:zoom-in}
+  .tile img{width:100%;aspect-ratio:var(--ar);object-fit:cover;opacity:0;transition:opacity .6s ease,transform 1.2s var(--ease)}
+  .tile img.ready{opacity:1}
+  .tile:hover img{transform:scale(1.045)}
+  .tile::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(20,6,0,.6));opacity:0;transition:opacity .45s;pointer-events:none}
+  .tile::after{content:attr(data-n);position:absolute;left:14px;bottom:10px;font:800 .8rem "Montserrat",sans-serif;letter-spacing:.12em;color:#fff;opacity:0;transform:translateY(8px);transition:opacity .45s,transform .45s var(--ease);pointer-events:none}
+  .tile:hover::before,.tile:hover::after{opacity:1;transform:none}
+  .tile:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+  .empty{text-align:center;color:var(--muted);padding:40px 0}
+
+  #page-contact{padding-top:var(--nav-h)}
+  .contact{min-height:calc(100vh - var(--nav-h) - 66px);min-height:calc(100svh - var(--nav-h) - 66px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(24px,5vh,60px) var(--pad)}
+  .contact h1{color:var(--gold);font-size:clamp(3rem,8.5vw,7rem)}
+  .contact .lead{margin-top:clamp(14px,2.4vh,26px);max-width:34rem;color:var(--muted);font-size:clamp(1rem,1.5vw,1.2rem)}
+  .mail{position:relative}
+  .mail-addr{display:inline-block;font-weight:500;font-size:clamp(1.35rem,4.6vw,3.6rem);letter-spacing:-.02em;color:var(--yellow);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.22em}
+  .plane{position:absolute;left:50%;top:50%;width:clamp(120px,18vw,250px);padding:0;border:0;background:none;transform:translate(-50%,-50%) rotate(-4deg);z-index:2}
+  .plane svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 16px 16px rgba(10,3,0,.4));animation:float 5s ease-in-out infinite;transition:transform .5s var(--ease)}
+  .plane:hover svg,.plane:focus-visible svg{animation:none;transform:translate(8px,-12px) rotate(-5deg)}
+  .plane.fly{animation:fly .9s cubic-bezier(.55,0,.75,.35) forwards;pointer-events:none}
+  @keyframes float{50%{transform:translateY(-7px) rotate(-1.5deg)}}
+  @keyframes fly{to{transform:translate(calc(-50% + 70vw),calc(-50% - 70vh)) rotate(-16deg) scale(.35);opacity:0}}
+  .hint{margin-top:clamp(26px,4vh,44px);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .contact-meta{margin-top:clamp(28px,5vh,56px);display:flex;gap:clamp(24px,5vw,64px);flex-wrap:wrap;justify-content:center;font-size:1rem}
+  .contact-meta dt{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .contact-meta a{text-decoration:none;transition:color .25s}
+  .contact-meta a:hover{color:var(--yellow)}
+
+  footer{padding:22px var(--pad);font-size:.85rem;color:var(--muted);text-align:center;border-top:1px solid rgba(243,233,216,.12)}
+
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,.96);display:flex;align-items:center;justify-content:center;touch-action:pan-y;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+  .lb.open{opacity:1;visibility:visible}
+  .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .3s}
+  .lb button{position:absolute;background:none;border:0;color:var(--cream);cursor:pointer;font-size:2.2rem;line-height:1;padding:14px;opacity:.8;transition:opacity .2s}
+  .lb button:hover{opacity:1}
+  .lb .x{top:max(8px,env(safe-area-inset-top));right:8px}
+  .lb .prev{left:4px;top:50%;transform:translateY(-50%)}
+  .lb .next{right:4px;top:50%;transform:translateY(-50%)}
+  .lb .count{position:absolute;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:.9rem;color:var(--muted)}
+
+  @media (max-width:900px){
+    .about-inner{grid-template-columns:1fr}
+    .about-photo img{max-height:60svh}
+  }
+  @media (max-width:560px){
+    :root{--row-h:150px;--nav-h:54px}
+    .nav{gap:10px}
+    .brand-name{font-size:.92rem}
+    .brand-tag{display:none}
+    .links{gap:10px}
+    .links a{font-size:.88rem}
+    .stage-ui{font-size:.8rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .intro{display:none}
+    .tile img{opacity:1}
+  }
+</style>
+</head>
+
+<body>
+
+<div class="intro" id="intro"><h1>Mees Putman</h1></div>
+<script>
+try{
+  const skip = sessionStorage.getItem("intro") || (location.hash && location.hash !== "#home") || location.search.includes("order");
+  const el = document.getElementById("intro");
+  if (skip) el.remove();
+  else { sessionStorage.setItem("intro", "1"); document.documentElement.classList.add("intro-on"); setTimeout(() => el.remove(), 2400); }
+}catch(e){ document.getElementById("intro").remove(); }
+</script>
+<div class="grain" aria-hidden="true"></div>
+
+<nav class="nav" id="nav" aria-label="Main">
+  <a class="brand" href="#home"><span class="brand-name">Mees Putman</span><span class="brand-tag">Photography &amp; Cinematography</span></a>
+  <div class="links">
+    <a href="#people" data-page="people">People</a>
+    <a href="#street" data-page="street">Street</a>
+    <a href="#concert" data-page="concert">Concert</a>
+    <a href="#contact" data-page="contact">Contact</a>
+  </div>
+</nav>
+
+<main>
+  <section class="page" id="page-home">
+
+    <div class="journey" id="journey">
+      <div class="stage" id="stage">
+        <div class="card" id="card">
+          <div class="slides" id="slides"></div>
+          <div class="card-shade" id="card-shade"></div>
+          <div class="sticker-wrap"><a class="sticker" href="#contact">Open for projects</a></div>
+        </div>
+
+        <div class="hero-text" id="hero-text">
+          <h1 id="site-name"></h1>
+          <p class="tag" id="site-tagline"></p>
+          <a class="btn" id="hero-btn" href="#work">See the work</a>
+        </div>
+
+        <div class="hero-meta">
+          <a id="slide-label" href="#home"></a>
+          <span class="cue" id="stage-cue" aria-hidden="true">Scroll</span>
+          <span class="count" id="slide-count"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-sec" id="work">
+      <p class="work-label">Selected work</p>
+      <div id="work-rows"></div>
+    </div>
+
+    <div class="about" id="about">
+      <div class="about-inner">
+        <div class="about-photo"><img id="img-about" alt="Mees Putman" loading="lazy" decoding="async"></div>
+        <div>
+          <h2>About</h2>
+          <div class="about-text" id="about-text"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page gallery-page" id="page-people">
+    <h1 class="page-title">People</h1>
+    <div class="grid" id="grid-people"></div>
+  </section>
+
+  <section class="page gallery-page" id="page-street">
+    <h1 class="page-title">Street</h1>
+    <div class="grid" id="grid-street"></div>
+  </section>
+
+  <section class="page gallery-page" id="page-concert">
+    <h1 class="page-title">Concert</h1>
+    <div class="grid" id="grid-concert"></div>
+  </section>
+
+  <section class="page" id="page-contact">
+    <div class="contact">
+      <div class="mail">
+        <a class="mail-addr" id="c-email"></a>
+        <button class="plane" id="plane" aria-label="Send me an email">
+          <svg viewBox="0 0 320 260" aria-hidden="true">
+            <defs>
+              <linearGradient id="pa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbf4e6"/><stop offset="1" stop-color="#e6d7bc"/></linearGradient>
+              <linearGradient id="pb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2d3b7"/><stop offset="1" stop-color="#bda980"/></linearGradient>
+              <linearGradient id="pc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a08b69"/><stop offset="1" stop-color="#7a6747"/></linearGradient>
+            </defs>
+            <path d="M8 118 L312 8 L132 156 Z" fill="url(#pa)"/>
+            <path d="M132 156 L312 8 L224 236 Z" fill="url(#pb)"/>
+            <path d="M132 156 L224 236 L158 214 Z" fill="url(#pc)"/>
+          </svg>
+        </button>
+      </div>
+      <p class="hint">Click the paper plane</p>
+      <dl class="contact-meta">
+        <div><dt>Phone</dt><dd><a id="c-phone"></a></dd></div>
+        <div><dt>Instagram</dt><dd><a id="c-insta" target="_blank" rel="noopener"></a></dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>© <span id="year"></span> Mees Putman</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="x" aria-label="Close">&times;</button>
+  <button class="prev" aria-label="Previous photo">&#8249;</button>
+  <img id="lb-img" alt="">
+  <button class="next" aria-label="Next photo">&#8250;</button>
+  <div class="count" id="lb-count"></div>
+</div>
+
+<script>
+const SITE = {
+  name:    ["Mees", "Putman"],
+  tagline: "Photography & Cinematography",
+
+  phone:     "+31 6 20470271",
+  email:     "meesputman@outlook.com",
+  instagram: "meesputman1",
+
+  about: [
+    "My name is Mees Putman, a photographer and filmmaker based in Utrecht, The Netherlands, driven by an eye for visuals that goes back as long as I can remember. It started casually, filming friends, shooting whatever caught my eye, long before I saw it as more than a hobby. That curiosity slowly turned into a real fascination with mood, motion, and energy.",
+    "Whether I'm framing a candid street scene, a live show, or a quiet portrait, I'm always trying to capture what a moment actually felt like; honest, alive, and true to the atmosphere it happened in.",
+    "Always searching for genuine stories to tell, I welcome new collaborations and projects across the Netherlands and beyond. Feel free to reach out.",
+    "Have a look around."
+  ]
+};
+
+const PHOTOS = {
+  hero:     "photos/home/hero.jpg",
+  slides:   [],
+  about:    "photos/home/about.jpg",
+
+  people:  { folder: "photos/people/",  files: [] },
+  concert: { folder: "photos/concert/", files: [] },
+  street:  { folder: "photos/street/",  files: [] }
+};
+
+const ORDER_MODE = new URLSearchParams(location.search).has("order");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = id => document.getElementById(id);
+
+$("site-name").innerHTML = SITE.name.map(w => `<span>${w}</span>`).join("");
+$("site-tagline").textContent = SITE.tagline;
+$("about-text").innerHTML =
+  SITE.about.map(p => `<p>${p}</p>`).join("") +
+  `<div class="btn-row"><a class="btn" href="#contact">Get in touch</a></div>`;
+$("year").textContent = new Date().getFullYear();
+
+$("c-phone").textContent = SITE.phone;
+$("c-phone").href = "tel:" + SITE.phone.replace(/[^+\d]/g, "");
+$("c-email").textContent = SITE.email;
+$("c-email").href = "mailto:" + SITE.email;
+$("c-insta").href = "https://instagram.com/" + SITE.instagram;
+$("c-insta").textContent = "@" + SITE.instagram;
+
+const aboutImg = $("img-about");
+aboutImg.src = PHOTOS.about;
+aboutImg.onerror = () => { aboutImg.closest(".about-photo").style.display = "none"; };
+
+const plane = $("plane");
+plane.addEventListener("click", () => {
+  if (plane.classList.contains("fly")) return;
+  plane.classList.add("fly");
+  setTimeout(() => { location.href = "mailto:" + SITE.email; }, reduced ? 0 : 700);
+  setTimeout(() => plane.classList.remove("fly"), reduced ? 300 : 2600);
+});
+
+const galleries = {};
+const built = {};
+const niceAlt = f => f.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+
+const manifestPromise = fetch("photos/manifest.json", { cache: "no-cache" })
+  .then(r => r.ok ? r.json() : {}).catch(() => ({}));
+
+function loadSize(item){
+  return new Promise(res => {
+    const im = new Image();
+    im.onload  = () => res({ ...item, ar: im.naturalWidth / im.naturalHeight });
+    im.onerror = () => res(null);
+    im.src = item.src;
+  });
+}
+
+async function entriesFor(name){
+  const manifest = await manifestPromise;
+  return (manifest[name] && manifest[name].length) ? manifest[name] : PHOTOS[name].files;
+}
+
+function reveal(im){
+  if (im.complete && im.naturalWidth) im.classList.add("ready");
+  else im.addEventListener("load", () => im.classList.add("ready"), { once: true });
+}
+
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const slidesEl = $("slides"), slideLabel = $("slide-label"), slideCount = $("slide-count");
+let slides = [], si = 0;
+
+function ensureSlide(i){
+  const s = slides[i];
+  if (!s.el){
+    const im = document.createElement("img");
+    im.className = "slide"; im.alt = ""; im.decoding = "async";
+    im.addEventListener("error", () => { s.bad = true; });
+    im.src = s.src;
+    slidesEl.appendChild(im);
+    s.el = im;
+  }
+  return s.el;
+}
+
+async function showSlide(i){
+  const s = slides[i], el = ensureSlide(i);
+  try { await el.decode(); } catch(e) {}
+  if (s.bad) return false;
+  const old = slides[si] && slides[si].el;
+  if (old && old !== el) old.classList.remove("on");
+  el.classList.add("on");
+  si = i;
+  slideCount.textContent = slides.length > 1 ? String(i + 1).padStart(2, "0") + " / " + String(slides.length).padStart(2, "0") : "";
+  if (s.label){ slideLabel.textContent = s.label + " →"; slideLabel.href = "#" + s.label.toLowerCase(); }
+  else { slideLabel.textContent = ""; }
+  if (slides.length > 1) ensureSlide((i + 1) % slides.length);
+  return true;
+}
+
+async function nextSlide(){
+  for (let n = 1; n <= slides.length; n++){
+    const j = (si + n) % slides.length;
+    if (!slides[j].bad && await showSlide(j)) return;
+  }
+}
+
+async function initSlides(){
+  const landscape = innerWidth >= innerHeight;
+  const ok = ar => landscape ? ar >= 1.25 : ar <= .95;
+  let list = [];
+  if (PHOTOS.slides.length) list = PHOTOS.slides.map(src => ({ src }));
+  else {
+    const pools = await Promise.all(["street", "concert", "people"].map(async g =>
+      shuffle((await entriesFor(g)).filter(f => typeof f !== "string" && ok(f.w / f.h)))
+        .slice(0, 4)
+        .map(f => ({ src: PHOTOS[g].folder + encodeURIComponent(f.f), label: g[0].toUpperCase() + g.slice(1) }))));
+    for (let i = 0; i < 4; i++) pools.forEach(p => p[i] && list.push(p[i]));
+    list = list.slice(0, 8);
+    if (!landscape) list.push({ src: PHOTOS.hero });
+    shuffle(list);
+    if (list.length < 2) list.unshift({ src: PHOTOS.hero });
+  }
+  if (!list.length) list = [{ src: PHOTOS.hero }];
+  slides = list;
+  if (!await showSlide(0)) await nextSlide();
+  if (slides.length > 1) setInterval(() => { if (!document.hidden && page === "home") nextSlide(); }, 6500);
+}
+
+async function buildWork(){
+  const box = $("work-rows");
+  const names = ["people", "street", "concert"];
+  const lists = await Promise.all(names.map(entriesFor));
+  names.forEach((n, i) => {
+    const first = lists[i][0];
+    if (!first) return;
+    const src = PHOTOS[n].folder + (typeof first === "string" ? first : encodeURIComponent(first.f));
+    const a = document.createElement("a");
+    a.className = "row";
+    a.href = "#" + n;
+    a.innerHTML = `<span class="row-name">${n[0].toUpperCase() + n.slice(1)}</span>
+      <span class="thumb"><img src="${src}" alt="" loading="lazy" decoding="async"></span>`;
+    box.appendChild(a);
+  });
+  if (!box.children.length) $("work").style.display = "none";
+}
+
+async function buildGallery(name){
+  if (built[name]) return;
+  built[name] = true;
+  const cfg  = PHOTOS[name];
+  const grid = $("grid-" + name);
+  const entries = await entriesFor(name);
+  const items = entries.map(f => {
+    if (typeof f === "string") return { src: cfg.folder + f, alt: niceAlt(f), file: f };
+    return { src: cfg.folder + encodeURIComponent(f.f), alt: niceAlt(f.f), ar: f.w / f.h, file: f.f };
+  });
+
+  const loaded = (await Promise.all(items.map(it => it.ar ? it : loadSize(it)))).filter(Boolean);
+  galleries[name] = loaded;
+
+  if (!loaded.length){
+    grid.innerHTML = `<p class="empty">No photos yet.</p>`;
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  loaded.forEach((p, i) => {
+    const t = document.createElement("a");
+    t.className = "tile";
+    t.href = p.src;
+    t.dataset.file = p.file;
+    t.dataset.n = String(i + 1).padStart(2, "0");
+    t.style.setProperty("--ar", p.ar.toFixed(4));
+    t.innerHTML = `<img src="${p.src}" alt="${p.alt}" loading="lazy" decoding="async">`;
+    t.addEventListener("click", e => { e.preventDefault(); if (!ORDER_MODE) openLB(name, i); });
+    const im = t.querySelector("img"); let tries = 0;
+    im.addEventListener("error", () => {
+      if (tries++ < 3) setTimeout(() => { im.src = p.src + (p.src.includes("?") ? "&" : "?") + "r=" + tries; }, 1200 * tries);
+    });
+    reveal(im);
+    frag.appendChild(t);
+  });
+  grid.appendChild(frag);
+  if (ORDER_MODE) enableOrdering(name, grid);
+}
+
+function enableOrdering(name, grid){
+  let bar = $("order-bar");
+  if (!bar){
+    bar = document.createElement("div");
+    bar.id = "order-bar";
+    bar.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:260;background:#e12020;color:#fff;padding:12px var(--pad);display:flex;gap:14px;align-items:center;justify-content:space-between;font-size:.95rem";
+    bar.innerHTML = '<span id="order-msg"></span><button id="order-copy" style="font:inherit;padding:8px 16px;border:0;cursor:pointer;background:#fff;color:#401804;font-weight:700">Copy order</button>';
+    document.body.appendChild(bar);
+  }
+  const msg = bar.querySelector("#order-msg"), btn = bar.querySelector("#order-copy");
+  const names = () => [...document.querySelectorAll(".page.active .tile")].map(t => t.dataset.file);
+  const label = () => { msg.textContent = "Order mode: drag the photos into your order, then press Copy order."; btn.textContent = "Copy order"; };
+  label();
+  btn.onclick = async () => {
+    const pg = (location.hash.replace("#","") || name);
+    const text = "[" + pg + "]\n" + names().join("\n") + "\n";
+    try { await navigator.clipboard.writeText(text); msg.textContent = "Copied! Paste it into order.txt on GitHub (replace the [" + pg + "] section)."; }
+    catch(e){ prompt("Copy this text:", text); }
+    setTimeout(label, 6000);
+  };
+  let drag = null;
+  grid.querySelectorAll(".tile").forEach(t => {
+    t.draggable = true; t.style.cursor = "grab";
+    t.querySelector("img").draggable = false;
+    t.addEventListener("dragstart", e => { drag = t; t.style.opacity = .4; e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", t.dataset.file); });
+    t.addEventListener("dragend", () => { t.style.opacity = ""; drag = null; });
+    t.addEventListener("dragover", e => e.preventDefault());
+    t.addEventListener("drop", e => {
+      e.preventDefault();
+      if (!drag || drag === t) return;
+      const kids = [...grid.querySelectorAll(".tile")];
+      if (kids.indexOf(drag) < kids.indexOf(t)) t.after(drag); else t.before(drag);
+    });
+  });
+}
+
+const nav = $("nav");
+const journey = $("journey"), stage = $("stage"), card = $("card"), shade = $("card-shade");
+const heroText = $("hero-text"), heroBtn = $("hero-btn"), cue = $("stage-cue"), meta = document.querySelector(".hero-meta");
+
+const BROWN = [64, 24, 4], BLACK = [0, 0, 0];
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease  = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const mix   = (a, b, t) => "rgb(" + a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",") + ")";
+
+let page = "home", on = false, lastP = -1, geo = null;
+
+function clearJourney(){
+  [card, shade, heroText, heroBtn, cue, stage].forEach(el => el.removeAttribute("style"));
+}
+
+function measure(){
+  if (page !== "home") return;
+  const ok = !reduced && innerHeight >= 520;
+  journey.classList.toggle("journey-on", ok);
+  if (!ok){ on = false; clearJourney(); updateNav(); return; }
+
+  const W = stage.clientWidth, H = stage.clientHeight, navH = nav.offsetHeight;
+  const pad = heroText.offsetLeft;
+  const tw = heroText.offsetWidth, th = heroText.offsetHeight, tTop = heroText.offsetTop;
+  const wide = W >= 900 && W / H >= 1.15;
+
+  let s, cx, cy, k, targetTop, rot;
+  if (wide){
+    s = .52; cx = W - pad - s * W / 2; cy = (navH + H) / 2;
+    k = clamp(((W - pad - s * W) - pad - 24) / tw, .45, 1);
+    targetTop = cy - th * k / 2; rot = 2.5;
+  } else {
+    k = clamp((W - 2 * pad) / tw, .4, 1);
+    const m = navH + 16;
+    const metaTop = H - (meta.offsetHeight + parseFloat(getComputedStyle(meta).bottom || 0)) - 14;
+    const bh = heroBtn.offsetHeight || 48;
+    s = clamp((metaTop - (th * k + 18 + bh) - 22 - m) / H, .26, .66);
+    cx = W / 2; cy = m + s * H / 2; targetTop = m + s * H + 22; rot = -2;
+  }
+  geo = { s, dx: cx - W / 2, dy: cy - H / 2, rot, k, ty: targetTop - tTop, range: journey.offsetHeight - stage.offsetHeight };
+  on = true; lastP = -1;
+  update();
+}
+
+function update(){
+  if (!on || page !== "home" || !geo) return;
+  const p = clamp(scrollY / geo.range);
+  if (p === lastP) return;
+  lastP = p;
+
+  const e = ease(clamp((p - .04) / .62));
+  const sc = 1 + (geo.s - 1) * e;
+  card.style.transform =
+    `translate3d(${(geo.dx * e).toFixed(1)}px,${(geo.dy * e).toFixed(1)}px,0) scale(${sc.toFixed(4)}) rotate(${(geo.rot * e).toFixed(2)}deg)`;
+  card.style.setProperty("--ss", (1 / sc).toFixed(3));  shade.style.opacity = (1 - e * .85).toFixed(3);
+
+  const t = ease(clamp((p - .08) / .5));
+  stage.style.backgroundColor = mix(BROWN, BLACK, t);
+
+  const e2 = ease(clamp((p - .1) / .6));
+  heroText.style.transform =
+    `translate3d(0,${(geo.ty * e2).toFixed(1)}px,0) scale(${(1 + (geo.k - 1) * e2).toFixed(4)})`;
+
+  const b = clamp((p - .74) / .16);
+  heroBtn.style.opacity = b.toFixed(3);
+  heroBtn.style.visibility = b < .02 ? "hidden" : "visible";
+
+  cue.style.opacity = (1 - clamp(p / .05)).toFixed(3);
+  updateNav();
+}
+
+const pages = ["home", "people", "street", "concert", "contact"];
+const seenPages = new Set();
+
+function current(){
+  const p = location.hash.replace("#", "");
+  return pages.includes(p) ? p : "home";
+}
+
+function updateNav(){
+  nav.classList.toggle("solid", page !== "home" || scrollY > 40);
+  nav.classList.toggle("show-brand", page !== "home" || (on ? lastP > .6 : scrollY > 40));
+}
+
+function render(){
+  const prev = page;
+  page = current();
+  pages.forEach(n => $("page-" + n).classList.toggle("active", n === page));
+  document.querySelectorAll(".links a").forEach(a => a.classList.toggle("active", a.dataset.page === page));
+  if (PHOTOS[page] && PHOTOS[page].files) buildGallery(page);
+  const title = $("page-" + page).querySelector(".page-title");
+  if (title && !seenPages.has(page)){
+    seenPages.add(page);
+    title.classList.remove("title-in"); void title.offsetWidth; title.classList.add("title-in");
+  }
+  if (page !== prev || !/^#(work|about)$/.test(location.hash)) window.scrollTo({ top: 0, behavior: "instant" });
+  if (page === "home") requestAnimationFrame(measure);
+  updateNav();
+}
+
+addEventListener("hashchange", () => {
+  const h = location.hash.replace("#", "");
+  if (h === "work" || h === "about"){
+    if (page !== "home"){ page = "home"; render(); }
+    $(h).scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+  render();
+});
+
+let ticking = false;
+addEventListener("scroll", () => {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => { ticking = false; update(); updateNav(); });
+}, { passive: true });
+
+let rz;
+addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(measure, 150); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+render();
+buildWork();
+initSlides();
+
+if (matchMedia("(hover: hover) and (pointer: fine)").matches && !ORDER_MODE && !reduced){
+  const c = document.createElement("div");
+  c.className = "cursor";
+  document.body.append(c);
+  document.documentElement.classList.add("has-cursor");
+  let x = -100, y = -100, cx = x, cy = y, ts = .36, cs = ts, running = false;
+  function loop(){
+    cx += (x - cx) * .22; cy += (y - cy) * .22; cs += (ts - cs) * .2;
+    c.style.transform = `translate3d(${cx}px, ${cy}px, 0) scale(${cs})`;
+    if (Math.abs(x - cx) > .1 || Math.abs(y - cy) > .1 || Math.abs(ts - cs) > .005) requestAnimationFrame(loop);
+    else running = false;
+  }
+  addEventListener("mousemove", e => {
+    x = e.clientX; y = e.clientY;
+    c.classList.add("on");
+    ts = (e.target.closest && e.target.closest("a, button")) ? .8 : .36;
+    if (!running){ running = true; requestAnimationFrame(loop); }
+  }, { passive: true });
+  document.addEventListener("mouseleave", () => c.classList.remove("on"));
+}
+
+const lb = $("lb"), lbImg = $("lb-img"), lbCount = $("lb-count");
+let cur = { name: null, i: 0 };
+lbImg.addEventListener("load",  () => { lbImg.style.opacity = 1; });
+lbImg.addEventListener("error", () => { lbImg.style.opacity = 1; });
+
+function show(){
+  const list = galleries[cur.name], p = list[cur.i];
+  lbImg.style.opacity = 0;
+  lbImg.src = p.src; lbImg.alt = p.alt;
+  lbCount.textContent = (cur.i + 1) + " / " + list.length;
+  [1, -1].forEach(d => { const n = list[(cur.i + d + list.length) % list.length]; new Image().src = n.src; });
+}
+function openLB(name, i){ cur = { name, i }; lb.classList.add("open"); document.body.style.overflow = "hidden"; show(); }
+function closeLB(){ lb.classList.remove("open"); document.body.style.overflow = ""; }
+function step(d){ const n = galleries[cur.name].length; cur.i = (cur.i + d + n) % n; show(); }
+
+lb.querySelector(".x").onclick = closeLB;
+lb.querySelector(".prev").onclick = () => step(-1);
+lb.querySelector(".next").onclick = () => step(1);
+lb.addEventListener("click", e => { if (e.target === lb) closeLB(); });
+document.addEventListener("keydown", e => {
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape") closeLB();
+  if (e.key === "ArrowLeft") step(-1);
+  if (e.key === "ArrowRight") step(1);
+});
+let sx = null;
+lb.addEventListener("touchstart", e => { sx = e.touches[0].clientX; }, { passive: true });
+lb.addEventListener("touchend", e => {
+  if (sx === null) return;
+  const dx = e.changedTouches[0].clientX - sx;
+  if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+  sx = null;
+});
+</script>
+</body>
+</html>
