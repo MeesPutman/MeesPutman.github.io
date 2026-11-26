@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mees Putman — Photography &amp; Cinematography</title>
 <meta name="description" content="Mees Putman, photographer and filmmaker based in Utrecht, The Netherlands.">
-<meta name="theme-color" content="#2f1204">
+<meta name="theme-color" content="#401804">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -21,114 +21,149 @@
 <meta name="twitter:image" content="https://meesputman.github.io/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Montserrat:wght@500;800;900&display=swap" rel="stylesheet">
 
 <style>
   :root{
-    --bg:#2f1204;
-    --bg-soft:#3b1807;
-    --ink:#f3e9d8;
-    --muted:rgba(243,233,216,.64);
-    --line:rgba(243,233,216,.16);
-    --accent:#fce08b;
+    --brown:#401804;
+    --brown-deep:#2e1103;
+    --black:#000;
     --red:#e12020;
+    --yellow:#fce08b;
+    --cream:#f3e9d8;
+    --muted:rgba(243,233,216,.66);
+    --line:rgba(243,233,216,.16);
     --gap:clamp(6px,1.2vw,14px);
-    --pad:clamp(20px,5vw,72px);
+    --pad:clamp(18px,5.5vw,80px);
     --row-h:clamp(170px,24vw,300px);
-    --nav-h:64px;
+    --nav-h:62px;
     --ease:cubic-bezier(.2,.7,.1,1);
+    --pop:cubic-bezier(.34,1.56,.64,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:var(--nav-h)}
-  body{background:var(--bg);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;font-size:1.0625rem;line-height:1.65;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+  body{background:var(--brown);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;font-size:1.0625rem;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
   img{display:block;max-width:100%}
   a{color:inherit}
-  h1,h2{font-weight:500;letter-spacing:-.04em;line-height:1}
-  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  h1,h2,.display{font-family:"Montserrat",sans-serif;font-weight:900;letter-spacing:-.05em;line-height:.95}
+  ::selection{background:var(--red);color:var(--cream)}
+  :focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
 
-  /* ---------- Intro: one soft fade, first visit only ---------- */
-  .intro{position:fixed;inset:0;z-index:400;background:var(--bg);display:grid;place-items:center;animation:introOut .7s ease 1.5s forwards}
-  .intro p{font-size:clamp(1.6rem,4.5vw,2.6rem);font-weight:500;letter-spacing:-.04em;color:var(--ink);opacity:0;animation:introIn .8s ease .2s forwards}
+  /* hand-drawn squiggle (one <symbol>, reused) */
+  .squig{display:block;width:clamp(120px,15vw,200px);height:auto;aspect-ratio:172/20;fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+
+  /* ---------- Intro: soft fade, first visit only ---------- */
+  .intro{position:fixed;inset:0;z-index:400;background:var(--brown);display:grid;place-items:center;animation:introOut .7s ease 1.5s forwards}
+  .intro h1{color:var(--red);font-size:clamp(2.6rem,9vw,6rem);text-align:center;opacity:0;animation:introIn .8s ease .2s forwards}
   @keyframes introIn{to{opacity:1}}
   @keyframes introOut{to{opacity:0;visibility:hidden}}
 
   /* ---------- Navigation ---------- */
-  .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nav-h);display:flex;align-items:center;gap:24px;padding:0 var(--pad);background:var(--bg);border-bottom:1px solid transparent;transition:border-color .3s}
+  .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nav-h);display:flex;align-items:center;gap:20px;padding:0 var(--pad);background:var(--brown);border-bottom:1px solid transparent;transition:border-color .3s}
   .nav.line{border-bottom-color:var(--line)}
-  .brand{font-weight:600;font-size:1.1rem;letter-spacing:-.03em;color:var(--red);text-decoration:none;opacity:0;pointer-events:none;transition:opacity .35s}
+  .brand{font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red);text-decoration:none;opacity:0;pointer-events:none;transition:opacity .35s}
   .nav.show-brand .brand{opacity:1;pointer-events:auto}
-  .links{display:flex;gap:clamp(16px,3vw,32px);margin-left:auto}
-  .links a{text-decoration:none;color:var(--muted);font-size:1rem;padding:8px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
-  .links a:hover{color:var(--ink)}
-  .links a.active{color:var(--ink);border-bottom-color:var(--accent)}
+  .links{display:flex;gap:clamp(14px,3vw,30px);margin-left:auto}
+  .links a{text-decoration:none;color:var(--muted);font-size:1.05rem;padding:8px 0;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+  .links a:hover{color:#fff}
+  .links a.active{color:#fff;border-bottom-color:var(--yellow)}
 
   main{flex:1;padding-top:var(--nav-h)}
   .page{display:none}
   .page.active{display:block;animation:fade .35s ease}
   @keyframes fade{from{opacity:0}to{opacity:1}}
 
-  /* ---------- Home: hero ---------- */
-  .hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100svh - var(--nav-h));gap:clamp(24px,5vw,80px);padding:0 var(--pad) clamp(24px,4vw,56px)}
-  .hero-text{display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(8px,2vw,24px)}
-  .hero h1{font-size:clamp(3rem,8.2vw,7.5rem)}
-  .hero .tag{margin-top:clamp(16px,2vw,28px);font-size:clamp(1.05rem,1.6vw,1.35rem);color:var(--ink)}
-  .hero .where{color:var(--muted);font-size:1rem}
-  .hero .go{margin-top:clamp(24px,4vw,48px);align-self:flex-start;color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
-  .hero .go:hover{border-bottom-color:transparent}
-  .hero-img{position:relative;background:var(--bg-soft);overflow:hidden;min-height:340px}
-  .hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%}
+  .btn{display:inline-block;text-decoration:none;padding:13px 28px;border:2px solid var(--yellow);color:var(--yellow);font-weight:700;letter-spacing:.04em;border-radius:999px;transition:background .2s,color .2s,transform .3s var(--pop)}
+  .btn:hover{background:var(--yellow);color:var(--brown);transform:rotate(-2deg) scale(1.04)}
 
-  /* ---------- Home: work ---------- */
-  .section{padding:clamp(56px,9vw,128px) var(--pad)}
-  .section h2{font-size:clamp(2rem,4.2vw,3.4rem);margin-bottom:clamp(28px,4vw,56px)}
-  .work{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2.4vw,32px)}
-  .work-card{display:block;text-decoration:none}
-  .work-card .cover{aspect-ratio:4/5;background:var(--bg-soft);overflow:hidden}
-  .work-card img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s ease,transform .6s var(--ease)}
-  .work-card img.ready{opacity:1}
-  .work-card:hover img{transform:scale(1.025)}
-  .work-card span{display:block;margin-top:14px;font-size:1.25rem;letter-spacing:-.02em}
-  .work-card small{display:block;color:var(--muted);font-size:.95rem}
+  /* ---------- Home: hero ---------- */
+  .hero{display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:clamp(28px,6vw,96px);min-height:calc(100svh - var(--nav-h));padding:clamp(24px,4vw,56px) var(--pad) clamp(40px,6vw,80px)}
+  .hero h1{color:var(--red);font-size:clamp(3.4rem,9.8vw,9.5rem);line-height:.88}
+  .hero h1 span{display:block}
+  .hero .tag{margin-top:clamp(18px,2.4vw,32px);color:var(--yellow);font-weight:500;font-size:clamp(.95rem,1.4vw,1.2rem);letter-spacing:.08em;text-transform:uppercase}
+  .hero .squig{margin-top:10px;color:var(--yellow);animation:wipe .9s var(--ease) 1.1s backwards}
+  .hero .where{margin-top:14px;color:var(--muted)}
+  .hero .btn{margin-top:clamp(24px,3.4vw,44px)}
+  @keyframes wipe{from{clip-path:inset(-8px 100% -8px 0)}to{clip-path:inset(-8px -8px -8px 0)}}
+
+  .hero-art{position:relative;justify-self:center;width:min(100%,520px);animation:pop 1s var(--ease) .15s backwards}
+  .hero-frame{position:relative;aspect-ratio:4/5;max-height:76svh;margin-inline:auto;background:var(--brown-deep);transform:rotate(2.5deg);transition:transform .5s var(--pop)}
+  .hero-frame::before{content:"";position:absolute;inset:0;background:var(--yellow);transform:translate(16px,16px);z-index:-1}
+  .hero-frame img{width:100%;height:100%;object-fit:cover;object-position:center 25%}
+  .hero-art:hover .hero-frame{transform:rotate(0)}
+  .sticker{position:absolute;left:-6%;bottom:6%;width:clamp(96px,11vw,132px);aspect-ratio:1;border-radius:50%;background:var(--red);color:var(--cream);display:grid;place-items:center;text-align:center;text-decoration:none;font:900 .8rem/1.1 "Montserrat",sans-serif;letter-spacing:-.01em;text-transform:uppercase;padding:14px;transform:rotate(-14deg);transition:transform .4s var(--pop);animation:stick .6s var(--pop) 1s backwards}
+  .sticker:hover{transform:rotate(6deg) scale(1.1)}
+  @keyframes pop{from{opacity:0;transform:translateY(24px) scale(.95)}to{opacity:1;transform:none}}
+  @keyframes stick{from{opacity:0;transform:rotate(-40deg) scale(.2)}to{opacity:1;transform:rotate(-14deg)}}
+  .intro-on .hero-art{animation-delay:1.6s}
+  .intro-on .hero .squig{animation-delay:2.5s}
+  .intro-on .sticker{animation-delay:2.4s}
+
+  /* ---------- Home: work (yellow block, big type rows) ---------- */
+  .work-sec{background:var(--yellow);color:var(--brown);padding:clamp(48px,8vw,110px) 0 0}
+  .work-sec h2{color:var(--red);font-size:clamp(3.4rem,11vw,9rem);padding:0 var(--pad);margin-bottom:clamp(24px,4vw,56px)}
+  .row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(12px,2vw,26px) var(--pad);border-top:2px solid var(--brown);text-decoration:none;color:var(--brown);overflow:hidden;transition:background .25s,color .25s}
+  .row:last-child{border-bottom:2px solid var(--brown)}
+  .row-name{font:900 clamp(3.4rem,13vw,11.5rem)/.95 "Montserrat",sans-serif;letter-spacing:-.05em;transition:transform .45s var(--ease)}
+  .row .thumb{flex:none;width:clamp(84px,14vw,210px);aspect-ratio:4/5;overflow:hidden;background:var(--brown-deep);transform:rotate(6deg);transition:transform .5s var(--pop),opacity .3s}
+  .row .thumb img{width:100%;height:100%;object-fit:cover}
+  .row:hover,.row:focus-visible{background:var(--red);color:var(--cream);outline-offset:-3px}
+  .row:hover .row-name,.row:focus-visible .row-name{transform:translateX(clamp(8px,1.6vw,24px))}
+  .row:hover .thumb,.row:focus-visible .thumb{transform:rotate(-5deg) scale(1.08)}
 
   /* ---------- Home: about ---------- */
-  .about{border-top:1px solid var(--line)}
-  .about-inner{display:grid;grid-template-columns:5fr 6fr;gap:clamp(28px,6vw,96px);align-items:start;max-width:1300px}
-  .about-photo img{width:100%;height:auto}
+  .about{background:var(--black);padding:clamp(56px,9vw,120px) var(--pad)}
+  .about h2{color:var(--red);font-size:clamp(3.4rem,11vw,9rem);margin-bottom:clamp(28px,5vw,64px)}
+  .about-inner{display:grid;grid-template-columns:5fr 6fr;gap:clamp(32px,6vw,96px);align-items:start;max-width:1400px}
+  .about-photo{position:relative;transform:rotate(-2deg)}
+  .about-photo::before{content:"";position:absolute;inset:0;background:var(--red);transform:translate(-14px,14px);z-index:0}
+  .about-photo img{position:relative;width:100%;height:auto}
   .about-text{max-width:62ch}
-  .about-text p{color:var(--ink);margin-bottom:1.2em}
-  .about-text p:last-of-type{color:var(--muted)}
-  .about-text .more{display:inline-block;margin-top:.8em;color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
-  .about-text .more:hover{border-bottom-color:transparent}
+  .about-text p{color:var(--yellow);font-size:clamp(1.05rem,1.4vw,1.25rem);margin-bottom:1.2em}
+  .about-text p:last-of-type{color:var(--cream)}
+  .about-text .btn{margin-top:1em}
+
+  /* ---------- Home: closing call to action ---------- */
+  .cta{display:block;background:var(--red);color:var(--cream);text-decoration:none;padding:clamp(40px,7vw,96px) var(--pad);font:900 clamp(2.8rem,10vw,9rem)/.92 "Montserrat",sans-serif;letter-spacing:-.05em;transition:background .25s,color .25s}
+  .cta:hover,.cta:focus-visible{background:var(--yellow);color:var(--red);outline-offset:-6px}
+  .cta .squig{margin-top:clamp(14px,2vw,28px);transition:transform .5s var(--pop)}
+  .cta:hover .squig{transform:translateX(20px) rotate(-2deg)}
 
   /* ---------- Gallery pages ---------- */
-  .gallery-page{padding:clamp(24px,4vw,56px) var(--pad) clamp(48px,7vw,100px)}
-  .gallery-page h1{font-size:clamp(2.4rem,6vw,4.8rem);margin-bottom:clamp(24px,4vw,48px)}
+  .gallery-page{padding:clamp(28px,5vw,64px) var(--pad) clamp(48px,7vw,100px)}
+  .gallery-page h1{color:var(--red);font-size:clamp(3.4rem,13vw,11rem);text-transform:uppercase}
+  .gallery-page .squig{margin:clamp(10px,1.4vw,18px) 0 clamp(28px,4.5vw,60px);color:var(--yellow)}
   .grid{display:flex;flex-wrap:wrap;gap:var(--gap)}
   .grid::after{content:"";flex-grow:1e6}
-  .tile{--ar:1.5;flex:calc(var(--ar) * 1000) 1 calc(var(--ar) * var(--row-h));min-width:0;position:relative;overflow:hidden;background:var(--bg-soft);cursor:zoom-in}
+  .tile{--ar:1.5;flex:calc(var(--ar) * 1000) 1 calc(var(--ar) * var(--row-h));min-width:0;position:relative;background:var(--brown-deep);cursor:zoom-in;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
   .tile img{width:100%;aspect-ratio:var(--ar);object-fit:cover;opacity:0;transition:opacity .5s ease}
   .tile img.ready{opacity:1}
-  .tile:hover img.ready{opacity:.88}
+  .tile:hover{transform:translate(-5px,-5px);box-shadow:8px 8px 0 var(--yellow);z-index:2}
   .empty{color:var(--muted);padding:40px 0}
 
-  /* ---------- Contact ---------- */
-  .contact{display:grid;grid-template-columns:5fr 6fr;gap:clamp(28px,6vw,96px);padding:clamp(24px,4vw,56px) var(--pad) clamp(48px,7vw,100px);align-items:end;min-height:calc(100svh - var(--nav-h) - 80px)}
-  .contact-img{background:var(--bg-soft);overflow:hidden;align-self:stretch;min-height:320px}
-  .contact-img img{width:100%;height:100%;object-fit:cover}
-  .contact-body h1{font-size:clamp(2.4rem,6vw,4.8rem);margin-bottom:clamp(20px,3vw,40px)}
-  .contact-lead{color:var(--muted);max-width:40ch;margin-bottom:clamp(24px,3vw,40px)}
-  .contact-list{list-style:none;display:grid;gap:6px}
-  .contact-list a{text-decoration:none;font-size:clamp(1.3rem,2.6vw,2rem);letter-spacing:-.03em;border-bottom:1px solid var(--line);transition:border-color .2s,color .2s}
-  .contact-list a:hover{color:var(--accent);border-bottom-color:var(--accent)}
-  .contact-list .phone{font-size:clamp(1.1rem,2vw,1.4rem);color:var(--muted)}
+  /* ---------- Contact (yellow page) ---------- */
+  #page-contact{background:var(--yellow);color:var(--brown);min-height:calc(100svh - var(--nav-h))}
+  .contact{display:grid;grid-template-columns:5fr 6fr;gap:clamp(32px,7vw,112px);align-items:center;padding:clamp(32px,5vw,72px) var(--pad) clamp(56px,8vw,110px)}
+  .contact-art{position:relative;transform:rotate(-2.5deg);transition:transform .5s var(--pop)}
+  .contact-art:hover{transform:rotate(0)}
+  .contact-art::before{content:"";position:absolute;inset:0;background:var(--red);transform:translate(14px,14px)}
+  .contact-art img{position:relative;width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--brown-deep)}
+  .contact h1{color:var(--red);font-size:clamp(3.2rem,8vw,7.5rem)}
+  .contact .squig{margin:clamp(12px,1.6vw,20px) 0 clamp(24px,3.4vw,44px);color:var(--brown)}
+  .contact-lead{max-width:38ch;margin-bottom:clamp(24px,3.4vw,44px);font-size:1.15rem}
+  .contact-list{list-style:none;display:grid;gap:clamp(10px,1.4vw,18px);justify-items:start}
+  .contact-list a{display:inline-flex;align-items:center;gap:14px;text-decoration:none;font:900 clamp(1.5rem,3.6vw,3rem)/1.05 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--brown);overflow-wrap:anywhere;transition:color .2s,transform .35s var(--pop)}
+  .contact-list a:hover{color:var(--red);transform:translateX(8px) rotate(-1deg)}
+  .contact-list .phone{font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:800}
+  .contact-list svg{width:1.1em;height:1.1em;flex:none}
 
-  footer{padding:24px var(--pad);font-size:.875rem;color:var(--muted);border-top:1px solid var(--line)}
+  footer{padding:22px var(--pad);font-size:.875rem;color:var(--muted);text-align:center;border-top:1px solid var(--line)}
 
   /* ---------- Lightbox ---------- */
-  .lb{position:fixed;inset:0;z-index:100;background:rgba(20,7,1,.97);display:flex;align-items:center;justify-content:center;touch-action:pan-y;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,.96);display:flex;align-items:center;justify-content:center;touch-action:pan-y;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
   .lb.open{opacity:1;visibility:visible}
   .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .2s}
-  .lb button{position:absolute;background:none;border:0;color:var(--ink);cursor:pointer;font-size:2.2rem;line-height:1;padding:14px;opacity:.75;transition:opacity .2s}
+  .lb button{position:absolute;background:none;border:0;color:var(--cream);cursor:pointer;font-size:2.2rem;line-height:1;padding:14px;opacity:.8;transition:opacity .2s}
   .lb button:hover{opacity:1}
   .lb .x{top:max(8px,env(safe-area-inset-top));right:8px}
   .lb .prev{left:4px;top:50%;transform:translateY(-50%)}
@@ -137,47 +172,52 @@
 
   /* ---------- Responsive ---------- */
   @media (max-width:900px){
-    .hero{grid-template-columns:1fr;min-height:0;gap:28px}
-    .hero-text{order:2;padding-bottom:0}
-    .hero-img{order:1;aspect-ratio:4/5;max-height:70svh;min-height:0}
+    .hero{grid-template-columns:1fr;min-height:0;gap:44px}
+    .hero h1{font-size:clamp(3.4rem,19vw,8rem)}
+    .hero-art{order:-1;width:min(86%,440px)}
     .about-inner{grid-template-columns:1fr}
-    .contact{grid-template-columns:1fr;min-height:0;align-items:start}
-    .contact-img{order:2;min-height:0;aspect-ratio:4/3}
-  }
-  @media (max-width:700px){
-    .work{grid-template-columns:1fr}
-    .work-card .cover{aspect-ratio:4/3}
-    .links a[data-page="home"]{display:none}
-    .links{gap:16px}
-    .links a{font-size:.95rem}
+    .about-photo{max-width:440px}
+    .contact{grid-template-columns:1fr}
+    .contact-art{max-width:420px;order:2}
   }
   @media (max-width:560px){
-    :root{--row-h:140px;--nav-h:56px}
+    :root{--row-h:140px;--nav-h:54px;--pad:16px}
+    .nav{gap:10px}
+    .brand{font-size:.98rem}
+    .links{gap:12px}
+    .links a{font-size:.9rem}
+    .sticker{left:-3%}
+  }
+  @media (hover:none){
+    .row .thumb{transform:rotate(5deg)}
   }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
     .intro{display:none}
-    .tile img,.work-card img{opacity:1}
+    .tile img{opacity:1}
   }
 </style>
 </head>
 
 <body>
 
-<div class="intro" id="intro"><p>Mees Putman</p></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="squig" viewBox="0 0 172 20"><path d="M3 11 Q14 1 25 11 T47 11 T69 11 T91 11 T113 11 T135 11 T157 11 L169 8"/></symbol>
+</svg>
+
+<div class="intro" id="intro"><h1>Mees Putman</h1></div>
 <script>
 try{
   const skip = sessionStorage.getItem("intro") || (location.hash && location.hash !== "#home") || location.search.includes("order");
   const el = document.getElementById("intro");
   if (skip) el.remove();
-  else { sessionStorage.setItem("intro", "1"); setTimeout(() => el.remove(), 2400); }
+  else { sessionStorage.setItem("intro", "1"); document.documentElement.classList.add("intro-on"); setTimeout(() => el.remove(), 2400); }
 }catch(e){ document.getElementById("intro").remove(); }
 </script>
 
 <nav class="nav" id="nav" aria-label="Main">
   <a class="brand" href="#home">Mees Putman</a>
   <div class="links">
-    <a href="#home" data-page="home">Home</a>
     <a href="#people" data-page="people">People</a>
     <a href="#street" data-page="street">Street</a>
     <a href="#concert" data-page="concert">Concert</a>
@@ -191,52 +231,64 @@ try{
       <div class="hero-text" id="hero-text">
         <h1 id="site-name"></h1>
         <p class="tag" id="site-tagline"></p>
+        <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
         <p class="where" id="site-where"></p>
-        <a class="go" href="#work">See the work</a>
+        <a class="btn" href="#work">See the work</a>
       </div>
-      <div class="hero-img"><img id="img-hero" alt="Photo by Mees Putman" fetchpriority="high" decoding="async"></div>
+      <div class="hero-art">
+        <div class="hero-frame"><img id="img-hero" alt="Photo by Mees Putman" fetchpriority="high" decoding="async"></div>
+        <a class="sticker" href="#contact">Open for projects</a>
+      </div>
     </div>
 
-    <div class="section" id="work">
+    <div class="work-sec" id="work">
       <h2>Work</h2>
-      <div class="work" id="work-grid"></div>
+      <div id="work-rows"></div>
     </div>
 
-    <div class="section about" id="about">
+    <div class="about" id="about">
+      <h2>About</h2>
       <div class="about-inner">
         <div class="about-photo"><img id="img-about" alt="Mees Putman" loading="lazy" decoding="async"></div>
-        <div>
-          <h2>About</h2>
-          <div class="about-text" id="about-text"></div>
-        </div>
+        <div class="about-text" id="about-text"></div>
       </div>
     </div>
+
+    <a class="cta" href="#contact">Let’s work together
+      <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
+    </a>
   </section>
 
   <section class="page gallery-page" id="page-people">
     <h1>People</h1>
+    <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
     <div class="grid" id="grid-people"></div>
   </section>
 
   <section class="page gallery-page" id="page-street">
     <h1>Street</h1>
+    <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
     <div class="grid" id="grid-street"></div>
   </section>
 
   <section class="page gallery-page" id="page-concert">
     <h1>Concert</h1>
+    <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
     <div class="grid" id="grid-concert"></div>
   </section>
 
   <section class="page" id="page-contact">
     <div class="contact">
-      <div class="contact-img"><img id="img-contact" alt="" decoding="async"></div>
+      <div class="contact-art"><img id="img-contact" alt="" decoding="async"></div>
       <div class="contact-body">
         <h1>Work with me</h1>
+        <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
         <p class="contact-lead" id="contact-lead"></p>
         <ul class="contact-list">
           <li><a id="c-email"></a></li>
-          <li><a id="c-insta" target="_blank" rel="noopener"></a></li>
+          <li><a id="c-insta" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+            <span id="c-insta-name"></span></a></li>
           <li><a class="phone" id="c-phone"></a></li>
         </ul>
       </div>
@@ -271,7 +323,8 @@ const SITE = {
   about: [
     "My name is Mees Putman, a photographer and filmmaker based in Utrecht, The Netherlands, driven by an eye for visuals that goes back as long as I can remember. It started casually, filming friends, shooting whatever caught my eye, long before I saw it as more than a hobby. That curiosity slowly turned into a real fascination with mood, motion, and energy.",
     "Whether I'm framing a candid street scene, a live show, or a quiet portrait, I'm always trying to capture what a moment actually felt like; honest, alive, and true to the atmosphere it happened in.",
-    "Always searching for genuine stories to tell, I welcome new collaborations and projects across the Netherlands and beyond. Feel free to reach out."
+    "Always searching for genuine stories to tell, I welcome new collaborations and projects across the Netherlands and beyond. Feel free to reach out.",
+    "Have a look around."
   ]
 };
 
@@ -290,11 +343,11 @@ const ORDER_MODE = new URLSearchParams(location.search).has("order");
 const $ = id => document.getElementById(id);
 
 /* ---------- Static content ---------- */
-$("site-name").innerHTML = SITE.name.map(w => `<span style="display:block">${w}</span>`).join("");
+$("site-name").innerHTML = SITE.name.map(w => `<span>${w}</span>`).join("");
 $("site-tagline").textContent = SITE.tagline;
 $("site-where").textContent = SITE.where;
 $("about-text").innerHTML =
-  SITE.about.map(p => `<p>${p}</p>`).join("") + `<a class="more" href="#contact">Get in touch</a>`;
+  SITE.about.map(p => `<p>${p}</p>`).join("") + `<a class="btn" href="#contact">Get in touch</a>`;
 $("year").textContent = new Date().getFullYear();
 $("contact-lead").textContent = SITE.contactLead;
 
@@ -302,10 +355,10 @@ $("c-phone").textContent = SITE.phone;
 $("c-phone").href = "tel:" + SITE.phone.replace(/[^+\d]/g, "");
 $("c-email").textContent = SITE.email;
 $("c-email").href = "mailto:" + SITE.email;
-$("c-insta").textContent = "@" + SITE.instagram;
 $("c-insta").href = "https://instagram.com/" + SITE.instagram;
+$("c-insta-name").textContent = SITE.instagram;
 
-[["img-hero", PHOTOS.hero, ".hero-img"], ["img-about", PHOTOS.about, ".about-photo"], ["img-contact", PHOTOS.contact, ".contact-img"]]
+[["img-hero", PHOTOS.hero, ".hero-art"], ["img-about", PHOTOS.about, ".about-photo"], ["img-contact", PHOTOS.contact, ".contact-art"]]
   .forEach(([id, src, wrap]) => {
     const el = $(id);
     el.src = src;
@@ -331,33 +384,30 @@ function loadSize(item){
 
 async function entriesFor(name){
   const manifest = await manifestPromise;
-  const cfg = PHOTOS[name];
-  return (manifest[name] && manifest[name].length) ? manifest[name] : cfg.files;
+  return (manifest[name] && manifest[name].length) ? manifest[name] : PHOTOS[name].files;
 }
 
-/* Fade an image in once it has actually loaded (cheap, no layout shift). */
+/* Fade an image in once it has loaded (opacity only — cheap, no layout shift). */
 function reveal(im){
   if (im.complete && im.naturalWidth) im.classList.add("ready");
   else im.addEventListener("load", () => im.classList.add("ready"), { once: true });
 }
 
-/* ---------- Home: work covers ---------- */
+/* ---------- Home: work rows ---------- */
 async function buildWork(){
-  const box = $("work-grid");
+  const box = $("work-rows");
   const names = ["people", "street", "concert"];
   const lists = await Promise.all(names.map(entriesFor));
   names.forEach((n, i) => {
-    const list = lists[i];
-    if (!list.length) return;
-    const first = list[0];
+    const first = lists[i][0];
+    if (!first) return;
     const src = PHOTOS[n].folder + (typeof first === "string" ? first : encodeURIComponent(first.f));
     const a = document.createElement("a");
-    a.className = "work-card";
+    a.className = "row";
     a.href = "#" + n;
-    a.innerHTML = `<div class="cover"><img src="${src}" alt="" loading="lazy" decoding="async"></div>
-      <span>${n[0].toUpperCase() + n.slice(1)}</span><small>${list.length} photos</small>`;
+    a.innerHTML = `<span class="row-name">${n[0].toUpperCase() + n.slice(1)}</span>
+      <span class="thumb"><img src="${src}" alt="" loading="lazy" decoding="async"></span>`;
     box.appendChild(a);
-    reveal(a.querySelector("img"));
   });
   if (!box.children.length) $("work").style.display = "none";
 }
@@ -409,7 +459,7 @@ function enableOrdering(name, grid){
     bar = document.createElement("div");
     bar.id = "order-bar";
     bar.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:260;background:#e12020;color:#fff;padding:12px var(--pad);display:flex;gap:14px;align-items:center;justify-content:space-between;font-size:.95rem";
-    bar.innerHTML = '<span id="order-msg"></span><button id="order-copy" style="font:inherit;padding:8px 16px;border:0;cursor:pointer;background:#fff;color:#2f1204;font-weight:600">Copy order</button>';
+    bar.innerHTML = '<span id="order-msg"></span><button id="order-copy" style="font:inherit;padding:8px 16px;border:0;cursor:pointer;background:#fff;color:#401804;font-weight:700">Copy order</button>';
     document.body.appendChild(bar);
   }
   const msg = bar.querySelector("#order-msg"), btn = bar.querySelector("#order-copy");
@@ -450,7 +500,7 @@ function current(){
   return pages.includes(p) ? p : "home";
 }
 
-/* Logo shows on every page except while the big name is on screen (home, top). */
+/* Logo shows everywhere except while the big name is on screen (top of Home). */
 function updateBrand(){
   nav.classList.toggle("show-brand", page !== "home" || !heroVisible);
 }
@@ -461,7 +511,7 @@ function render(){
   pages.forEach(n => $("page-" + n).classList.toggle("active", n === page));
   document.querySelectorAll(".links a").forEach(a => a.classList.toggle("active", a.dataset.page === page));
   if (PHOTOS[page] && PHOTOS[page].files) buildGallery(page);
-  if (page !== prev || !location.hash.match(/^#(work|about)$/)) window.scrollTo({ top: 0, behavior: "instant" });
+  if (page !== prev || !/^#(work|about)$/.test(location.hash)) window.scrollTo({ top: 0, behavior: "instant" });
   updateBrand();
 }
 
@@ -476,11 +526,11 @@ addEventListener("hashchange", () => {
   render();
 });
 
-/* Cheap scroll awareness: observers instead of a scroll handler. */
+/* Observers instead of a scroll handler = no per-frame work while scrolling. */
 new IntersectionObserver(es => {
   heroVisible = es[0].isIntersecting;
   updateBrand();
-}, { rootMargin: "-" + 64 + "px 0px 0px 0px" }).observe($("hero-text"));
+}, { rootMargin: "-64px 0px 0px 0px" }).observe($("hero-text"));
 
 const sentinel = document.createElement("div");
 sentinel.style.cssText = "position:absolute;top:0;left:0;height:8px;width:1px;pointer-events:none";
