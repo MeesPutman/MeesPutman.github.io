@@ -31,153 +31,154 @@
     --red:#e12020;
     --yellow:#fce08b;
     --cream:#f3e9d8;
-    --muted:rgba(243,233,216,.66);
-    --line:rgba(243,233,216,.16);
-    --gap:clamp(6px,1.2vw,14px);
-    --pad:clamp(18px,5.5vw,80px);
-    --row-h:clamp(170px,24vw,300px);
-    --nav-h:62px;
+    --muted:rgba(243,233,216,.62);
+    --gap:clamp(8px,1.6vw,20px);
+    --pad:clamp(16px,5.5vw,80px);
+    --row-h:clamp(170px,26vw,330px);
+    --nav-h:60px;
     --ease:cubic-bezier(.2,.7,.1,1);
     --pop:cubic-bezier(.34,1.56,.64,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:var(--nav-h)}
-  body{background:var(--brown);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;font-size:1.0625rem;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+  body{background:var(--brown);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
   img{display:block;max-width:100%}
   a{color:inherit}
   h1,h2,.display{font-family:"Montserrat",sans-serif;font-weight:900;letter-spacing:-.05em;line-height:.95}
   ::selection{background:var(--red);color:var(--cream)}
-  :focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+  :focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
 
-  /* ---------- Intro: soft fade, first visit only ---------- */
+  /* Film grain: still (not animated), so it costs almost nothing. Delete this block to remove it. */
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:250;opacity:.06;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* ---------- Intro: a soft fade, first visit only ---------- */
   .intro{position:fixed;inset:0;z-index:400;background:var(--brown);display:grid;place-items:center;animation:introOut .7s ease 1.5s forwards}
   .intro h1{color:var(--red);font-size:clamp(2.6rem,9vw,6rem);text-align:center;opacity:0;animation:introIn .8s ease .2s forwards}
   @keyframes introIn{to{opacity:1}}
   @keyframes introOut{to{opacity:0;visibility:hidden}}
 
-  /* ---------- Navigation ---------- */
-  .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nav-h);display:flex;align-items:center;gap:20px;padding:0 var(--pad);background:var(--brown);border-bottom:1px solid transparent;transition:border-color .3s}
-  .nav.line{border-bottom-color:var(--line)}
-  .brand{font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red);text-decoration:none;opacity:0;pointer-events:none;transition:opacity .35s}
-  .nav.show-brand .brand{opacity:1;pointer-events:auto}
-  .links{display:flex;gap:clamp(14px,3vw,30px);margin-left:auto}
-  .links a{text-decoration:none;color:var(--muted);font-size:1.05rem;padding:8px 0;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
-  .links a:hover{color:#fff}
-  .links a.active{color:#fff;border-bottom-color:var(--yellow)}
+  /* ---------- Custom cursor (desktop only) ---------- */
+  .cursor{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border:1.5px solid var(--yellow);border-radius:50%;pointer-events:none;z-index:300;opacity:0;display:grid;place-items:center;
+    font:800 .72rem/1 "Montserrat",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--brown);
+    transition:width .3s var(--ease),height .3s var(--ease),margin .3s var(--ease),background .25s,opacity .25s}
+  .cursor.on{opacity:1}
+  .cursor::after{content:"View";font-size:0;transition:font-size .2s}
+  .cursor.view{width:86px;height:86px;margin:-43px 0 0 -43px;background:var(--yellow)}
+  .cursor.view::after{font-size:.72rem}
+  .cursor.link{width:36px;height:36px;margin:-18px 0 0 -18px}
+  .has-cursor .tile{cursor:none}
 
-  main{flex:1;padding-top:var(--nav-h)}
+  /* ---------- Navigation ---------- */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nav-h);display:flex;align-items:center;gap:clamp(14px,3vw,28px);padding:0 var(--pad);background-color:transparent;transition:background-color .35s}
+  /* soft shade behind the links while the photo is under them (its own layer: no hard line) */
+  .nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(20,6,0,.55),rgba(20,6,0,0));transition:opacity .35s}
+  .nav.solid{background-color:var(--brown)}
+  .nav.solid::before{opacity:0}
+  .brand{font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red);text-decoration:none;opacity:0;pointer-events:none;transition:opacity .4s}
+  .nav.show-brand .brand{opacity:1;pointer-events:auto}
+  .links{display:flex;gap:clamp(14px,3vw,28px);margin-left:auto}
+  .links a{text-decoration:none;color:var(--muted);font-size:1.05rem;padding:8px 2px;position:relative;transition:color .25s}
+  .links a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1.5px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+  .links a:hover,.links a.active{color:#fff}
+  .links a:hover::after,.links a.active::after{transform:scaleX(1)}
+
+  main{flex:1}
   .page{display:none}
   .page.active{display:block;animation:fade .35s ease}
   @keyframes fade{from{opacity:0}to{opacity:1}}
 
-  .btn{display:inline-block;text-decoration:none;padding:13px 28px;border:2px solid var(--yellow);color:var(--yellow);font-weight:700;letter-spacing:.04em;border-radius:999px;transition:background .2s,color .2s,transform .3s var(--pop)}
-  .btn:hover{background:var(--yellow);color:var(--brown);transform:rotate(-2deg) scale(1.04)}
+  .btn{display:inline-block;text-decoration:none;padding:12px 26px;border:1.5px solid var(--yellow);color:var(--yellow);font-weight:500;letter-spacing:.04em;transition:background .25s,color .25s}
+  .btn:hover{background:var(--yellow);color:var(--black)}
 
   /* ============================================================
      HOME: scroll journey
-     The hero is pinned while you scroll. The photo grows to fill
-     the screen, the background changes colour, then the real site
-     scrolls in. Without JS (or with reduced motion) it is a plain hero.
+     Starts as your full-bleed photo with the big red name. As you
+     scroll, the photo pulls back into a framed print, the page turns
+     yellow, and the name settles beside it. Then the site scrolls in.
+     (Without JS / with reduced motion this is just the full-bleed hero.)
      ============================================================ */
-  .stage{position:relative;background:var(--brown);--blk:var(--yellow)}
-  .journey-on{height:calc((100svh - var(--nav-h)) * 2.8)}
-  .journey-on .stage{position:sticky;top:var(--nav-h);height:calc(100svh - var(--nav-h));overflow:hidden}
-  .journey-on .hero{height:100%;min-height:0}
+  .stage{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden;background:var(--brown)}
+  .journey-on{height:225vh;height:225svh}
+  .journey-on .stage{position:sticky;top:0}
 
-  .hero{display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:clamp(28px,6vw,96px);min-height:calc(100svh - var(--nav-h));padding:clamp(24px,4vw,56px) var(--pad) clamp(40px,6vw,80px)}
-  .hero h1{color:var(--red);font-size:clamp(3.4rem,9.8vw,9.5rem);line-height:.88}
-  .hero h1 span{display:block}
-  .hero .tag{margin-top:clamp(18px,2.4vw,32px);color:var(--yellow);font-weight:500;font-size:clamp(.95rem,1.4vw,1.2rem);letter-spacing:.08em;text-transform:uppercase}
-  .hero .where{margin-top:8px;color:var(--muted)}
-  .hero .btn{margin-top:clamp(24px,3.4vw,44px)}
+  .card{position:absolute;inset:0;background:#120803;isolation:isolate;transform-origin:50% 50%}
+  .card::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--red);transform:translate(calc(var(--e,0) * 36px),calc(var(--e,0) * 36px))}
+  .card-img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center}
+  .card-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,6,0,.82),rgba(20,6,0,.15) 55%,rgba(20,6,0,.35))}
 
-  .hero-art{position:relative;justify-self:center;width:min(100%,520px);animation:pop 1s var(--ease) .15s backwards}
-  .hero-frame{position:relative;aspect-ratio:4/5;max-height:calc(100svh - var(--nav-h) - 130px);margin-inline:auto;background:var(--brown-deep);transform:rotate(2.5deg)}
-  .hero-frame::before{content:"";position:absolute;inset:0;background:var(--blk);transform:translate(16px,16px);z-index:-1}
-  .hero-frame img{width:100%;height:100%;object-fit:cover;object-position:center 25%}
-  .sticker{position:absolute;left:-6%;bottom:6%;width:clamp(96px,11vw,132px);aspect-ratio:1;border-radius:50%;background:var(--red);color:var(--cream);display:grid;place-items:center;text-align:center;text-decoration:none;font:900 .8rem/1.1 "Montserrat",sans-serif;letter-spacing:-.01em;text-transform:uppercase;padding:14px;transform:rotate(-14deg);transition:transform .4s var(--pop);animation:stick .6s var(--pop) 1s backwards}
-  .sticker:hover{transform:rotate(6deg) scale(1.1)}
-  @keyframes pop{from{opacity:0;transform:translateY(24px) scale(.95)}to{opacity:1;transform:none}}
-  @keyframes stick{from{opacity:0;transform:rotate(-40deg) scale(.2)}to{opacity:1;transform:rotate(-14deg)}}
-  .intro-on .hero-art{animation-delay:1.6s}
-  .intro-on .sticker{animation-delay:2.4s}
+  .hero-text{position:absolute;z-index:3;left:var(--pad);bottom:clamp(76px,13vh,130px);transform-origin:0 0}
+  .hero-text h1{color:var(--red);font-size:clamp(3.8rem,min(15vw,26vh),11rem);line-height:.95}
+  .hero-text h1 span{display:block}
+  .hero-text .tag{margin-top:clamp(14px,2vw,26px);color:var(--tag,var(--yellow));font-size:clamp(.9rem,1.4vw,1.25rem);letter-spacing:.06em;text-transform:uppercase}
+  .hero-text .btn{position:absolute;left:0;top:calc(100% + 18px);white-space:nowrap;opacity:0;visibility:hidden;border-color:var(--brown);color:var(--brown)}
+  .hero-text .btn:hover{background:var(--brown);color:var(--yellow)}
 
-  /* journey-only layers (hidden in the plain fallback) */
-  .stage-shade,.stage-caption,.stage-ui{display:none}
-  .journey-on .stage-shade,.journey-on .stage-caption{display:block}
+  .stage-ui{display:none;position:absolute;z-index:4;left:var(--pad);right:var(--pad);bottom:clamp(14px,2.6vh,26px);grid-template-columns:1fr auto 1fr;align-items:center;font-size:.9rem;color:var(--ui,var(--cream))}
   .journey-on .stage-ui{display:grid}
-  .stage-shade{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:linear-gradient(to top,rgba(20,6,0,.8),rgba(20,6,0,0) 60%)}
-  .stage-caption{position:absolute;z-index:3;left:var(--pad);right:var(--pad);bottom:clamp(64px,10vh,110px);opacity:0;pointer-events:none}
-  .stage-caption strong{display:block;font:900 clamp(2rem,5.4vw,4.6rem)/.95 "Montserrat",sans-serif;letter-spacing:-.05em;color:var(--cream)}
-  .stage-caption span{display:block;margin-top:12px;color:var(--yellow);font-size:clamp(1rem,1.5vw,1.25rem)}
-  .stage-ui{position:absolute;z-index:4;left:var(--pad);right:var(--pad);bottom:clamp(14px,2.6vh,26px);grid-template-columns:1fr auto 1fr;align-items:center;font-size:.9rem;color:var(--cream)}
-  .stage-ui .skip{justify-self:start;text-decoration:none;opacity:.8}
+  .stage-ui .skip{justify-self:start;text-decoration:none;opacity:.85}
   .stage-ui .skip:hover{opacity:1;text-decoration:underline}
   .stage-ui .cue{justify-self:center}
-  .stage-ui .count{justify-self:end;font-variant-numeric:tabular-nums;opacity:.8}
+  .stage-ui .count{justify-self:end;font-variant-numeric:tabular-nums;opacity:.85}
 
   /* ---------- Home: work (yellow block, big type rows) ---------- */
   .work-sec{position:relative;z-index:5;background:var(--yellow);color:var(--brown);padding:clamp(36px,6vw,80px) 0 0}
   .work-sec h2{color:var(--red);font-size:clamp(2.8rem,7.5vw,6rem);padding:0 var(--pad);margin-bottom:clamp(16px,2.6vw,36px)}
   .row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(8px,1.4vw,18px) var(--pad);border-top:2px solid var(--brown);text-decoration:none;color:var(--brown);overflow:hidden;transition:background .25s,color .25s}
   .row:last-child{border-bottom:2px solid var(--brown)}
-  .row-name{font:900 clamp(2.8rem,9vw,8rem)/.95 "Montserrat",sans-serif;letter-spacing:-.05em;transition:transform .45s var(--ease)}
+  .row-name{font:900 clamp(2.8rem,9vw,8rem)/1 "Montserrat",sans-serif;letter-spacing:-.05em;transition:transform .45s var(--ease)}
   .row .thumb{flex:none;width:clamp(70px,10vw,150px);aspect-ratio:4/5;overflow:hidden;background:var(--brown-deep);transform:rotate(6deg);transition:transform .5s var(--pop)}
   .row .thumb img{width:100%;height:100%;object-fit:cover}
   .row:hover,.row:focus-visible{background:var(--red);color:var(--cream);outline-offset:-3px}
   .row:hover .row-name,.row:focus-visible .row-name{transform:translateX(clamp(8px,1.6vw,24px))}
   .row:hover .thumb,.row:focus-visible .thumb{transform:rotate(-5deg) scale(1.08)}
 
-  /* ---------- Home: about (compact, fits one screen) ---------- */
+  /* ---------- Home: about (compact) ---------- */
   .about{position:relative;z-index:5;background:var(--black);padding:clamp(36px,6vw,80px) var(--pad)}
   .about-inner{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,6vw,88px);align-items:center;max-width:1300px;margin:0 auto}
-  .about-photo{position:relative;transform:rotate(-2deg);width:min(100%,360px)}
-  .about-photo::before{content:"";position:absolute;inset:0;background:var(--red);transform:translate(-12px,12px)}
-  .about-photo img{position:relative;width:100%;aspect-ratio:4/5;object-fit:cover}
-  .about h2{color:var(--red);font-size:clamp(2.8rem,7.5vw,6rem);margin-bottom:clamp(14px,2vw,26px)}
+  .about-photo{width:min(100%,360px);overflow:hidden}
+  .about-photo img{width:100%;aspect-ratio:4/5;object-fit:cover}
+  .about h2{color:var(--red);font-size:clamp(2.8rem,6.5vw,5.2rem);margin-bottom:clamp(14px,2vw,26px)}
   .about-text{max-width:60ch}
   .about-text p{color:var(--yellow);font-size:clamp(1rem,1.2vw,1.1rem);margin-bottom:1em}
-  .about-text p:last-of-type{color:var(--cream)}
-  .about-text .btn{margin-top:.6em}
+  .about-text .btn-row{margin-top:1.4em}
 
   /* ---------- Gallery pages ---------- */
-  .gallery-page{padding:clamp(28px,5vw,64px) var(--pad) clamp(48px,7vw,100px)}
-  .gallery-page h1{color:var(--red);font-size:clamp(3.4rem,13vw,11rem);text-transform:uppercase;margin-bottom:clamp(24px,4vw,56px)}
-  .grid{display:flex;flex-wrap:wrap;gap:var(--gap)}
+  .gallery-page{padding:calc(var(--nav-h) + clamp(28px,5vw,64px)) var(--pad) clamp(48px,7vw,100px)}
+  .gallery-page h1{color:var(--red);text-align:center;font-size:clamp(3rem,9vw,7.5rem);line-height:1;margin-bottom:clamp(28px,5vw,64px);text-transform:uppercase}
+  .grid{display:flex;flex-wrap:wrap;gap:var(--gap);max-width:1500px;margin:0 auto}
   .grid::after{content:"";flex-grow:1e6}
-  .tile{--ar:1.5;flex:calc(var(--ar) * 1000) 1 calc(var(--ar) * var(--row-h));min-width:0;position:relative;background:var(--brown-deep);cursor:zoom-in;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
-  .tile img{width:100%;aspect-ratio:var(--ar);object-fit:cover;opacity:0;transition:opacity .5s ease}
+  .tile{--ar:1.5;flex:calc(var(--ar) * 1000) 1 calc(var(--ar) * var(--row-h));min-width:0;position:relative;overflow:hidden;background:#2e1103;cursor:zoom-in}
+  .tile img{width:100%;aspect-ratio:var(--ar);object-fit:cover;opacity:0;transition:opacity .6s ease,transform 1.2s var(--ease)}
   .tile img.ready{opacity:1}
-  .tile:hover{transform:translate(-5px,-5px);box-shadow:8px 8px 0 var(--yellow);z-index:2}
-  .empty{color:var(--muted);padding:40px 0}
+  .tile:hover img{transform:scale(1.045)}
+  .tile::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(20,6,0,.6));opacity:0;transition:opacity .45s;pointer-events:none}
+  .tile::after{content:attr(data-n);position:absolute;left:14px;bottom:10px;font:800 .8rem "Montserrat",sans-serif;letter-spacing:.12em;color:#fff;opacity:0;transform:translateY(8px);transition:opacity .45s,transform .45s var(--ease);pointer-events:none}
+  .tile:hover::before,.tile:hover::after{opacity:1;transform:none}
+  .tile:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+  .empty{text-align:center;color:var(--muted);padding:40px 0}
 
-  /* ---------- Contact (yellow page) ---------- */
-  #page-contact{background:var(--yellow);color:var(--brown);min-height:calc(100svh - var(--nav-h))}
-  .contact{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,7vw,112px);align-items:center;padding:clamp(32px,5vw,72px) var(--pad) clamp(56px,8vw,110px)}
-  .contact-art{position:relative;transform:rotate(-2.5deg);transition:transform .5s var(--pop)}
-  .contact-art:hover{transform:rotate(0)}
-  .contact-art::before{content:"";position:absolute;inset:0;background:var(--red);transform:translate(14px,14px)}
-  .contact-art img{position:relative;width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--brown-deep)}
-  .contact-body{min-width:0;container-type:inline-size}
-  .contact h1{color:var(--red);font-size:clamp(3rem,7vw,6.5rem);margin-bottom:clamp(18px,2.6vw,32px)}
-  .contact-lead{max-width:38ch;margin-bottom:clamp(24px,3.4vw,44px);font-size:1.15rem}
-  .contact-list{list-style:none;display:grid;gap:clamp(10px,1.4vw,18px);justify-items:start}
-  .contact-list a{display:inline-flex;align-items:center;gap:14px;white-space:nowrap;text-decoration:none;font:900 clamp(1.3rem,2.4vw,2.4rem)/1.1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--brown);transition:color .2s,transform .35s var(--pop)}
-  .contact-list a:hover{color:var(--red);transform:translateX(8px) rotate(-1deg)}
-  .contact-list .phone{font-size:clamp(1.1rem,1.8vw,1.6rem);font-weight:800}
-  .contact-list svg{width:1.1em;height:1.1em;flex:none}
-  /* Email always fits its column: size is tied to the column's own width. */
-  @supports (font-size:1cqw){
-    .contact-list #c-email{font-size:clamp(1rem,6.2cqw,2.8rem)}
-  }
+  /* ---------- Contact ---------- */
+  #page-contact{padding-top:var(--nav-h)}
+  .contact-img{height:clamp(150px,calc(100vh - var(--nav-h) - 360px),460px);height:clamp(150px,calc(100svh - var(--nav-h) - 360px),460px);background:#120803;overflow:hidden}
+  .contact-img img{width:100%;height:100%;object-fit:cover}
+  .contact{padding:clamp(24px,4vw,56px) var(--pad) clamp(28px,4vw,56px)}
+  .contact h1{color:var(--yellow);font-size:clamp(2.4rem,6vw,5rem);margin-bottom:clamp(18px,2.6vw,36px)}
+  .contact-grid{display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;gap:28px;align-items:center}
+  .contact dt{font-weight:700;font-size:1.25rem;color:#fff}
+  .contact dd{font-size:1.1rem}
+  .contact dd a{text-decoration:none;transition:color .25s}
+  .contact dd a:hover{color:var(--yellow)}
+  .insta{display:flex;align-items:center;gap:14px;text-decoration:none;font-weight:700;font-size:1.3rem;color:var(--yellow)}
+  .insta svg{width:38px;height:38px;transition:transform .5s var(--ease)}
+  .insta:hover svg{transform:rotate(-12deg) scale(1.1)}
 
-  /* ---------- Footer ---------- */
-  footer{display:flex;justify-content:center;text-align:center;padding:22px var(--pad);font-size:.875rem;color:var(--muted);border-top:1px solid var(--line)}
+  footer{display:flex;justify-content:center;text-align:center;padding:22px var(--pad);font-size:.85rem;color:var(--muted)}
 
   /* ---------- Lightbox ---------- */
-  .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,.96);display:flex;align-items:center;justify-content:center;touch-action:pan-y;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,.96);display:flex;align-items:center;justify-content:center;touch-action:pan-y;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
   .lb.open{opacity:1;visibility:visible}
-  .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .2s}
+  .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .3s}
   .lb button{position:absolute;background:none;border:0;color:var(--cream);cursor:pointer;font-size:2.2rem;line-height:1;padding:14px;opacity:.8;transition:opacity .2s}
   .lb button:hover{opacity:1}
   .lb .x{top:max(8px,env(safe-area-inset-top));right:8px}
@@ -187,24 +188,17 @@
 
   /* ---------- Responsive ---------- */
   @media (max-width:900px){
-    .hero{grid-template-columns:1fr;min-height:0;gap:36px}
-    .hero h1{font-size:clamp(3.4rem,17vw,8rem)}
-    .hero-art{order:-1;width:min(86%,440px)}
-    .journey-on .hero-art{width:min(58%,250px)}
-    .journey-on .hero{gap:26px;padding-top:20px;padding-bottom:56px}
-    .journey-on .hero .btn{margin-top:18px}
     .about-inner{grid-template-columns:1fr}
     .about-photo{width:min(70%,300px)}
-    .contact{grid-template-columns:1fr}
-    .contact-art{max-width:420px;order:2}
+    .contact-grid{grid-template-columns:1fr;justify-content:start}
+    .contact-img{height:clamp(140px,26vh,240px)}
   }
   @media (max-width:560px){
-    :root{--row-h:140px;--nav-h:54px;--pad:16px}
+    :root{--row-h:150px;--nav-h:54px}
     .nav{gap:10px}
-    .brand{font-size:.98rem}
+    .brand{font-size:1rem}
     .links{gap:12px}
-    .links a{font-size:.9rem}
-    .sticker{left:-3%}
+    .links a{font-size:.95rem}
     .stage-ui{font-size:.8rem}
   }
   @media (prefers-reduced-motion:reduce){
@@ -223,9 +217,10 @@ try{
   const skip = sessionStorage.getItem("intro") || (location.hash && location.hash !== "#home") || location.search.includes("order");
   const el = document.getElementById("intro");
   if (skip) el.remove();
-  else { sessionStorage.setItem("intro", "1"); document.documentElement.classList.add("intro-on"); setTimeout(() => el.remove(), 2400); }
+  else { sessionStorage.setItem("intro", "1"); setTimeout(() => el.remove(), 2400); }
 }catch(e){ document.getElementById("intro").remove(); }
 </script>
+<div class="grain" aria-hidden="true"></div>
 
 <nav class="nav" id="nav" aria-label="Main">
   <a class="brand" href="#home">Mees Putman</a>
@@ -242,22 +237,18 @@ try{
 
     <div class="journey" id="journey">
       <div class="stage" id="stage">
-        <div class="hero" id="hero">
-          <div class="hero-text" id="hero-text">
-            <h1 id="site-name"></h1>
-            <p class="tag" id="site-tagline"></p>
-            <p class="where" id="site-where"></p>
-            <a class="btn" href="#work">See the work</a>
-          </div>
-          <div class="hero-art">
-            <div class="hero-frame" id="hero-frame"><img id="img-hero" alt="Photo by Mees Putman" fetchpriority="high" decoding="async"></div>
-            <a class="sticker" id="sticker" href="#contact">Open for projects</a>
-          </div>
+        <div class="card" id="card">
+          <img class="card-img" id="img-hero" alt="Photo by Mees Putman" fetchpriority="high" decoding="async">
+          <div class="card-shade" id="card-shade"></div>
         </div>
 
-        <div class="stage-shade" id="stage-shade"></div>
-        <div class="stage-caption" id="stage-caption" aria-hidden="true"><strong id="cap-title"></strong><span id="cap-where"></span></div>
-        <div class="stage-ui" id="stage-ui">
+        <div class="hero-text" id="hero-text">
+          <h1 id="site-name"></h1>
+          <p class="tag" id="site-tagline"></p>
+          <a class="btn" id="hero-btn" href="#work">See the work</a>
+        </div>
+
+        <div class="stage-ui">
           <a class="skip" href="#work">Skip intro</a>
           <span class="cue" id="stage-cue" aria-hidden="true">Scroll</span>
           <span class="count" id="stage-count" aria-hidden="true">1 / 3</span>
@@ -297,18 +288,18 @@ try{
   </section>
 
   <section class="page" id="page-contact">
+    <div class="contact-img"><img id="img-contact" alt="" decoding="async"></div>
     <div class="contact">
-      <div class="contact-art"><img id="img-contact" alt="" decoding="async"></div>
-      <div class="contact-body">
-        <h1>Work with me</h1>
-        <p class="contact-lead" id="contact-lead"></p>
-        <ul class="contact-list">
-          <li><a id="c-email"></a></li>
-          <li><a id="c-insta" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
-            <span id="c-insta-name"></span></a></li>
-          <li><a class="phone" id="c-phone"></a></li>
-        </ul>
+      <h1>Work with me</h1>
+      <div class="contact-grid">
+        <dl><dt>Phone</dt><dd><a id="c-phone"></a></dd></dl>
+        <dl><dt>Email</dt><dd><a id="c-email"></a></dd></dl>
+        <a class="insta" id="c-insta" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+          <span id="c-insta-name"></span>
+        </a>
       </div>
     </div>
   </section>
@@ -331,12 +322,10 @@ try{
 const SITE = {
   name:    ["Mees", "Putman"],
   tagline: "Photography & Cinematography",
-  where:   "Utrecht, The Netherlands",
 
   phone:     "+31 6 20470271",
   email:     "meesputman@outlook.com",
   instagram: "meesputman1",
-  contactLead: "Always looking for genuine stories to tell. Get in touch about a collaboration or project.",
 
   about: [
     "My name is Mees Putman, a photographer and filmmaker based in Utrecht, The Netherlands, driven by an eye for visuals that goes back as long as I can remember. It started casually, filming friends, shooting whatever caught my eye, long before I saw it as more than a hobby. That curiosity slowly turned into a real fascination with mood, motion, and energy.",
@@ -347,9 +336,11 @@ const SITE = {
 };
 
 const PHOTOS = {
-  hero:    "photos/home/hero.jpg",
-  about:   "photos/home/about.jpg",
-  contact: "photos/home/contact.jpg",
+  hero:     "photos/home/hero.jpg",   // used on phones / portrait screens
+  heroWide: "",                       // photo for wide screens. Leave "" to pick the first landscape photo
+                                      // from street / concert / people. Or set e.g. "photos/street/tree.jpg"
+  about:    "photos/home/about.jpg",
+  contact:  "photos/home/contact.jpg",
 
   people:  { folder: "photos/people/",  files: [] },
   concert: { folder: "photos/concert/", files: [] },
@@ -364,13 +355,10 @@ const $ = id => document.getElementById(id);
 /* ---------- Static content ---------- */
 $("site-name").innerHTML = SITE.name.map(w => `<span>${w}</span>`).join("");
 $("site-tagline").textContent = SITE.tagline;
-$("site-where").textContent = SITE.where;
-$("cap-title").textContent = SITE.tagline;
-$("cap-where").textContent = SITE.where;
 $("about-text").innerHTML =
-  SITE.about.map(p => `<p>${p}</p>`).join("") + `<a class="btn" href="#contact">Get in touch</a>`;
+  SITE.about.map(p => `<p>${p}</p>`).join("") +
+  `<div class="btn-row"><a class="btn" href="#contact">Get in touch</a></div>`;
 $("year").textContent = new Date().getFullYear();
-$("contact-lead").textContent = SITE.contactLead;
 
 $("c-phone").textContent = SITE.phone;
 $("c-phone").href = "tel:" + SITE.phone.replace(/[^+\d]/g, "");
@@ -379,12 +367,11 @@ $("c-email").href = "mailto:" + SITE.email;
 $("c-insta").href = "https://instagram.com/" + SITE.instagram;
 $("c-insta-name").textContent = SITE.instagram;
 
-[["img-hero", PHOTOS.hero, ".hero-art"], ["img-about", PHOTOS.about, ".about-photo"], ["img-contact", PHOTOS.contact, ".contact-art"]]
-  .forEach(([id, src, wrap]) => {
-    const el = $(id);
-    el.src = src;
-    el.onerror = () => { el.closest(wrap).style.display = "none"; };
-  });
+[["img-about", PHOTOS.about, ".about-photo"], ["img-contact", PHOTOS.contact, ".contact-img"]].forEach(([id, src, wrap]) => {
+  const el = $(id);
+  el.src = src;
+  el.onerror = () => { el.closest(wrap).style.display = "none"; };
+});
 
 /* ---------- Photo data ---------- */
 const galleries = {};
@@ -412,6 +399,23 @@ function reveal(im){
   if (im.complete && im.naturalWidth) im.classList.add("ready");
   else im.addEventListener("load", () => im.classList.add("ready"), { once: true });
 }
+
+/* ---------- Hero photo: one still, picked to suit the screen shape ---------- */
+(async function setHero(){
+  const el = $("img-hero");
+  const manifest = await manifestPromise;
+  const landscape = innerWidth >= innerHeight;
+  let src = landscape ? PHOTOS.heroWide : PHOTOS.hero;
+  if (!src){
+    const ok = ar => landscape ? ar >= 1.25 : ar <= .95;
+    for (const g of ["street", "concert", "people"]){
+      const f = (manifest[g] || []).find(f => typeof f !== "string" && ok(f.w / f.h));
+      if (f){ src = PHOTOS[g].folder + encodeURIComponent(f.f); break; }
+    }
+  }
+  el.onerror = () => { if (!el.dataset.fb){ el.dataset.fb = 1; el.src = PHOTOS.hero; } };
+  el.src = src || PHOTOS.hero;
+})();
 
 /* ---------- Home: work rows ---------- */
 async function buildWork(){
@@ -458,6 +462,7 @@ async function buildGallery(name){
     t.className = "tile";
     t.href = p.src;
     t.dataset.file = p.file;
+    t.dataset.n = String(i + 1).padStart(2, "0");
     t.style.setProperty("--ar", p.ar.toFixed(4));
     t.innerHTML = `<img src="${p.src}" alt="${p.alt}" loading="lazy" decoding="async">`;
     t.addEventListener("click", e => { e.preventDefault(); if (!ORDER_MODE) openLB(name, i); });
@@ -511,46 +516,49 @@ function enableOrdering(name, grid){
 
 /* ============================================================
    Scroll journey (home)
-   One scroll handler, throttled to animation frames, only
-   touching opacity / transform / one background colour.
+   One scroll handler, throttled to animation frames. It only
+   changes transforms, opacity and a couple of colours.
    ============================================================ */
-const journey = $("journey"), stage = $("stage"), hero = $("hero"), frame = $("hero-frame");
-const heroText = $("hero-text"), sticker = $("sticker"), shade = $("stage-shade");
-const caption = $("stage-caption"), cue = $("stage-cue"), count = $("stage-count");
+const nav = $("nav");
+const journey = $("journey"), stage = $("stage"), card = $("card"), shade = $("card-shade");
+const heroText = $("hero-text"), heroBtn = $("hero-btn"), cue = $("stage-cue"), count = $("stage-count");
 
-const BROWN = [64, 24, 4], YELLOW = [252, 224, 139], RED = [225, 32, 32];
+const BROWN = [64, 24, 4], YELLOW = [252, 224, 139], CREAM = [243, 233, 216];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease  = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const mix   = (a, b, t) => "rgb(" + a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",") + ")";
 
-let on = false, lastP = -1, geo = null;
+let page = "home", on = false, lastP = -1, geo = null;
 
 function clearJourney(){
-  [frame, stage, heroText, sticker, shade, caption, cue].forEach(el => el.removeAttribute("style"));
-  frame.style.removeProperty("--blk");
+  [card, shade, heroText, heroBtn, cue, stage].forEach(el => el.removeAttribute("style"));
 }
 
 function measure(){
   if (page !== "home") return;
   const ok = !reduced && innerHeight >= 520;
   journey.classList.toggle("journey-on", ok);
-  if (!ok){ on = false; clearJourney(); updateBrand(); return; }
+  if (!ok){ on = false; clearJourney(); updateNav(); return; }
 
-  /* If the hero does not fit on this screen, fall back to a normal page. */
-  if (hero.scrollHeight > stage.clientHeight + 2){
-    journey.classList.remove("journey-on"); on = false; clearJourney(); updateBrand(); return;
+  const W = stage.clientWidth, H = stage.clientHeight, navH = nav.offsetHeight;
+  const pad = heroText.offsetLeft;
+  const tw = heroText.offsetWidth, th = heroText.offsetHeight, tTop = heroText.offsetTop;
+  const wide = W >= 900 && W / H >= 1.15;
+
+  let s, cx, cy, k, targetTop, rot;
+  if (wide){
+    /* print on the right, name on the left */
+    s = .52; cx = W - pad - s * W / 2; cy = (navH + H) / 2;
+    k = clamp(((W - pad - s * W) - pad - 24) / tw, .45, 1);
+    targetTop = cy - th * k / 2; rot = 2.5;
+  } else {
+    /* print on top, name underneath */
+    k = clamp((W - 2 * pad) / tw, .4, 1);
+    const m = navH + 16;
+    s = clamp((H - m - th * k - 70 - 40) / H, .28, .66);
+    cx = W / 2; cy = m + s * H / 2; targetTop = m + s * H + 26; rot = -2;
   }
-  const art = frame.offsetParent;
-  const sw = stage.clientWidth, sh = stage.clientHeight;
-  const fw = frame.offsetWidth, fh = frame.offsetHeight;
-  const cx = art.offsetLeft + frame.offsetLeft + fw / 2;
-  const cy = art.offsetTop  + frame.offsetTop  + fh / 2;
-  geo = {
-    s:  Math.max(sw / fw, sh / fh),
-    dx: sw / 2 - cx,
-    dy: sh / 2 - cy,
-    range: journey.offsetHeight - stage.offsetHeight
-  };
+  geo = { s, dx: cx - W / 2, dy: cy - H / 2, rot, k, ty: targetTop - tTop, range: journey.offsetHeight - stage.offsetHeight };
   on = true; lastP = -1;
   update();
 }
@@ -561,51 +569,47 @@ function update(){
   if (p === lastP) return;
   lastP = p;
 
-  /* 1. the photo grows until it fills the screen */
-  const e = ease(clamp((p - .05) / .57));
-  frame.style.transform =
-    `translate3d(${(geo.dx * e).toFixed(1)}px,${(geo.dy * e).toFixed(1)}px,0) scale(${(1 + (geo.s - 1) * e).toFixed(4)}) rotate(${(2.5 * (1 - e)).toFixed(2)}deg)`;
+  /* the photo pulls back into a framed print */
+  const e = ease(clamp((p - .04) / .62));
+  card.style.transform =
+    `translate3d(${(geo.dx * e).toFixed(1)}px,${(geo.dy * e).toFixed(1)}px,0) scale(${(1 + (geo.s - 1) * e).toFixed(4)}) rotate(${(geo.rot * e).toFixed(2)}deg)`;
+  card.style.setProperty("--e", e.toFixed(3));
+  shade.style.opacity = (1 - e * .85).toFixed(3);
 
-  /* 2. the whole page changes colour: brown to yellow */
-  const t = ease(clamp((p - .12) / .28));
+  /* the whole page turns from brown to yellow */
+  const t = ease(clamp((p - .08) / .42));
   stage.style.backgroundColor = mix(BROWN, YELLOW, t);
-  frame.style.setProperty("--blk", mix(YELLOW, RED, t));
+  stage.style.setProperty("--tag", mix(YELLOW, BROWN, t));
+  stage.style.setProperty("--ui",  mix(CREAM,  BROWN, t));
 
-  /* 3. intro text and sticker clear out */
-  const o = 1 - clamp((p - .02) / .2);
-  heroText.style.opacity = o;
-  heroText.style.transform = `translate3d(0,${(-p * 80).toFixed(1)}px,0)`;
-  heroText.style.visibility = o < .02 ? "hidden" : "";
-  const so = 1 - clamp(p / .18);
-  sticker.style.opacity = so;
-  sticker.style.visibility = so < .02 ? "hidden" : "";
-  cue.style.opacity = 1 - clamp(p / .06);
+  /* the name rises and settles next to the print */
+  const e2 = ease(clamp((p - .1) / .6));
+  heroText.style.transform =
+    `translate3d(0,${(geo.ty * e2).toFixed(1)}px,0) scale(${(1 + (geo.k - 1) * e2).toFixed(4)})`;
 
-  /* 4. arrival: shade + caption on the full photo */
-  shade.style.opacity = (e * .9).toFixed(3);
-  const c = clamp((p - .66) / .2);
-  caption.style.opacity = c;
-  caption.style.transform = `translate3d(0,${((1 - c) * 24).toFixed(1)}px,0)`;
+  /* the button arrives last */
+  const b = clamp((p - .74) / .16);
+  heroBtn.style.opacity = b.toFixed(3);
+  heroBtn.style.visibility = b < .02 ? "hidden" : "visible";
 
-  count.textContent = (p < .2 ? 1 : p < .62 ? 2 : 3) + " / 3";
-  updateBrand();
+  cue.style.opacity = (1 - clamp(p / .05)).toFixed(3);
+  count.textContent = (p < .2 ? 1 : p < .7 ? 2 : 3) + " / 3";
+  updateNav();
 }
 
 /* ---------- Routing + nav ---------- */
 const pages = ["home", "people", "street", "concert", "contact"];
-const nav = $("nav");
-let page = "home";
-let heroVisible = true;
 
 function current(){
   const p = location.hash.replace("#", "");
   return pages.includes(p) ? p : "home";
 }
 
-/* Logo: always on other pages; on Home once the big name has gone. */
-function updateBrand(){
-  const homeShow = on ? lastP > .3 : !heroVisible;
-  nav.classList.toggle("show-brand", page !== "home" || homeShow);
+/* Bar turns solid once you scroll. The logo shows on every page except the
+   very top of Home, where the big name already is. */
+function updateNav(){
+  nav.classList.toggle("solid", page !== "home" || scrollY > 40);
+  nav.classList.toggle("show-brand", page !== "home" || (on ? lastP > .6 : scrollY > 40));
 }
 
 function render(){
@@ -616,7 +620,7 @@ function render(){
   if (PHOTOS[page] && PHOTOS[page].files) buildGallery(page);
   if (page !== prev || !/^#(work|about)$/.test(location.hash)) window.scrollTo({ top: 0, behavior: "instant" });
   if (page === "home") requestAnimationFrame(measure);
-  updateBrand();
+  updateNav();
 }
 
 /* #work and #about are in-page anchors on Home, not separate pages. */
@@ -632,26 +636,40 @@ addEventListener("hashchange", () => {
 
 let ticking = false;
 addEventListener("scroll", () => {
-  if (ticking || !on) return;
+  if (ticking) return;
   ticking = true;
-  requestAnimationFrame(() => { ticking = false; update(); });
+  requestAnimationFrame(() => { ticking = false; update(); updateNav(); });
 }, { passive: true });
 
 let rz;
 addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(measure, 150); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 
-/* Fallback (no journey): logo appears once the hero text is off screen. */
-new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; updateBrand(); },
-  { rootMargin: "-64px 0px 0px 0px" }).observe(heroText);
-
-const sentinel = document.createElement("div");
-sentinel.style.cssText = "position:absolute;top:0;left:0;height:8px;width:1px;pointer-events:none";
-document.body.prepend(sentinel);
-new IntersectionObserver(es => nav.classList.toggle("line", !es[0].isIntersecting)).observe(sentinel);
-
 render();
 buildWork();
+
+/* ---------- Cursor (desktop). Only animates while the mouse is moving. ---------- */
+if (matchMedia("(hover: hover) and (pointer: fine)").matches && !ORDER_MODE && !reduced){
+  const c = document.createElement("div");
+  c.className = "cursor";
+  document.body.append(c);
+  document.body.classList.add("has-cursor");
+  let x = -100, y = -100, cx = x, cy = y, raf = 0;
+  const loop = () => {
+    cx += (x - cx) * .22; cy += (y - cy) * .22;
+    c.style.transform = `translate(${cx}px, ${cy}px)`;
+    raf = (Math.abs(x - cx) > .3 || Math.abs(y - cy) > .3) ? requestAnimationFrame(loop) : 0;
+  };
+  addEventListener("mousemove", e => {
+    x = e.clientX; y = e.clientY;
+    c.classList.add("on");
+    const t = e.target.closest && e.target.closest(".tile, a, button");
+    c.classList.toggle("view", !!(t && t.classList.contains("tile")));
+    c.classList.toggle("link", !!(t && !t.classList.contains("tile")));
+    if (!raf) raf = requestAnimationFrame(loop);
+  }, { passive: true });
+  document.addEventListener("mouseleave", () => c.classList.remove("on"));
+}
 
 /* ---------- Lightbox ---------- */
 const lb = $("lb"), lbImg = $("lb-img"), lbCount = $("lb-count");
