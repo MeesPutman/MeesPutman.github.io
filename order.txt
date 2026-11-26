@@ -43,7 +43,7 @@ people-36.jpg
 [street]
 street-01.jpg
 street-02.jpg
-IMG_3209.JPG
+IMG_3209.jpg
 R0003675.jpg
 street-03.jpg
 street-04.jpg
@@ -58,7 +58,6 @@ R0003787.jpg
 R0003758.jpg
 street-09.jpg
 street-10.jpg
-street-11.jpg
 street-19.jpg
 street-12.jpg
 street-13.jpg
@@ -96,9 +95,7 @@ street-44.jpg
 street-45.jpg
 street-46.jpg
 street-47.jpg
-street-48.jpg
-street-49.jpg
-street-50.jpg
+
 
 [concert]
 Chicks@Mees Putman-21.jpg
