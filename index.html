@@ -739,6 +739,36 @@ lb.addEventListener("touchend", e => {
   if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
   sx = null;
 });
+
+<script>
+(function protectPhotos(){
+  const photoSelector = "img, .tile, .slide, .thumb, .about-photo, #lb";
+
+  document.addEventListener("contextmenu", e => {
+    if (e.target.closest && e.target.closest(photoSelector)) {
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener("dragstart", e => {
+    if (e.target.closest && e.target.closest(photoSelector)) {
+      e.preventDefault();
+    }
+  });
+
+  const style = document.createElement("style");
+  style.textContent = `
+    img, .tile, .slide, .thumb, .about-photo, #lb, #lb img {
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-user-drag: none;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+</script>
+
 </script>
 </body>
 </html>
