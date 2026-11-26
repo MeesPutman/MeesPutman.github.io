@@ -49,9 +49,6 @@
   ::selection{background:var(--red);color:var(--cream)}
   :focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
 
-  /* hand-drawn squiggle (one <symbol>, reused) */
-  .squig{display:block;width:clamp(120px,15vw,200px);height:auto;aspect-ratio:172/20;fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
-
   /* ---------- Intro: soft fade, first visit only ---------- */
   .intro{position:fixed;inset:0;z-index:400;background:var(--brown);display:grid;place-items:center;animation:introOut .7s ease 1.5s forwards}
   .intro h1{color:var(--red);font-size:clamp(2.6rem,9vw,6rem);text-align:center;opacity:0;animation:introIn .8s ease .2s forwards}
@@ -76,63 +73,76 @@
   .btn{display:inline-block;text-decoration:none;padding:13px 28px;border:2px solid var(--yellow);color:var(--yellow);font-weight:700;letter-spacing:.04em;border-radius:999px;transition:background .2s,color .2s,transform .3s var(--pop)}
   .btn:hover{background:var(--yellow);color:var(--brown);transform:rotate(-2deg) scale(1.04)}
 
-  /* ---------- Home: hero ---------- */
+  /* ============================================================
+     HOME: scroll journey
+     The hero is pinned while you scroll. The photo grows to fill
+     the screen, the background changes colour, then the real site
+     scrolls in. Without JS (or with reduced motion) it is a plain hero.
+     ============================================================ */
+  .stage{position:relative;background:var(--brown);--blk:var(--yellow)}
+  .journey-on{height:calc((100svh - var(--nav-h)) * 2.8)}
+  .journey-on .stage{position:sticky;top:var(--nav-h);height:calc(100svh - var(--nav-h));overflow:hidden}
+  .journey-on .hero{height:100%;min-height:0}
+
   .hero{display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:clamp(28px,6vw,96px);min-height:calc(100svh - var(--nav-h));padding:clamp(24px,4vw,56px) var(--pad) clamp(40px,6vw,80px)}
   .hero h1{color:var(--red);font-size:clamp(3.4rem,9.8vw,9.5rem);line-height:.88}
   .hero h1 span{display:block}
   .hero .tag{margin-top:clamp(18px,2.4vw,32px);color:var(--yellow);font-weight:500;font-size:clamp(.95rem,1.4vw,1.2rem);letter-spacing:.08em;text-transform:uppercase}
-  .hero .squig{margin-top:10px;color:var(--yellow);animation:wipe .9s var(--ease) 1.1s backwards}
-  .hero .where{margin-top:14px;color:var(--muted)}
+  .hero .where{margin-top:8px;color:var(--muted)}
   .hero .btn{margin-top:clamp(24px,3.4vw,44px)}
-  @keyframes wipe{from{clip-path:inset(-8px 100% -8px 0)}to{clip-path:inset(-8px -8px -8px 0)}}
 
   .hero-art{position:relative;justify-self:center;width:min(100%,520px);animation:pop 1s var(--ease) .15s backwards}
-  .hero-frame{position:relative;aspect-ratio:4/5;max-height:76svh;margin-inline:auto;background:var(--brown-deep);transform:rotate(2.5deg);transition:transform .5s var(--pop)}
-  .hero-frame::before{content:"";position:absolute;inset:0;background:var(--yellow);transform:translate(16px,16px);z-index:-1}
+  .hero-frame{position:relative;aspect-ratio:4/5;max-height:calc(100svh - var(--nav-h) - 130px);margin-inline:auto;background:var(--brown-deep);transform:rotate(2.5deg)}
+  .hero-frame::before{content:"";position:absolute;inset:0;background:var(--blk);transform:translate(16px,16px);z-index:-1}
   .hero-frame img{width:100%;height:100%;object-fit:cover;object-position:center 25%}
-  .hero-art:hover .hero-frame{transform:rotate(0)}
   .sticker{position:absolute;left:-6%;bottom:6%;width:clamp(96px,11vw,132px);aspect-ratio:1;border-radius:50%;background:var(--red);color:var(--cream);display:grid;place-items:center;text-align:center;text-decoration:none;font:900 .8rem/1.1 "Montserrat",sans-serif;letter-spacing:-.01em;text-transform:uppercase;padding:14px;transform:rotate(-14deg);transition:transform .4s var(--pop);animation:stick .6s var(--pop) 1s backwards}
   .sticker:hover{transform:rotate(6deg) scale(1.1)}
   @keyframes pop{from{opacity:0;transform:translateY(24px) scale(.95)}to{opacity:1;transform:none}}
   @keyframes stick{from{opacity:0;transform:rotate(-40deg) scale(.2)}to{opacity:1;transform:rotate(-14deg)}}
   .intro-on .hero-art{animation-delay:1.6s}
-  .intro-on .hero .squig{animation-delay:2.5s}
   .intro-on .sticker{animation-delay:2.4s}
 
+  /* journey-only layers (hidden in the plain fallback) */
+  .stage-shade,.stage-caption,.stage-ui{display:none}
+  .journey-on .stage-shade,.journey-on .stage-caption{display:block}
+  .journey-on .stage-ui{display:grid}
+  .stage-shade{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:linear-gradient(to top,rgba(20,6,0,.8),rgba(20,6,0,0) 60%)}
+  .stage-caption{position:absolute;z-index:3;left:var(--pad);right:var(--pad);bottom:clamp(64px,10vh,110px);opacity:0;pointer-events:none}
+  .stage-caption strong{display:block;font:900 clamp(2rem,5.4vw,4.6rem)/.95 "Montserrat",sans-serif;letter-spacing:-.05em;color:var(--cream)}
+  .stage-caption span{display:block;margin-top:12px;color:var(--yellow);font-size:clamp(1rem,1.5vw,1.25rem)}
+  .stage-ui{position:absolute;z-index:4;left:var(--pad);right:var(--pad);bottom:clamp(14px,2.6vh,26px);grid-template-columns:1fr auto 1fr;align-items:center;font-size:.9rem;color:var(--cream)}
+  .stage-ui .skip{justify-self:start;text-decoration:none;opacity:.8}
+  .stage-ui .skip:hover{opacity:1;text-decoration:underline}
+  .stage-ui .cue{justify-self:center}
+  .stage-ui .count{justify-self:end;font-variant-numeric:tabular-nums;opacity:.8}
+
   /* ---------- Home: work (yellow block, big type rows) ---------- */
-  .work-sec{background:var(--yellow);color:var(--brown);padding:clamp(48px,8vw,110px) 0 0}
-  .work-sec h2{color:var(--red);font-size:clamp(3.4rem,11vw,9rem);padding:0 var(--pad);margin-bottom:clamp(24px,4vw,56px)}
-  .row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(12px,2vw,26px) var(--pad);border-top:2px solid var(--brown);text-decoration:none;color:var(--brown);overflow:hidden;transition:background .25s,color .25s}
+  .work-sec{position:relative;z-index:5;background:var(--yellow);color:var(--brown);padding:clamp(36px,6vw,80px) 0 0}
+  .work-sec h2{color:var(--red);font-size:clamp(2.8rem,7.5vw,6rem);padding:0 var(--pad);margin-bottom:clamp(16px,2.6vw,36px)}
+  .row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(8px,1.4vw,18px) var(--pad);border-top:2px solid var(--brown);text-decoration:none;color:var(--brown);overflow:hidden;transition:background .25s,color .25s}
   .row:last-child{border-bottom:2px solid var(--brown)}
-  .row-name{font:900 clamp(3.4rem,13vw,11.5rem)/.95 "Montserrat",sans-serif;letter-spacing:-.05em;transition:transform .45s var(--ease)}
-  .row .thumb{flex:none;width:clamp(84px,14vw,210px);aspect-ratio:4/5;overflow:hidden;background:var(--brown-deep);transform:rotate(6deg);transition:transform .5s var(--pop),opacity .3s}
+  .row-name{font:900 clamp(2.8rem,9vw,8rem)/.95 "Montserrat",sans-serif;letter-spacing:-.05em;transition:transform .45s var(--ease)}
+  .row .thumb{flex:none;width:clamp(70px,10vw,150px);aspect-ratio:4/5;overflow:hidden;background:var(--brown-deep);transform:rotate(6deg);transition:transform .5s var(--pop)}
   .row .thumb img{width:100%;height:100%;object-fit:cover}
   .row:hover,.row:focus-visible{background:var(--red);color:var(--cream);outline-offset:-3px}
   .row:hover .row-name,.row:focus-visible .row-name{transform:translateX(clamp(8px,1.6vw,24px))}
   .row:hover .thumb,.row:focus-visible .thumb{transform:rotate(-5deg) scale(1.08)}
 
-  /* ---------- Home: about ---------- */
-  .about{background:var(--black);padding:clamp(56px,9vw,120px) var(--pad)}
-  .about h2{color:var(--red);font-size:clamp(3.4rem,11vw,9rem);margin-bottom:clamp(28px,5vw,64px)}
-  .about-inner{display:grid;grid-template-columns:5fr 6fr;gap:clamp(32px,6vw,96px);align-items:start;max-width:1400px}
-  .about-photo{position:relative;transform:rotate(-2deg)}
-  .about-photo::before{content:"";position:absolute;inset:0;background:var(--red);transform:translate(-14px,14px);z-index:0}
-  .about-photo img{position:relative;width:100%;height:auto}
-  .about-text{max-width:62ch}
-  .about-text p{color:var(--yellow);font-size:clamp(1.05rem,1.4vw,1.25rem);margin-bottom:1.2em}
+  /* ---------- Home: about (compact, fits one screen) ---------- */
+  .about{position:relative;z-index:5;background:var(--black);padding:clamp(36px,6vw,80px) var(--pad)}
+  .about-inner{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,6vw,88px);align-items:center;max-width:1300px;margin:0 auto}
+  .about-photo{position:relative;transform:rotate(-2deg);width:min(100%,360px)}
+  .about-photo::before{content:"";position:absolute;inset:0;background:var(--red);transform:translate(-12px,12px)}
+  .about-photo img{position:relative;width:100%;aspect-ratio:4/5;object-fit:cover}
+  .about h2{color:var(--red);font-size:clamp(2.8rem,7.5vw,6rem);margin-bottom:clamp(14px,2vw,26px)}
+  .about-text{max-width:60ch}
+  .about-text p{color:var(--yellow);font-size:clamp(1rem,1.2vw,1.1rem);margin-bottom:1em}
   .about-text p:last-of-type{color:var(--cream)}
-  .about-text .btn{margin-top:1em}
-
-  /* ---------- Home: closing call to action ---------- */
-  .cta{display:block;background:var(--red);color:var(--cream);text-decoration:none;padding:clamp(40px,7vw,96px) var(--pad);font:900 clamp(2.8rem,10vw,9rem)/.92 "Montserrat",sans-serif;letter-spacing:-.05em;transition:background .25s,color .25s}
-  .cta:hover,.cta:focus-visible{background:var(--yellow);color:var(--red);outline-offset:-6px}
-  .cta .squig{margin-top:clamp(14px,2vw,28px);transition:transform .5s var(--pop)}
-  .cta:hover .squig{transform:translateX(20px) rotate(-2deg)}
+  .about-text .btn{margin-top:.6em}
 
   /* ---------- Gallery pages ---------- */
   .gallery-page{padding:clamp(28px,5vw,64px) var(--pad) clamp(48px,7vw,100px)}
-  .gallery-page h1{color:var(--red);font-size:clamp(3.4rem,13vw,11rem);text-transform:uppercase}
-  .gallery-page .squig{margin:clamp(10px,1.4vw,18px) 0 clamp(28px,4.5vw,60px);color:var(--yellow)}
+  .gallery-page h1{color:var(--red);font-size:clamp(3.4rem,13vw,11rem);text-transform:uppercase;margin-bottom:clamp(24px,4vw,56px)}
   .grid{display:flex;flex-wrap:wrap;gap:var(--gap)}
   .grid::after{content:"";flex-grow:1e6}
   .tile{--ar:1.5;flex:calc(var(--ar) * 1000) 1 calc(var(--ar) * var(--row-h));min-width:0;position:relative;background:var(--brown-deep);cursor:zoom-in;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
@@ -143,21 +153,26 @@
 
   /* ---------- Contact (yellow page) ---------- */
   #page-contact{background:var(--yellow);color:var(--brown);min-height:calc(100svh - var(--nav-h))}
-  .contact{display:grid;grid-template-columns:5fr 6fr;gap:clamp(32px,7vw,112px);align-items:center;padding:clamp(32px,5vw,72px) var(--pad) clamp(56px,8vw,110px)}
+  .contact{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,7vw,112px);align-items:center;padding:clamp(32px,5vw,72px) var(--pad) clamp(56px,8vw,110px)}
   .contact-art{position:relative;transform:rotate(-2.5deg);transition:transform .5s var(--pop)}
   .contact-art:hover{transform:rotate(0)}
   .contact-art::before{content:"";position:absolute;inset:0;background:var(--red);transform:translate(14px,14px)}
   .contact-art img{position:relative;width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--brown-deep)}
-  .contact h1{color:var(--red);font-size:clamp(3.2rem,8vw,7.5rem)}
-  .contact .squig{margin:clamp(12px,1.6vw,20px) 0 clamp(24px,3.4vw,44px);color:var(--brown)}
+  .contact-body{min-width:0;container-type:inline-size}
+  .contact h1{color:var(--red);font-size:clamp(3rem,7vw,6.5rem);margin-bottom:clamp(18px,2.6vw,32px)}
   .contact-lead{max-width:38ch;margin-bottom:clamp(24px,3.4vw,44px);font-size:1.15rem}
   .contact-list{list-style:none;display:grid;gap:clamp(10px,1.4vw,18px);justify-items:start}
-  .contact-list a{display:inline-flex;align-items:center;gap:14px;text-decoration:none;font:900 clamp(1.5rem,3.6vw,3rem)/1.05 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--brown);overflow-wrap:anywhere;transition:color .2s,transform .35s var(--pop)}
+  .contact-list a{display:inline-flex;align-items:center;gap:14px;white-space:nowrap;text-decoration:none;font:900 clamp(1.3rem,2.4vw,2.4rem)/1.1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--brown);transition:color .2s,transform .35s var(--pop)}
   .contact-list a:hover{color:var(--red);transform:translateX(8px) rotate(-1deg)}
-  .contact-list .phone{font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:800}
+  .contact-list .phone{font-size:clamp(1.1rem,1.8vw,1.6rem);font-weight:800}
   .contact-list svg{width:1.1em;height:1.1em;flex:none}
+  /* Email always fits its column: size is tied to the column's own width. */
+  @supports (font-size:1cqw){
+    .contact-list #c-email{font-size:clamp(1rem,6.2cqw,2.8rem)}
+  }
 
-  footer{padding:22px var(--pad);font-size:.875rem;color:var(--muted);text-align:center;border-top:1px solid var(--line)}
+  /* ---------- Footer ---------- */
+  footer{display:flex;justify-content:center;text-align:center;padding:22px var(--pad);font-size:.875rem;color:var(--muted);border-top:1px solid var(--line)}
 
   /* ---------- Lightbox ---------- */
   .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,.96);display:flex;align-items:center;justify-content:center;touch-action:pan-y;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
@@ -172,11 +187,14 @@
 
   /* ---------- Responsive ---------- */
   @media (max-width:900px){
-    .hero{grid-template-columns:1fr;min-height:0;gap:44px}
-    .hero h1{font-size:clamp(3.4rem,19vw,8rem)}
+    .hero{grid-template-columns:1fr;min-height:0;gap:36px}
+    .hero h1{font-size:clamp(3.4rem,17vw,8rem)}
     .hero-art{order:-1;width:min(86%,440px)}
+    .journey-on .hero-art{width:min(58%,250px)}
+    .journey-on .hero{gap:26px;padding-top:20px;padding-bottom:56px}
+    .journey-on .hero .btn{margin-top:18px}
     .about-inner{grid-template-columns:1fr}
-    .about-photo{max-width:440px}
+    .about-photo{width:min(70%,300px)}
     .contact{grid-template-columns:1fr}
     .contact-art{max-width:420px;order:2}
   }
@@ -187,9 +205,7 @@
     .links{gap:12px}
     .links a{font-size:.9rem}
     .sticker{left:-3%}
-  }
-  @media (hover:none){
-    .row .thumb{transform:rotate(5deg)}
+    .stage-ui{font-size:.8rem}
   }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -200,10 +216,6 @@
 </head>
 
 <body>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <symbol id="squig" viewBox="0 0 172 20"><path d="M3 11 Q14 1 25 11 T47 11 T69 11 T91 11 T113 11 T135 11 T157 11 L169 8"/></symbol>
-</svg>
 
 <div class="intro" id="intro"><h1>Mees Putman</h1></div>
 <script>
@@ -227,17 +239,29 @@ try{
 
 <main>
   <section class="page" id="page-home">
-    <div class="hero">
-      <div class="hero-text" id="hero-text">
-        <h1 id="site-name"></h1>
-        <p class="tag" id="site-tagline"></p>
-        <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
-        <p class="where" id="site-where"></p>
-        <a class="btn" href="#work">See the work</a>
-      </div>
-      <div class="hero-art">
-        <div class="hero-frame"><img id="img-hero" alt="Photo by Mees Putman" fetchpriority="high" decoding="async"></div>
-        <a class="sticker" href="#contact">Open for projects</a>
+
+    <div class="journey" id="journey">
+      <div class="stage" id="stage">
+        <div class="hero" id="hero">
+          <div class="hero-text" id="hero-text">
+            <h1 id="site-name"></h1>
+            <p class="tag" id="site-tagline"></p>
+            <p class="where" id="site-where"></p>
+            <a class="btn" href="#work">See the work</a>
+          </div>
+          <div class="hero-art">
+            <div class="hero-frame" id="hero-frame"><img id="img-hero" alt="Photo by Mees Putman" fetchpriority="high" decoding="async"></div>
+            <a class="sticker" id="sticker" href="#contact">Open for projects</a>
+          </div>
+        </div>
+
+        <div class="stage-shade" id="stage-shade"></div>
+        <div class="stage-caption" id="stage-caption" aria-hidden="true"><strong id="cap-title"></strong><span id="cap-where"></span></div>
+        <div class="stage-ui" id="stage-ui">
+          <a class="skip" href="#work">Skip intro</a>
+          <span class="cue" id="stage-cue" aria-hidden="true">Scroll</span>
+          <span class="count" id="stage-count" aria-hidden="true">1 / 3</span>
+        </div>
       </div>
     </div>
 
@@ -247,33 +271,28 @@ try{
     </div>
 
     <div class="about" id="about">
-      <h2>About</h2>
       <div class="about-inner">
         <div class="about-photo"><img id="img-about" alt="Mees Putman" loading="lazy" decoding="async"></div>
-        <div class="about-text" id="about-text"></div>
+        <div>
+          <h2>About</h2>
+          <div class="about-text" id="about-text"></div>
+        </div>
       </div>
     </div>
-
-    <a class="cta" href="#contact">Let’s work together
-      <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
-    </a>
   </section>
 
   <section class="page gallery-page" id="page-people">
     <h1>People</h1>
-    <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
     <div class="grid" id="grid-people"></div>
   </section>
 
   <section class="page gallery-page" id="page-street">
     <h1>Street</h1>
-    <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
     <div class="grid" id="grid-street"></div>
   </section>
 
   <section class="page gallery-page" id="page-concert">
     <h1>Concert</h1>
-    <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
     <div class="grid" id="grid-concert"></div>
   </section>
 
@@ -282,7 +301,6 @@ try{
       <div class="contact-art"><img id="img-contact" alt="" decoding="async"></div>
       <div class="contact-body">
         <h1>Work with me</h1>
-        <svg class="squig" viewBox="0 0 172 20" aria-hidden="true"><use href="#squig"/></svg>
         <p class="contact-lead" id="contact-lead"></p>
         <ul class="contact-list">
           <li><a id="c-email"></a></li>
@@ -340,12 +358,15 @@ const PHOTOS = {
 /* ============================================================ */
 
 const ORDER_MODE = new URLSearchParams(location.search).has("order");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = id => document.getElementById(id);
 
 /* ---------- Static content ---------- */
 $("site-name").innerHTML = SITE.name.map(w => `<span>${w}</span>`).join("");
 $("site-tagline").textContent = SITE.tagline;
 $("site-where").textContent = SITE.where;
+$("cap-title").textContent = SITE.tagline;
+$("cap-where").textContent = SITE.where;
 $("about-text").innerHTML =
   SITE.about.map(p => `<p>${p}</p>`).join("") + `<a class="btn" href="#contact">Get in touch</a>`;
 $("year").textContent = new Date().getFullYear();
@@ -387,7 +408,6 @@ async function entriesFor(name){
   return (manifest[name] && manifest[name].length) ? manifest[name] : PHOTOS[name].files;
 }
 
-/* Fade an image in once it has loaded (opacity only — cheap, no layout shift). */
 function reveal(im){
   if (im.complete && im.naturalWidth) im.classList.add("ready");
   else im.addEventListener("load", () => im.classList.add("ready"), { once: true });
@@ -489,6 +509,88 @@ function enableOrdering(name, grid){
   });
 }
 
+/* ============================================================
+   Scroll journey (home)
+   One scroll handler, throttled to animation frames, only
+   touching opacity / transform / one background colour.
+   ============================================================ */
+const journey = $("journey"), stage = $("stage"), hero = $("hero"), frame = $("hero-frame");
+const heroText = $("hero-text"), sticker = $("sticker"), shade = $("stage-shade");
+const caption = $("stage-caption"), cue = $("stage-cue"), count = $("stage-count");
+
+const BROWN = [64, 24, 4], YELLOW = [252, 224, 139], RED = [225, 32, 32];
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease  = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const mix   = (a, b, t) => "rgb(" + a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",") + ")";
+
+let on = false, lastP = -1, geo = null;
+
+function clearJourney(){
+  [frame, stage, heroText, sticker, shade, caption, cue].forEach(el => el.removeAttribute("style"));
+  frame.style.removeProperty("--blk");
+}
+
+function measure(){
+  if (page !== "home") return;
+  const ok = !reduced && innerHeight >= 520;
+  journey.classList.toggle("journey-on", ok);
+  if (!ok){ on = false; clearJourney(); updateBrand(); return; }
+
+  /* If the hero does not fit on this screen, fall back to a normal page. */
+  if (hero.scrollHeight > stage.clientHeight + 2){
+    journey.classList.remove("journey-on"); on = false; clearJourney(); updateBrand(); return;
+  }
+  const art = frame.offsetParent;
+  const sw = stage.clientWidth, sh = stage.clientHeight;
+  const fw = frame.offsetWidth, fh = frame.offsetHeight;
+  const cx = art.offsetLeft + frame.offsetLeft + fw / 2;
+  const cy = art.offsetTop  + frame.offsetTop  + fh / 2;
+  geo = {
+    s:  Math.max(sw / fw, sh / fh),
+    dx: sw / 2 - cx,
+    dy: sh / 2 - cy,
+    range: journey.offsetHeight - stage.offsetHeight
+  };
+  on = true; lastP = -1;
+  update();
+}
+
+function update(){
+  if (!on || page !== "home" || !geo) return;
+  const p = clamp(scrollY / geo.range);
+  if (p === lastP) return;
+  lastP = p;
+
+  /* 1. the photo grows until it fills the screen */
+  const e = ease(clamp((p - .05) / .57));
+  frame.style.transform =
+    `translate3d(${(geo.dx * e).toFixed(1)}px,${(geo.dy * e).toFixed(1)}px,0) scale(${(1 + (geo.s - 1) * e).toFixed(4)}) rotate(${(2.5 * (1 - e)).toFixed(2)}deg)`;
+
+  /* 2. the whole page changes colour: brown to yellow */
+  const t = ease(clamp((p - .12) / .28));
+  stage.style.backgroundColor = mix(BROWN, YELLOW, t);
+  frame.style.setProperty("--blk", mix(YELLOW, RED, t));
+
+  /* 3. intro text and sticker clear out */
+  const o = 1 - clamp((p - .02) / .2);
+  heroText.style.opacity = o;
+  heroText.style.transform = `translate3d(0,${(-p * 80).toFixed(1)}px,0)`;
+  heroText.style.visibility = o < .02 ? "hidden" : "";
+  const so = 1 - clamp(p / .18);
+  sticker.style.opacity = so;
+  sticker.style.visibility = so < .02 ? "hidden" : "";
+  cue.style.opacity = 1 - clamp(p / .06);
+
+  /* 4. arrival: shade + caption on the full photo */
+  shade.style.opacity = (e * .9).toFixed(3);
+  const c = clamp((p - .66) / .2);
+  caption.style.opacity = c;
+  caption.style.transform = `translate3d(0,${((1 - c) * 24).toFixed(1)}px,0)`;
+
+  count.textContent = (p < .2 ? 1 : p < .62 ? 2 : 3) + " / 3";
+  updateBrand();
+}
+
 /* ---------- Routing + nav ---------- */
 const pages = ["home", "people", "street", "concert", "contact"];
 const nav = $("nav");
@@ -500,9 +602,10 @@ function current(){
   return pages.includes(p) ? p : "home";
 }
 
-/* Logo shows everywhere except while the big name is on screen (top of Home). */
+/* Logo: always on other pages; on Home once the big name has gone. */
 function updateBrand(){
-  nav.classList.toggle("show-brand", page !== "home" || !heroVisible);
+  const homeShow = on ? lastP > .3 : !heroVisible;
+  nav.classList.toggle("show-brand", page !== "home" || homeShow);
 }
 
 function render(){
@@ -512,6 +615,7 @@ function render(){
   document.querySelectorAll(".links a").forEach(a => a.classList.toggle("active", a.dataset.page === page));
   if (PHOTOS[page] && PHOTOS[page].files) buildGallery(page);
   if (page !== prev || !/^#(work|about)$/.test(location.hash)) window.scrollTo({ top: 0, behavior: "instant" });
+  if (page === "home") requestAnimationFrame(measure);
   updateBrand();
 }
 
@@ -526,11 +630,20 @@ addEventListener("hashchange", () => {
   render();
 });
 
-/* Observers instead of a scroll handler = no per-frame work while scrolling. */
-new IntersectionObserver(es => {
-  heroVisible = es[0].isIntersecting;
-  updateBrand();
-}, { rootMargin: "-64px 0px 0px 0px" }).observe($("hero-text"));
+let ticking = false;
+addEventListener("scroll", () => {
+  if (ticking || !on) return;
+  ticking = true;
+  requestAnimationFrame(() => { ticking = false; update(); });
+}, { passive: true });
+
+let rz;
+addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(measure, 150); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+/* Fallback (no journey): logo appears once the hero text is off screen. */
+new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; updateBrand(); },
+  { rootMargin: "-64px 0px 0px 0px" }).observe(heroText);
 
 const sentinel = document.createElement("div");
 sentinel.style.cssText = "position:absolute;top:0;left:0;height:8px;width:1px;pointer-events:none";
