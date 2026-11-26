@@ -182,7 +182,7 @@
   .lb.open{opacity:1;visibility:visible}
   .lb-stage{position:relative;display:inline-flex;align-items:center;justify-content:center;max-width:94vw;max-height:88vh;max-height:88dvh;width:fit-content;height:fit-content}
   .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .2s}
-  .lb-credit{position:absolute;left:10px;bottom:10px;z-index:2;background:rgba(12,12,12,.88);color:var(--cream);font-family:"Montserrat",sans-serif;font-weight:700;font-size:.7rem;letter-spacing:.08em;padding:5px 11px;border-radius:999px;pointer-events:none;user-select:none}
+  .lb-credit{position:absolute;left:10px;bottom:10px;z-index:2;background:rgba(12,12,12,.86);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;font-weight:500;font-size:.68rem;letter-spacing:.02em;padding:4px 10px;border-radius:999px;pointer-events:none;user-select:none}
   .lb button{position:absolute;background:none;border:0;color:var(--cream);cursor:pointer;font-size:2.2rem;line-height:1;min-width:44px;min-height:44px;padding:12px;opacity:.85;transition:opacity .2s;z-index:102}
   .lb button:hover{opacity:1}
   .lb .x{top:max(8px,env(safe-area-inset-top));right:8px}
@@ -195,12 +195,13 @@
     .about-photo img{max-height:60svh}
   }
   @media (max-width:640px){
-    :root{--row-h:clamp(225px,54vw,290px);--nav-h:58px;--pad:14px}
-    .nav{gap:8px;padding-inline:max(12px,env(safe-area-inset-left)) max(12px,env(safe-area-inset-right))}
-    .brand-name{font-size:.96rem}
-    .brand-tag{display:block;font-size:.48rem;letter-spacing:.09em;margin-top:3px}
-    .links{gap:10px}
-    .links a{font-size:.92rem;padding:8px 3px;min-height:42px}
+    :root{--row-h:clamp(225px,54vw,290px);--nav-h:56px;--pad:12px}
+    .nav{gap:6px;padding-inline:max(12px,env(safe-area-inset-left)) max(12px,env(safe-area-inset-right))}
+    .brand-name{font-size:.94rem}
+    .brand-tag{display:block;font-size:.42rem;letter-spacing:.05em;margin-top:3px}
+    .links{gap:8px}
+    .links a{font-size:.88rem;padding:8px 2px;min-height:40px}
+    .lb-credit{left:8px;bottom:8px;font-size:.58rem;padding:4px 8px}
     .stage-ui{font-size:.85rem}
   }
   @media (prefers-reduced-motion:reduce){
