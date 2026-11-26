@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mees Putman — Photography &amp; Cinematography</title>
 <meta name="description" content="Mees Putman, photographer and filmmaker based in Utrecht, The Netherlands.">
-<meta name="theme-color" content="#401804">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -29,7 +28,10 @@
     --brown-deep:#2e1103;
     --black:#000;
     --red:#e12020;
-    --yellow:#f0c24b;    --gold:#e0a82e;    --orange:#d9561f;    --cream:#f3e9d8;
+    --yellow:#f0c24b;
+    --gold:#e0a82e;
+    --orange:#d9561f;
+    --cream:#f3e9d8;
     --muted:rgba(243,233,216,.62);
     --gap:clamp(8px,1.6vw,20px);
     --pad:clamp(16px,5.5vw,80px);
@@ -39,8 +41,8 @@
     --pop:cubic-bezier(.34,1.56,.64,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:var(--nav-h)}
-  body{background:var(--brown);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--nav-h) + env(safe-area-inset-top));background:var(--black)}
+  body{background:var(--black);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;line-height:1.6;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;overflow-x:hidden}
   img{display:block;max-width:100%}
   a{color:inherit}
   h1,h2,.display{font-family:"Montserrat",sans-serif;font-weight:900;letter-spacing:-.05em;line-height:.95}
@@ -55,13 +57,13 @@
   @keyframes introIn{to{opacity:1}}
   @keyframes introOut{to{opacity:0;visibility:hidden}}
 
-  .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nav-h);display:flex;align-items:center;gap:clamp(14px,3vw,28px);padding:0 var(--pad);background-color:transparent;transition:background-color .35s}
-  .nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(20,6,0,.55),rgba(20,6,0,0));transition:opacity .35s}
-  .nav.solid{background-color:var(--brown)}
-  .nav.solid::before{opacity:0}
+  .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:calc(var(--nav-h) + env(safe-area-inset-top));padding-top:env(safe-area-inset-top);display:flex;align-items:center;gap:clamp(14px,3vw,28px);padding-left:var(--pad);padding-right:var(--pad);background-color:transparent;transition:background-color .35s}
+  .nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,rgba(10,3,0,.72),rgba(10,3,0,.28) 65%,rgba(10,3,0,0));transition:opacity .35s}
+  .nav.solid{background-color:rgba(12,4,0,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .nav.solid::before{opacity:1}
   .brand{display:block;white-space:nowrap;line-height:1;text-decoration:none;opacity:0;pointer-events:none;transition:opacity .4s}
   .brand-name{display:block;font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red)}
-  .brand-tag{display:block;margin-top:5px;font-size:.58rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
+  .brand-tag{display:block;margin-top:4px;font-size:.58rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
   .nav.show-brand .brand{opacity:1;pointer-events:auto}
   .links{display:flex;gap:clamp(14px,3vw,28px);margin-left:auto}
   .links a{text-decoration:none;color:var(--muted);font-size:1.05rem;padding:8px 2px;position:relative;transition:color .25s}
@@ -73,8 +75,8 @@
   .cursor.on{opacity:1}
   .has-cursor,.has-cursor *{cursor:none!important}
 
-  main{flex:1}
-  .page{display:none}
+  main{flex:1;background:var(--brown)}
+  .page{display:none;position:relative}
   .page.active{display:block;animation:fade .35s ease}
   @keyframes fade{from{opacity:0}to{opacity:1}}
 
@@ -112,7 +114,7 @@
   .intro-on .hero-meta{animation-delay:2.5s}
   .intro-on .sticker{animation-delay:2.4s}
   @media (max-width:700px),(max-aspect-ratio:1/1){
-    .sticker-wrap{bottom:auto;top:clamp(66px,12%,120px);transform-origin:100% 0}
+    .sticker-wrap{bottom:auto;top:clamp(74px,13%,128px);transform-origin:100% 0}
   }
 
   .work-sec{position:relative;z-index:5;background:var(--brown);color:var(--cream);padding:clamp(28px,4vw,52px) 0 0}
@@ -141,7 +143,12 @@
   @keyframes titleIn{from{opacity:0;transform:scale(1.07);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
   .page-title.title-in{animation:titleIn 1.2s var(--ease) both}
 
-  .gallery-page{padding:calc(var(--nav-h) + clamp(28px,5vw,64px)) var(--pad) clamp(48px,7vw,100px)}
+  .gallery-page{position:relative;padding:calc(var(--nav-h) + env(safe-area-inset-top) + clamp(28px,5vw,64px)) var(--pad) clamp(48px,7vw,100px)}
+  .top-photo-bleed{position:fixed;top:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-top) + 36px);z-index:1;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .35s ease}
+  .page.active .top-photo-bleed{opacity:1}
+  .top-photo-bleed img{width:100%;height:100%;object-fit:cover;filter:brightness(.68) saturate(1.1);transform:scale(1.06)}
+  .top-photo-bleed::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(15,6,1,.25),var(--brown) 96%)}
+  .gallery-page > *:not(.top-photo-bleed){position:relative;z-index:2}
   .gallery-page h1{color:var(--red);text-align:center;font-size:clamp(3rem,9vw,7.5rem);line-height:1;margin-bottom:clamp(28px,5vw,64px);text-transform:uppercase}
   .grid{display:flex;flex-wrap:wrap;gap:var(--gap);max-width:1500px;margin:0 auto}
   .grid::after{content:"";flex-grow:1e6}
@@ -155,7 +162,7 @@
   .tile:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
   .empty{text-align:center;color:var(--muted);padding:40px 0}
 
-  #page-contact{padding-top:var(--nav-h)}
+  #page-contact{padding-top:calc(var(--nav-h) + env(safe-area-inset-top))}
   .contact{min-height:calc(100vh - var(--nav-h) - 66px);min-height:calc(100svh - var(--nav-h) - 66px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(24px,5vh,60px) var(--pad)}
   .contact h1{color:var(--gold);font-size:clamp(3rem,8.5vw,7rem)}
   .contact .lead{margin-top:clamp(14px,2.4vh,26px);max-width:34rem;color:var(--muted);font-size:clamp(1rem,1.5vw,1.2rem)}
@@ -173,11 +180,11 @@
   .contact-meta a{text-decoration:none;transition:color .25s}
   .contact-meta a:hover{color:var(--yellow)}
 
-  footer{padding:22px var(--pad);font-size:.85rem;color:var(--muted);text-align:center;border-top:1px solid rgba(243,233,216,.12)}
+  footer{padding:22px var(--pad) calc(22px + env(safe-area-inset-bottom));font-size:.85rem;color:var(--muted);text-align:center;border-top:1px solid rgba(243,233,216,.12);background:var(--brown)}
 
-  .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,.96);display:flex;align-items:center;justify-content:center;touch-action:pan-y;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,1);display:flex;align-items:center;justify-content:center;touch-action:none;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
   .lb.open{opacity:1;visibility:visible}
-  .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .3s}
+  .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .2s}
   .lb button{position:absolute;background:none;border:0;color:var(--cream);cursor:pointer;font-size:2.2rem;line-height:1;padding:14px;opacity:.8;transition:opacity .2s}
   .lb button:hover{opacity:1}
   .lb .x{top:max(8px,env(safe-area-inset-top));right:8px}
@@ -191,11 +198,11 @@
   }
   @media (max-width:560px){
     :root{--row-h:150px;--nav-h:54px}
-    .nav{gap:10px}
-    .brand-name{font-size:.92rem}
-    .brand-tag{display:none}
-    .links{gap:10px}
-    .links a{font-size:.88rem}
+    .nav{gap:8px}
+    .brand-name{font-size:.86rem}
+    .brand-tag{display:block;font-size:.46rem;letter-spacing:.1em;margin-top:3px}
+    .links{gap:8px}
+    .links a{font-size:.84rem}
     .stage-ui{font-size:.8rem}
   }
   @media (prefers-reduced-motion:reduce){
@@ -271,16 +278,19 @@ try{
   </section>
 
   <section class="page gallery-page" id="page-people">
+    <div class="top-photo-bleed" aria-hidden="true"><img id="bleed-people" alt=""></div>
     <h1 class="page-title">People</h1>
     <div class="grid" id="grid-people"></div>
   </section>
 
   <section class="page gallery-page" id="page-street">
+    <div class="top-photo-bleed" aria-hidden="true"><img id="bleed-street" alt=""></div>
     <h1 class="page-title">Street</h1>
     <div class="grid" id="grid-street"></div>
   </section>
 
   <section class="page gallery-page" id="page-concert">
+    <div class="top-photo-bleed" aria-hidden="true"><img id="bleed-concert" alt=""></div>
     <h1 class="page-title">Concert</h1>
     <div class="grid" id="grid-concert"></div>
   </section>
@@ -483,6 +493,12 @@ async function buildWork(){
   if (!box.children.length) $("work").style.display = "none";
 }
 
+function setBleedPhoto(name, items){
+  const bleed = $("bleed-" + name);
+  if (!bleed || !items || !items.length) return;
+  bleed.src = items[0].src;
+}
+
 async function buildGallery(name){
   if (built[name]) return;
   built[name] = true;
@@ -494,6 +510,8 @@ async function buildGallery(name){
     return { src: cfg.folder + encodeURIComponent(f.f), alt: niceAlt(f.f), ar: f.w / f.h, file: f.f };
   });
 
+  if (items.length) setBleedPhoto(name, items);
+
   const loaded = (await Promise.all(items.map(it => it.ar ? it : loadSize(it)))).filter(Boolean);
   galleries[name] = loaded;
 
@@ -502,16 +520,25 @@ async function buildGallery(name){
     return;
   }
 
+  setBleedPhoto(name, loaded);
+
   const frag = document.createDocumentFragment();
   loaded.forEach((p, i) => {
-    const t = document.createElement("a");
+    const t = document.createElement("div");
     t.className = "tile";
-    t.href = p.src;
+    t.setAttribute("role", "button");
+    t.tabIndex = 0;
     t.dataset.file = p.file;
     t.dataset.n = String(i + 1).padStart(2, "0");
     t.style.setProperty("--ar", p.ar.toFixed(4));
     t.innerHTML = `<img src="${p.src}" alt="${p.alt}" loading="lazy" decoding="async">`;
-    t.addEventListener("click", e => { e.preventDefault(); if (!ORDER_MODE) openLB(name, i); });
+    t.addEventListener("click", () => { if (!ORDER_MODE) openLB(name, i); });
+    t.addEventListener("keydown", e => {
+      if ((e.key === "Enter" || e.key === " ") && !ORDER_MODE) {
+        e.preventDefault();
+        openLB(name, i);
+      }
+    });
     const im = t.querySelector("img"); let tries = 0;
     im.addEventListener("error", () => {
       if (tries++ < 3) setTimeout(() => { im.src = p.src + (p.src.includes("?") ? "&" : "?") + "r=" + tries; }, 1200 * tries);
@@ -613,7 +640,8 @@ function update(){
   const sc = 1 + (geo.s - 1) * e;
   card.style.transform =
     `translate3d(${(geo.dx * e).toFixed(1)}px,${(geo.dy * e).toFixed(1)}px,0) scale(${sc.toFixed(4)}) rotate(${(geo.rot * e).toFixed(2)}deg)`;
-  card.style.setProperty("--ss", (1 / sc).toFixed(3));  shade.style.opacity = (1 - e * .85).toFixed(3);
+  card.style.setProperty("--ss", (1 / sc).toFixed(3));
+  shade.style.opacity = (1 - e * .85).toFixed(3);
 
   const t = ease(clamp((p - .08) / .5));
   stage.style.backgroundColor = mix(BROWN, BLACK, t);
@@ -706,16 +734,32 @@ if (matchMedia("(hover: hover) and (pointer: fine)").matches && !ORDER_MODE && !
 }
 
 const lb = $("lb"), lbImg = $("lb-img"), lbCount = $("lb-count");
-let cur = { name: null, i: 0 };
+let cur = { name: null, i: 0 }, reqId = 0;
 lbImg.addEventListener("load",  () => { lbImg.style.opacity = 1; });
 lbImg.addEventListener("error", () => { lbImg.style.opacity = 1; });
 
 function show(){
-  const list = galleries[cur.name], p = list[cur.i];
-  lbImg.style.opacity = 0;
-  lbImg.src = p.src; lbImg.alt = p.alt;
+  const list = galleries[cur.name];
+  if (!list || !list.length) return;
+  const p = list[cur.i];
+  const token = ++reqId;
+  lbImg.style.opacity = .25;
   lbCount.textContent = (cur.i + 1) + " / " + list.length;
-  [1, -1].forEach(d => { const n = list[(cur.i + d + list.length) % list.length]; new Image().src = n.src; });
+
+  const loader = new Image();
+  loader.onload = loader.onerror = () => {
+    if (token !== reqId) return;
+    lbImg.src = p.src;
+    lbImg.alt = p.alt;
+    lbImg.style.opacity = 1;
+  };
+  loader.src = p.src;
+
+  [1, -1].forEach(d => {
+    const n = list[(cur.i + d + list.length) % list.length];
+    const pre = new Image();
+    pre.src = n.src;
+  });
 }
 function openLB(name, i){ cur = { name, i }; lb.classList.add("open"); document.body.style.overflow = "hidden"; show(); }
 function closeLB(){ lb.classList.remove("open"); document.body.style.overflow = ""; }
@@ -742,19 +786,16 @@ lb.addEventListener("touchend", e => {
 
 (function protectPhotos(){
   const photoSelector = "img, .tile, .slide, .thumb, .about-photo, #lb";
-
   document.addEventListener("contextmenu", e => {
     if (e.target.closest && e.target.closest(photoSelector)) {
       e.preventDefault();
     }
   });
-
   document.addEventListener("dragstart", e => {
     if (e.target.closest && e.target.closest(photoSelector)) {
       e.preventDefault();
     }
   });
-
   const style = document.createElement("style");
   style.textContent = `
     img, .tile, .slide, .thumb, .about-photo, #lb, #lb img {
@@ -769,3 +810,4 @@ lb.addEventListener("touchend", e => {
 </script>
 </body>
 </html>
+```[cite: 2, 9, 10]
