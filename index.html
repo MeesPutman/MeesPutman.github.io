@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mees Putman — Photography &amp; Cinematography</title>
 <meta name="description" content="Mees Putman, photographer and filmmaker based in Utrecht, The Netherlands.">
+<meta name="theme-color" content="#401804">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -41,8 +42,8 @@
     --pop:cubic-bezier(.34,1.56,.64,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--nav-h) + env(safe-area-inset-top));background:var(--black)}
-  body{background:var(--black);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;line-height:1.6;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;overflow-x:hidden}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:var(--nav-h)}
+  body{background:var(--brown);color:var(--cream);font-family:"DM Sans",system-ui,sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
   img{display:block;max-width:100%}
   a{color:inherit}
   h1,h2,.display{font-family:"Montserrat",sans-serif;font-weight:900;letter-spacing:-.05em;line-height:.95}
@@ -57,16 +58,16 @@
   @keyframes introIn{to{opacity:1}}
   @keyframes introOut{to{opacity:0;visibility:hidden}}
 
-  .nav{position:fixed;top:0;left:0;right:0;z-index:50;height:calc(var(--nav-h) + env(safe-area-inset-top));padding-top:env(safe-area-inset-top);display:flex;align-items:center;gap:clamp(14px,3vw,28px);padding-left:var(--pad);padding-right:var(--pad);background-color:transparent;transition:background-color .35s}
-  .nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,rgba(10,3,0,.72),rgba(10,3,0,.28) 65%,rgba(10,3,0,0));transition:opacity .35s}
-  .nav.solid{background-color:rgba(12,4,0,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-  .nav.solid::before{opacity:1}
+  .nav{position:fixed;top:0;left:0;right:0;z-index:50;min-height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,3vw,28px);padding:8px var(--pad);background-color:transparent;transition:background-color .35s}
+  .nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(20,6,0,.55),rgba(20,6,0,0));transition:opacity .35s}
+  .nav.solid{background-color:var(--brown)}
+  .nav.solid::before{opacity:0}
   .brand{display:block;white-space:nowrap;line-height:1;text-decoration:none;opacity:0;pointer-events:none;transition:opacity .4s}
   .brand-name{display:block;font:900 1.2rem/1 "Montserrat",sans-serif;letter-spacing:-.04em;color:var(--red)}
   .brand-tag{display:block;margin-top:4px;font-size:.58rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
   .nav.show-brand .brand{opacity:1;pointer-events:auto}
-  .links{display:flex;gap:clamp(14px,3vw,28px);margin-left:auto}
-  .links a{text-decoration:none;color:var(--muted);font-size:1.05rem;padding:8px 2px;position:relative;transition:color .25s}
+  .links{display:flex;gap:clamp(12px,3vw,28px);margin-left:auto;flex-shrink:0}
+  .links a{text-decoration:none;color:var(--muted);font-size:1.05rem;padding:8px 2px;position:relative;transition:color .25s;white-space:nowrap}
   .links a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1.5px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
   .links a:hover,.links a.active{color:#fff}
   .links a:hover::after,.links a.active::after{transform:scaleX(1)}
@@ -75,8 +76,8 @@
   .cursor.on{opacity:1}
   .has-cursor,.has-cursor *{cursor:none!important}
 
-  main{flex:1;background:var(--brown)}
-  .page{display:none;position:relative}
+  main{flex:1}
+  .page{display:none}
   .page.active{display:block;animation:fade .35s ease}
   @keyframes fade{from{opacity:0}to{opacity:1}}
 
@@ -114,7 +115,7 @@
   .intro-on .hero-meta{animation-delay:2.5s}
   .intro-on .sticker{animation-delay:2.4s}
   @media (max-width:700px),(max-aspect-ratio:1/1){
-    .sticker-wrap{bottom:auto;top:clamp(74px,13%,128px);transform-origin:100% 0}
+    .sticker-wrap{bottom:auto;top:clamp(66px,12%,120px);transform-origin:100% 0}
   }
 
   .work-sec{position:relative;z-index:5;background:var(--brown);color:var(--cream);padding:clamp(28px,4vw,52px) 0 0}
@@ -143,12 +144,7 @@
   @keyframes titleIn{from{opacity:0;transform:scale(1.07);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
   .page-title.title-in{animation:titleIn 1.2s var(--ease) both}
 
-  .gallery-page{position:relative;padding:calc(var(--nav-h) + env(safe-area-inset-top) + clamp(28px,5vw,64px)) var(--pad) clamp(48px,7vw,100px)}
-  .top-photo-bleed{position:fixed;top:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-top) + 36px);z-index:1;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .35s ease}
-  .page.active .top-photo-bleed{opacity:1}
-  .top-photo-bleed img{width:100%;height:100%;object-fit:cover;filter:brightness(.68) saturate(1.1);transform:scale(1.06)}
-  .top-photo-bleed::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(15,6,1,.25),var(--brown) 96%)}
-  .gallery-page > *:not(.top-photo-bleed){position:relative;z-index:2}
+  .gallery-page{padding:calc(var(--nav-h) + clamp(28px,5vw,64px)) var(--pad) clamp(48px,7vw,100px)}
   .gallery-page h1{color:var(--red);text-align:center;font-size:clamp(3rem,9vw,7.5rem);line-height:1;margin-bottom:clamp(28px,5vw,64px);text-transform:uppercase}
   .grid{display:flex;flex-wrap:wrap;gap:var(--gap);max-width:1500px;margin:0 auto}
   .grid::after{content:"";flex-grow:1e6}
@@ -162,7 +158,7 @@
   .tile:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
   .empty{text-align:center;color:var(--muted);padding:40px 0}
 
-  #page-contact{padding-top:calc(var(--nav-h) + env(safe-area-inset-top))}
+  #page-contact{padding-top:var(--nav-h)}
   .contact{min-height:calc(100vh - var(--nav-h) - 66px);min-height:calc(100svh - var(--nav-h) - 66px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(24px,5vh,60px) var(--pad)}
   .contact h1{color:var(--gold);font-size:clamp(3rem,8.5vw,7rem)}
   .contact .lead{margin-top:clamp(14px,2.4vh,26px);max-width:34rem;color:var(--muted);font-size:clamp(1rem,1.5vw,1.2rem)}
@@ -180,29 +176,31 @@
   .contact-meta a{text-decoration:none;transition:color .25s}
   .contact-meta a:hover{color:var(--yellow)}
 
-  footer{padding:22px var(--pad) calc(22px + env(safe-area-inset-bottom));font-size:.85rem;color:var(--muted);text-align:center;border-top:1px solid rgba(243,233,216,.12);background:var(--brown)}
+  footer{padding:22px var(--pad);font-size:.85rem;color:var(--muted);text-align:center;border-top:1px solid rgba(243,233,216,.12)}
 
   .lb{position:fixed;inset:0;z-index:100;background:rgba(8,3,1,1);display:flex;align-items:center;justify-content:center;touch-action:none;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
   .lb.open{opacity:1;visibility:visible}
-  .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .2s}
-  .lb button{position:absolute;background:none;border:0;color:var(--cream);cursor:pointer;font-size:2.2rem;line-height:1;padding:14px;opacity:.8;transition:opacity .2s}
+  .lb-stage{position:relative;display:inline-flex;align-items:center;justify-content:center;max-width:94vw;max-height:88vh;max-height:88dvh;width:fit-content;height:fit-content}
+  .lb img{max-width:94vw;max-height:88vh;max-height:88dvh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:opacity .2s}
+  .lb-credit{position:absolute;left:10px;bottom:10px;z-index:2;background:rgba(15,15,15,.84);color:var(--cream);font-family:"Montserrat",sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.08em;padding:5px 10px;border-radius:4px;pointer-events:none;user-select:none}
+  .lb button{position:absolute;background:none;border:0;color:var(--cream);cursor:pointer;font-size:2.2rem;line-height:1;padding:14px;opacity:.8;transition:opacity .2s;z-index:102}
   .lb button:hover{opacity:1}
   .lb .x{top:max(8px,env(safe-area-inset-top));right:8px}
   .lb .prev{left:4px;top:50%;transform:translateY(-50%)}
   .lb .next{right:4px;top:50%;transform:translateY(-50%)}
-  .lb .count{position:absolute;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:.9rem;color:var(--muted)}
+  .lb .count{position:fixed;bottom:max(14px,env(safe-area-inset-bottom));right:max(14px,env(safe-area-inset-right));font-size:.9rem;color:var(--muted);z-index:102}
 
   @media (max-width:900px){
     .about-inner{grid-template-columns:1fr}
     .about-photo img{max-height:60svh}
   }
   @media (max-width:560px){
-    :root{--row-h:150px;--nav-h:54px}
-    .nav{gap:8px}
-    .brand-name{font-size:.86rem}
-    .brand-tag{display:block;font-size:.46rem;letter-spacing:.1em;margin-top:3px}
-    .links{gap:8px}
-    .links a{font-size:.84rem}
+    :root{--row-h:150px;--nav-h:54px;--pad:14px}
+    .nav{gap:6px}
+    .brand-name{font-size:.78rem}
+    .brand-tag{display:block;font-size:.4rem;letter-spacing:.07em;margin-top:3px}
+    .links{gap:6px}
+    .links a{font-size:.74rem;padding:6px 1px}
     .stage-ui{font-size:.8rem}
   }
   @media (prefers-reduced-motion:reduce){
@@ -278,19 +276,16 @@ try{
   </section>
 
   <section class="page gallery-page" id="page-people">
-    <div class="top-photo-bleed" aria-hidden="true"><img id="bleed-people" alt=""></div>
     <h1 class="page-title">People</h1>
     <div class="grid" id="grid-people"></div>
   </section>
 
   <section class="page gallery-page" id="page-street">
-    <div class="top-photo-bleed" aria-hidden="true"><img id="bleed-street" alt=""></div>
     <h1 class="page-title">Street</h1>
     <div class="grid" id="grid-street"></div>
   </section>
 
   <section class="page gallery-page" id="page-concert">
-    <div class="top-photo-bleed" aria-hidden="true"><img id="bleed-concert" alt=""></div>
     <h1 class="page-title">Concert</h1>
     <div class="grid" id="grid-concert"></div>
   </section>
@@ -326,7 +321,10 @@ try{
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
   <button class="x" aria-label="Close">&times;</button>
   <button class="prev" aria-label="Previous photo">&#8249;</button>
-  <img id="lb-img" alt="">
+  <div class="lb-stage">
+    <img id="lb-img" alt="">
+    <div class="lb-credit" aria-hidden="true">© Mees Putman</div>
+  </div>
   <button class="next" aria-label="Next photo">&#8250;</button>
   <div class="count" id="lb-count"></div>
 </div>
@@ -493,12 +491,6 @@ async function buildWork(){
   if (!box.children.length) $("work").style.display = "none";
 }
 
-function setBleedPhoto(name, items){
-  const bleed = $("bleed-" + name);
-  if (!bleed || !items || !items.length) return;
-  bleed.src = items[0].src;
-}
-
 async function buildGallery(name){
   if (built[name]) return;
   built[name] = true;
@@ -510,8 +502,6 @@ async function buildGallery(name){
     return { src: cfg.folder + encodeURIComponent(f.f), alt: niceAlt(f.f), ar: f.w / f.h, file: f.f };
   });
 
-  if (items.length) setBleedPhoto(name, items);
-
   const loaded = (await Promise.all(items.map(it => it.ar ? it : loadSize(it)))).filter(Boolean);
   galleries[name] = loaded;
 
@@ -519,8 +509,6 @@ async function buildGallery(name){
     grid.innerHTML = `<p class="empty">No photos yet.</p>`;
     return;
   }
-
-  setBleedPhoto(name, loaded);
 
   const frag = document.createDocumentFragment();
   loaded.forEach((p, i) => {
@@ -810,4 +798,3 @@ lb.addEventListener("touchend", e => {
 </script>
 </body>
 </html>
-```[cite: 2, 9, 10]
